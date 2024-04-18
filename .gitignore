@@ -1,0 +1,114 @@
+# Ignore node_modules directory
+node_modules/
+
+# Ignore npm debug log
+npm-debug.log
+
+# Ignore yarn error log
+yarn-error.log
+
+# Ignore IDE and editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Ignore OS generated files
+.DS_Store
+Thumbs.db
+
+# Ignore environment configuration files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Ignore compiled files and build output
+/build
+/dist
+/out
+/.next
+
+# Ignore dependencies installed via package manager
+# Uncomment the package manager you are using:
+# For npm
+# package-lock.json
+# For yarn
+# yarn.lock
+# For pnpm
+# pnpm-lock.yaml
+
+# Ignore local development config
+.local/
+
+# Ignore logs and other generated files
+*.log
+*.log.*
+*.tmp
+*.tmp.*
+*.pid
+*.pid.*
+
+# Ignore runtime data
+*.db
+*.sqlite
+*.sqlite3
+*.sqlitedb
+*.pdb
+
+# Ignore coverage output
+/coverage
+
+# Ignore IDE specific files
+/.idea
+/.vscode
+
+# Ignore editor specific files
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Ignore development tools
+.electron
+.esm-cache
+.flowconfig
+.jest
+.nyc_output
+.styled-components-cache
+
+# Ignore documentation
+/doc
+/docs
+/documentation
+/docgen
+/.docz
+/.out
+
+# Ignore package manager directories
+# For npm
+# /node_modules
+# For yarn
+# /yarn-error.log
+
+# Ignore generated files
+/build
+/Dist
+/coverage
+/Thumbs.db
+/*.zip
+/*.rar
+/*.tar.gz
+/*.tar.bz2
+/*.tar.xz
+/*.log
+/*.bak
+/*.iso
+/*.tmp
+/*.swp
+/*.DS_Store
+/*.class
+/*.war
+/*.ear
+/*.jar
