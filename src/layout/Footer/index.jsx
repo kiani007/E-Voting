@@ -1,12 +1,22 @@
-import React from 'react'
-import styles from './footer.module.css'
+import React from 'react';
+import { AppBar, Toolbar, Typography } from '@mui/material';
 
-const Footer = () => {
+const styles = {
+  footer: {
+    marginTop: 'auto',
+  },
+};
+
+function Footer() {
   return (
-    <div>
-      Footer
-    </div>
-  )
+    <AppBar position="static" color="primary" sx={styles.footer}>
+      <Toolbar>
+        <Typography variant="body1" color="inherit">
+          © {new Date().getFullYear()} E-Voting System. All rights reserved.
+        </Typography>
+      </Toolbar>
+    </AppBar>
+  );
 }
 
-export default Footer
+export default Footer;

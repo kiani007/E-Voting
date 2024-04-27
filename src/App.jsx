@@ -1,11 +1,12 @@
 import Routers from './Routers/Routers';
-
-function App() {
+import { ThemeProvider } from '@mui/material/styles';
+import theme from '../theme.js';
+const App = ()=> {
   return (
-    <div style={{ textAlign: 'center', width: '100vw' }}>
-      <h1>Welcome to Evoting App</h1>
-      <p> Comming Soon! </p>
-    </div>
+    <ThemeProvider theme={theme}>
+      <Routers />
+  </ThemeProvider>
+    
   );
 }
 
