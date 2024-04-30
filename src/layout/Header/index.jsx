@@ -1,14 +1,21 @@
-import React from 'react'
-import styles from './header.module.css'
-import { Box } from '@mui/material'
-import Navbar  from '../Navbar'
+import React from "react";
+import styles from "./header.module.css";
+import { Box, Typography } from "@mui/material";
+import { Navbar } from "../index.js";
 
-const Header = () => {
+const index = () => {
   return (
-    <>
-      <Navbar />
-    </>
-  ) 
-}
+    <header style={{ marginBottom: "2rem" }}>
+      <Box className={styles.root}>
+        {/* Logo */}
+        <Typography variant="h4" align="center" gutterBottom>
+          E-Voting Electoral System
+        </Typography>
+        {/* Navigation links */}
+        <Navbar />
+      </Box>
+    </header>
+  );
+};
 
-export default Header
+export default index;
