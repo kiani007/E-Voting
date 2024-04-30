@@ -1,5 +1,5 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Container,
   Typography,
@@ -8,43 +8,43 @@ import {
   Link,
   Grid,
   Avatar,
-} from "@mui/material";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+} from '@mui/material';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 const Index = () => {
   const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
-      email: data.get("email"),
-      password: data.get("password"),
+      email: data.get('email'),
+      password: data.get('password'),
     });
-    navigate("/e-voting-system");
+    navigate('/e-voting-system');
   };
 
   return (
     <Container component="main" maxWidth="xs">
       <div
         style={{
-          marginTop: "8rem",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          marginTop: '8rem',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
         }}
       >
-        <Avatar sx={{ m: 3, bgcolor: "primary.main", width: 150, height: 150 }}>
+        <Avatar sx={{ m: 3, bgcolor: 'primary.main', width: 150, height: 150 }}>
           <LockOutlinedIcon sx={{ fontSize: 50 }} />
         </Avatar>
         <Typography
           component="h1"
           variant="h5"
-          sx={{ marginBottom: "1rem", fontWeight: "bold" }}
+          sx={{ marginBottom: '1rem', fontWeight: 'bold' }}
         >
           Sign In
         </Typography>
-        <Typography sx={{ marginBottom: "1rem" }}> Welcome Back! </Typography>
+        <Typography sx={{ marginBottom: '1rem' }}> Welcome Back! </Typography>
         <form
-          style={{ width: "100%", marginTop: "1rem" }}
+          style={{ width: '100%', marginTop: '1rem' }}
           onSubmit={handleSubmit}
         >
           <TextField
@@ -74,7 +74,7 @@ const Index = () => {
             fullWidth
             variant="contained"
             color="primary"
-            style={{ margin: "1rem 0" }}
+            style={{ margin: '1rem 0' }}
           >
             Sign In
           </Button>
