@@ -1,5 +1,6 @@
-import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
-import { Home, Login, SignUp, Dashboard, PresidentialCandidate } from "@/pages";
+import { Routes, Route, BrowserRouter as Router } from 'react-router-dom';
+import { Home, Login, SignUp } from '@/pages';
+import { CandidatesRoutes } from '../Dashboard';
 
 const Routers = () => {
   return (
@@ -8,11 +9,7 @@ const Routers = () => {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/sign-up" element={<SignUp />} />
-        <Route path="/e-voting-system" element={<Dashboard />} />
-        <Route
-          path="/presidential-election"
-          element={<PresidentialCandidate />}
-        />
+        <Route path="/e-voting-system/*" element={<CandidatesRoutes />} />
         {/* <Route path="*" element={<ErrorPage />} /> */}
       </Routes>
     </Router>
