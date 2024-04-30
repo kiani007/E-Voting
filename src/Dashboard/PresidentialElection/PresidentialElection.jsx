@@ -8,12 +8,8 @@ import {
   Typography,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
-import pti from '../../assets/Pti.png';
-import pml from '../../assets/pml.jpg';
-import presidentialCandidatesData from './data';
-import vote from '../../assets/vote-img.png';
-
-const Index = () => {
+import presidentialCandidatesData from './data.js';
+export const PresidentialElection = () => {
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
       <Grid container spacing={2} justifyContent="center">
@@ -106,4 +102,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default PresidentialElection;

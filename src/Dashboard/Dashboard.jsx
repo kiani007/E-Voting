@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Container,
   Typography,
@@ -8,23 +8,23 @@ import {
   CardActionArea,
   CardMedia,
   CardContent,
-} from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import vote from "../../assets/vote-img.png";
-const index = () => {
+} from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import vote from '../assets/vote-img.png';
+const Dashboard = () => {
   const navigate = useNavigate();
   const handleVicePresidentElection = () => {
     // return navigate("/vice-presidentElection");
   };
   const handlePresidentElection = () => {
-    console.log("handlePresidentElection");
-    navigate("/presidential-election");
+    console.log('handlePresidentElection');
+    navigate('/presidential-election');
   };
   return (
     <Grid
       container
-      height={"100vh"}
-      sx={{ justifyContent: "center", bgcolor: "#f5f5f5" }}
+      height={'100vh'}
+      sx={{ justifyContent: 'center', bgcolor: '#f5f5f5' }}
     >
       <Grid item xs={12}>
         <Typography
@@ -32,9 +32,9 @@ const index = () => {
           align="center"
           sx={{
             mt: 4,
-            fontWeight: "bold",
-            textTransform: "uppercase",
-            color: "primary.main",
+            fontWeight: 'bold',
+            textTransform: 'uppercase',
+            color: 'primary.main',
           }}
         >
           Election 2023
@@ -48,21 +48,21 @@ const index = () => {
       <Grid item xs={12} lg={6}>
         <Box
           sx={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-            gridGap: "15px",
-            padding: "15px",
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+            gridGap: '15px',
+            padding: '15px',
           }}
         >
           <Card
             sx={{
-              minHeight: "100%",
-              backdropFilter: "blur(5px)",
-              cursor: "pointer",
-              "&:hover": {
-                transform: "scale(1.05)",
-                backgroundColor: "rgba(255, 255, 255, 0.5)",
-                boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.2)",
+              minHeight: '100%',
+              backdropFilter: 'blur(5px)',
+              cursor: 'pointer',
+              '&:hover': {
+                transform: 'scale(1.05)',
+                backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.2)',
               },
             }}
             onClick={handlePresidentElection}
@@ -86,13 +86,13 @@ const index = () => {
           </Card>
           <Card
             sx={{
-              minHeight: "100%",
-              backdropFilter: "blur(5px)",
-              cursor: "pointer",
-              "&:hover": {
-                transform: "scale(1.05)",
-                backgroundColor: "rgba(255, 255, 255, 0.5)",
-                boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.2)",
+              minHeight: '100%',
+              backdropFilter: 'blur(5px)',
+              cursor: 'pointer',
+              '&:hover': {
+                transform: 'scale(1.05)',
+                backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.2)',
               },
             }}
             onClick={handleVicePresidentElection}
