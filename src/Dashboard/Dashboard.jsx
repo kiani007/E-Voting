@@ -11,14 +11,14 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import vote from '../assets/vote-img.png';
-const Dashboard = () => {
+export const Dashboard = () => {
   const navigate = useNavigate();
   const handleVicePresidentElection = () => {
-    // return navigate("/vice-presidentElection");
+    return navigate('vice-presidential-eleciton');
   };
   const handlePresidentElection = () => {
     console.log('handlePresidentElection');
-    navigate('/presidential-election');
+    navigate('presidential-election');
   };
   return (
     <Grid
@@ -120,4 +120,4 @@ const Dashboard = () => {
     </Grid>
   );
 };
-export default index;
+export default Dashboard;

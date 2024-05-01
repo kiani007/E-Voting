@@ -16,22 +16,28 @@ export const PresidentialCandidates = () => {
   const navigate = useNavigate();
 
   const params = useParams();
-  const id = 2;
-  const candidate = data.find((item) => item.specialistTitle === id);
+  const { candidateId } = params;
+  const candidate = data.find(
+    (item) => item.candidateId === Number(candidateId)
+  );
+  console.log('params', params);
   const handleVoteCasted = () => {
     console.log('vote casted');
-    navigate('/successfully-voted');
+    navigate('successfully-voted');
     return;
   };
   const handleCancel = () => {
     // navigate back
     console.log('cancel');
-    navigate('/presidential-election');
+    navigate('/e-voting-system/presidential-election');
   };
   return (
-    <Box
+    <Container
       sx={{
+        textAlign: 'center',
+        bgcolor: '#F8F9FA',
         display: 'flex',
+        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         height: '100vh',
@@ -57,18 +63,21 @@ export const PresidentialCandidates = () => {
       >
         {candidate.candidatePartyShort}
       </Typography>
-      <Grid item>
+      <Box sx={{ mt: 4 }}>
         <Button
           onClick={handleVoteCasted}
-          sx={{ mt: 2, bgcolor: 'sucess.main' }}
+          sx={{ bgcolor: 'primary.main', color: 'white', mr: 2 }}
         >
           Vote
         </Button>
-        <Button onClick={handleCancel} sx={{ mt: 2, bgcolor: 'warning.main' }}>
+        <Button
+          sx={{ bgcolor: 'primary.main', color: 'white' }}
+          onClick={handleCancel}
+        >
           Cancel
         </Button>
-      </Grid>
-    </Box>
+      </Box>
+    </Container>
   );
 };
 export default PresidentialCandidates;
