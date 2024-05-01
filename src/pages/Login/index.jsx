@@ -19,7 +19,7 @@ const Index = () => {
       email: data.get('email'),
       password: data.get('password'),
     });
-    navigate('/e-voting-system');
+    navigate('/e-voting-system/presidential-election');
   };
 
   return (

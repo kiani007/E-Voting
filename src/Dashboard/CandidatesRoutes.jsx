@@ -8,10 +8,10 @@ export const CandidatesRoutes = () => {
     <Routes>
       <Route path="/presidential-election" element={<PresidentialElection />} />
       <Route
-        path="/vice-president-election/:candidateId"
+        path="/presidential-election/:candidateId"
         element={<PresidentialCandidates />}
       />
-      <Route path="/*" element={<Navigate to="/presidential-election" />} />
+      {/* <Route path="/*" element={<Navigate to="/presidential-election" />} /> */}
     </Routes>
   );
 };
