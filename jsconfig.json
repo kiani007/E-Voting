@@ -1,4 +1,3 @@
-// write a config file for jsconfig.json
 {
   "compilerOptions": {
     "target": "es5",

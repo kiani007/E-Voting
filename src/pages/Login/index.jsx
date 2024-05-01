@@ -10,8 +10,12 @@ import {
   Avatar,
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { useAuth } from '../../Auth';
+useAuth;
 const Index = () => {
+  const { login } = useAuth();
   const navigate = useNavigate();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -29,8 +33,7 @@ const Index = () => {
         credentials2[0].email === data.get('email') &&
         credentials2[0].password === data.get('password'))
     ) {
-      localStorage.setItem('isLoggedIn', 'true');
-      navigate('/e-voting-system');
+      login();
     } else {
       alert('Invalid credentials');
     }

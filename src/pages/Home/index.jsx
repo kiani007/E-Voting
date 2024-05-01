@@ -24,66 +24,60 @@ const index = () => {
     navigate('/sign-up');
   };
   return (
-    <div
-      style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}
-    >
-      <Header />
-      <Container sx={{ mt: 4, flexGrow: 1, backgroundColor: 'white' }}>
-        <Grid container spacing={3} sx={{ justifyContent: 'center', mt: 4 }}>
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              bgcolor: 'primary.main',
-              height: '400px',
-              width: '400px',
-              borderRadius: '50%',
-              margin: '0 auto',
-            }}
+    <Container sx={{ backgroundColor: 'white' }}>
+      <Grid container spacing={3} sx={{ justifyContent: 'center', mt: 4 }}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            bgcolor: 'primary.main',
+            height: '400px',
+            width: '400px',
+            borderRadius: '50%',
+            margin: '0 auto',
+          }}
+        >
+          <img src={vote} alt="vote.png" />
+        </Box>
+        <Grid item lg={6} xs={6} sx={{ pb: 2 }}>
+          <Typography
+            variant="h1"
+            gutterBottom
+            sx={{ fontWeight: 'bold', color: 'primary.main' }}
           >
-            <img src={vote} alt="vote.png" />
-          </Box>
-          <Grid item lg={6} xs={6} sx={{ pb: 2 }}>
-            <Typography
-              variant="h1"
-              gutterBottom
-              sx={{ fontWeight: 'bold', color: 'primary.main' }}
-            >
-              Join Now For Voting
-            </Typography>
-            <Typography variant="body1" gutterBottom>
-              Connect for Simple,free and fair Voting at you finger tips!
-            </Typography>
-            <Typography variant="body1" gutterBottom>
-              Let's get started!
-            </Typography>
-          </Grid>
-          <Grid item xs={6} sx={{ p: 4, mt: 4 }}>
-            <Button
-              p={3}
-              onClick={handleLogin}
-              fullWidth
-              variant="contained"
-              color="primary"
-            >
-              Login
-            </Button>
-          </Grid>
-          <Grid item xs={6} sx={{ p: 4, mt: 4 }}>
-            <Button
-              p={3}
-              onClick={handleSignUp}
-              fullWidth
-              variant="outlined"
-              color="primary"
-            >
-              Signup
-            </Button>
-          </Grid>
+            Join Now For Voting
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            Connect for Simple,free and fair Voting at you finger tips!
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            Let's get started!
+          </Typography>
         </Grid>
-      </Container>
-      <Footer />
-    </div>
+        <Grid item xs={6} sx={{ p: 4, mt: 4 }}>
+          <Button
+            p={3}
+            onClick={handleLogin}
+            fullWidth
+            variant="contained"
+            color="primary"
+          >
+            Login
+          </Button>
+        </Grid>
+        <Grid item xs={6} sx={{ p: 4, mt: 4 }}>
+          <Button
+            p={3}
+            onClick={handleSignUp}
+            fullWidth
+            variant="outlined"
+            color="primary"
+          >
+            Signup
+          </Button>
+        </Grid>
+      </Grid>
+    </Container>
   );
 };
 
