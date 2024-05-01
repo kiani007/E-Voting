@@ -13,16 +13,14 @@ const Routers = () => {
           path="/e-voting-system/*"
           element={
             <PrivateRoute
-              element={() => {
-                <>
-                  <CandidatesRoutes />
-                </>;
+              Component={() => {
+                return <CandidatesRoutes />;
               }}
             />
           }
         />
 
-        {/* <Route path="*" element={<ErrorPage />} /> */}
+        {/* <Route path="/*" element={<ErrorPage />} /> */}
       </Routes>
     </Router>
   );

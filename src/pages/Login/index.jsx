@@ -15,11 +15,25 @@ const Index = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-    navigate('/e-voting-system');
+    //GET LOCAL STORAGE DATA AND COMPARE USER credentials
+    const user = localStorage.getItem('user');
+    const credentials = user && JSON.parse(user);
+    const loginCredential = localStorage.getItem('loginCredential');
+    const credentials2 = loginCredential && JSON.parse(loginCredential);
+
+    if (
+      (credentials &&
+        credentials.email === data.get('email') &&
+        credentials.password === data.get('password')) ||
+      (credentials2 &&
+        credentials2[0].email === data.get('email') &&
+        credentials2[0].password === data.get('password'))
+    ) {
+      localStorage.setItem('isLoggedIn', 'true');
+      navigate('/e-voting-system');
+    } else {
+      alert('Invalid credentials');
+    }
   };
 
   return (
