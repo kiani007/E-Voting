@@ -1,7 +1,7 @@
 import React from 'react';
 import { AppBar, Button, Typography, Box } from '@mui/material';
 // import MenuIcon from "@mui/icons-material/Menu";
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { useAuth } from '../../Auth/index';
 const Navbar = () => {
   const { loggedIn, logout } = useAuth();
