@@ -1,10 +1,24 @@
-import React from 'react';
-import { Navigate, Route } from 'react-router-dom';
+import React, { Suspense, useEffect } from 'react';
+import { Navigate } from 'react-router-dom';
 import { useAuth } from '../Auth/index';
+import { Loader } from '../components/Loader';
+import { Layout } from '../layout';
 
 const PrivateRoute = ({ Component, ...rest }) => {
   const { loggedIn } = useAuth();
-  return loggedIn ? <Component {...rest} /> : <Navigate to="/login" replace />;
+  useEffect(() => {
+    const timer = setTimeout(() => {}, 10000);
+    return () => clearTimeout(timer);
+  }, []);
+  return loggedIn ? (
+    <Layout>
+      <Suspense fallback={<Loader type="linear" />}>
+        <Component {...rest} />
+      </Suspense>
+    </Layout>
+  ) : (
+    <Navigate to="/login" replace />
+  );
 };
 
 export default PrivateRoute;

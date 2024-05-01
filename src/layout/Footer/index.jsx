@@ -9,7 +9,7 @@ const styles = {
 
 function Footer() {
   return (
-    <AppBar position="static" color="primary" sx={styles.footer}>
+    <AppBar position="fixed" sx={{ top: 'auto', bottom: 0 }}>
       <Toolbar>
         <Typography variant="body1" color="inherit">
           © {new Date().getFullYear()} E-Voting System. All rights reserved.

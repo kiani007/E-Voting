@@ -8,7 +8,7 @@ import { Home, Login, SignUp } from '@/pages';
 import { CandidatesRoutes } from '../Dashboard';
 import PrivateRoute from './PrivateRoute';
 import { useAuth } from '../Auth/index';
-import { BasicRoutes } from './BasicRoutes';
+import BasicRoutes from './BasicRoutes';
 import MainRoutes from './MainRoutes';
 const Routers = () => {
   const { loggedIn } = useAuth();
