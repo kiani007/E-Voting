@@ -16,10 +16,16 @@ export const Dashboard = () => {
   const handleVicePresidentElection = () => {
     return navigate('vice-presidential-eleciton');
   };
+
   const handlePresidentElection = () => {
     console.log('handlePresidentElection');
     navigate('presidential-election');
   };
+
+  const handleMatrixElection = () => {
+    navigate('electorial-matrix');
+  };
+
   return (
     <Grid
       container
@@ -111,6 +117,37 @@ export const Dashboard = () => {
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   Campus Wise
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+          </Card>
+          <Card
+            sx={{
+              minHeight: '100%',
+              backdropFilter: 'blur(5px)',
+              cursor: 'pointer',
+              '&:hover': {
+                transform: 'scale(1.05)',
+                backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.2)',
+              },
+            }}
+            onClick={handleMatrixElection}
+          >
+            <CardActionArea>
+              <CardMedia
+                bgcolor="primary.main"
+                component="img"
+                height="100%"
+                image={vote}
+                alt="Voice President"
+              />
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="div">
+                  SEE RESULT
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  who is Leading
                 </Typography>
               </CardContent>
             </CardActionArea>
