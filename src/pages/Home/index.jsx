@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Container,
   Typography,
@@ -6,35 +6,39 @@ import {
   Grid,
   Avatar,
   Box,
-} from "@mui/material";
-import { Footer, Header } from "@/layout";
-import { useNavigate } from "react-router-dom";
-import vote from "../../assets/vote-img.png";
+} from '@mui/material';
+import { Footer, Header } from '@/layout';
+import { useNavigate } from 'react-router-dom';
+import vote from '../../assets/vote-img.png';
+import { loginCredential } from '../../db/data';
 const index = () => {
+  const user = JSON.stringify(loginCredential);
+  localStorage.setItem('loginCredential', user);
+
   const navigate = useNavigate();
   const handleLogin = () => {
-    navigate("/login");
+    navigate('/login');
   };
 
   const handleSignUp = () => {
-    navigate("/sign-up");
+    navigate('/sign-up');
   };
   return (
     <div
-      style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
+      style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}
     >
       <Header />
-      <Container sx={{ mt: 4, flexGrow: 1, backgroundColor: "white" }}>
-        <Grid container spacing={3} sx={{ justifyContent: "center", mt: 4 }}>
+      <Container sx={{ mt: 4, flexGrow: 1, backgroundColor: 'white' }}>
+        <Grid container spacing={3} sx={{ justifyContent: 'center', mt: 4 }}>
           <Box
             sx={{
-              display: "flex",
-              justifyContent: "center",
-              bgcolor: "primary.main",
-              height: "400px",
-              width: "400px",
-              borderRadius: "50%",
-              margin: "0 auto",
+              display: 'flex',
+              justifyContent: 'center',
+              bgcolor: 'primary.main',
+              height: '400px',
+              width: '400px',
+              borderRadius: '50%',
+              margin: '0 auto',
             }}
           >
             <img src={vote} alt="vote.png" />
@@ -43,7 +47,7 @@ const index = () => {
             <Typography
               variant="h1"
               gutterBottom
-              sx={{ fontWeight: "bold", color: "primary.main" }}
+              sx={{ fontWeight: 'bold', color: 'primary.main' }}
             >
               Join Now For Voting
             </Typography>

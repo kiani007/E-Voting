@@ -1,5 +1,5 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Container,
   Typography,
@@ -8,46 +8,54 @@ import {
   Link,
   Grid,
   Avatar,
-} from "@mui/material";
+} from '@mui/material';
 
 const index = () => {
   const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
-    // const data = new FormData(event.currentTarget);
-    //validation and navigate to login
-
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-    navigate("/login");
+    // save this to local storage
+    localStorage.setItem(
+      'loginCredential',
+      JSON.stringify({
+        email: data.get('email'),
+        password: data.get('password'),
+      })
+    );
+    localStorage.setItem(
+      'user',
+      JSON.stringify({
+        email: data.get('email'),
+        password: data.get('password'),
+      })
+    );
+    navigate('/login');
   };
 
   return (
     <Container component="main" maxWidth="xs">
       <div
         style={{
-          marginTop: "8rem",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          marginTop: '8rem',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
         }}
       >
         <Avatar
           sx={{
             m: 2,
-            bgcolor: "primary.main",
+            bgcolor: 'primary.main',
             width: 150,
             height: 150,
           }}
         />
-        <Typography component="h1" variant="h5" fontWeight={"bold"}>
+        <Typography component="h1" variant="h5" fontWeight={'bold'}>
           Sign Up
         </Typography>
         <form
-          style={{ width: "100%", marginTop: "2rem" }}
+          style={{ width: '100%', marginTop: '2rem' }}
           onSubmit={handleSubmit}
         >
           <Grid container spacing={2}>
@@ -115,7 +123,7 @@ const index = () => {
             fullWidth
             variant="contained"
             color="primary"
-            style={{ margin: "1rem 0" }}
+            style={{ margin: '1rem 0' }}
           >
             Sign Up
           </Button>
