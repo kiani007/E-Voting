@@ -67,16 +67,15 @@ export const PresidentialElection = () => {
             color: 'white',
           }}
         >
-          <Grid container lg={12} spacing={2} justifyContent="center">
+          <Grid container spacing={2} justifyContent="center">
             {presidentialCandidatesData.map((candidate) => (
               <Grid item key={candidate.candidateId} lg={3} sx={{ p: 2 }}>
                 <Link
-                  to={`/candidate/${candidate.candidateId}`}
+                  to={`${candidate.candidateId}`}
                   style={{ textDecoration: 'none' }}
                 >
                   <Card sx={{ maxWidth: 345, p: 4 }}>
                     <CardMedia
-                      paddingTop="56.25%"
                       component="img"
                       height="350"
                       width={'350'}
