@@ -2,7 +2,7 @@ import React, { Suspense, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../Auth/index';
 import { Loader } from '../components/Loader';
-import { Layout } from '../layout/index';
+import { PublicLayout } from '../layout';
 
 const BasicRoutes = ({ Component, args }) => {
   const { loggedIn } = useAuth();
@@ -14,11 +14,11 @@ const BasicRoutes = ({ Component, args }) => {
   return loggedIn ? (
     <Navigate to="/e-voting-system" />
   ) : (
-    <Layout>
+    <PublicLayout>
       <Suspense fallback={<Loader />}>
         <Component {...args} />
       </Suspense>
-    </Layout>
+    </PublicLayout>
   );
 };
 

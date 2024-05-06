@@ -1,8 +1,8 @@
 import React from 'react';
 import { AppBar, Toolbar, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import { Footer, Header, Navbar } from '../layout';
-const Layout = ({ children }) => {
+import { Footer, Header, Navbar } from '..';
+const PublicLayout = ({ children }) => {
   return (
     <>
       <Header />
@@ -14,4 +14,4 @@ const Layout = ({ children }) => {
   );
 };
 
-export default Layout;
+export default PublicLayout;
