@@ -33,11 +33,17 @@ const index = ({
       collapsed={collapsed}
       toggled={toggled}
       breakPoint="lg"
-      collapsedWidth="5rem"
+      collapsedWidth="4rem"
     >
       <Menu
         iconShape="circle"
         menuItemStyles={{
+          root: {
+            '&:hover': {
+              backgroundColor: theme.palette.primary.main,
+              color: theme.palette.success,
+            },
+          },
           button: {
             [`&.active`]: {
               backgroundColor: theme.palette.primary.main,
@@ -52,52 +58,66 @@ const index = ({
         }}
       >
         <Box
-          style={{
+          sx={{
             display: 'flex',
-            justifyContent: 'start',
-            flexDirection: 'row',
-            padding: '0 0 0 2rem',
-            alignItems: 'center',
+            flexDirection: 'column',
+            gap: '3rem',
+            alignContent: 'center',
+            alignItems: 'flex-start',
           }}
         >
-          <Typography
-            onClick={handleCollapsedChange}
-            variant="h6"
-            sx={{ fontWeight: 'bold', py: 2, cursor: 'pointer' }}
+          <Box
+            style={{
+              marginTop: '1rem',
+              display: 'flex',
+              width: '90%',
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              padding: '0 0 0 1.8rem',
+              alignItems: 'center',
+            }}
           >
-            {collapsed ? 'EV' : 'E - Voting'}
-          </Typography>
-          <Button sx={{ cursor: 'pointer' }} onClick={handleCollapsedChange}>
-            {<FaAngleDoubleLeft />}
-          </Button>
+            <Typography
+              onClick={handleCollapsedChange}
+              variant="h6"
+              sx={{ fontWeight: 'bold', py: 2, cursor: 'pointer' }}
+            >
+              {collapsed ? 'EV' : 'E - Voting'}
+            </Typography>
+            <Button sx={{ cursor: 'pointer' }} onClick={handleCollapsedChange}>
+              {<FaAngleDoubleLeft />}
+            </Button>
+          </Box>
+          <Box>
+            <MenuItem
+              icon={<FaUser />}
+              component={<Link to="/e-voting-system/profile" />}
+            >
+              My Profile
+            </MenuItem>
+            <MenuItem
+              icon={<MdDashboardCustomize />}
+              component={<Link to="/e-voting-system" />}
+            >
+              Voting Dashboard
+            </MenuItem>
+            <MenuItem
+              icon={<FaChartBar />}
+              component={<Link to="/e-voting-system/electorial-matrix" />}
+            >
+              Result Matrix
+            </MenuItem>
+          </Box>
+          <MenuItem
+            icon={<HiLogout />}
+            onClick={() => {
+              localStorage.clear();
+              window.location.reload();
+            }}
+          >
+            Logout
+          </MenuItem>
         </Box>
-        <MenuItem
-          icon={<FaUser />}
-          component={<Link to="/e-voting-system/profile" />}
-        >
-          My Profile
-        </MenuItem>
-        <MenuItem
-          icon={<MdDashboardCustomize />}
-          component={<Link to="/e-voting-system" />}
-        >
-          Voting Dashboard
-        </MenuItem>
-        <MenuItem
-          icon={<FaChartBar />}
-          component={<Link to="/e-voting-system/electorial-matrix" />}
-        >
-          Result Matrix
-        </MenuItem>
-        <MenuItem
-          icon={<HiLogout />}
-          onClick={() => {
-            localStorage.clear();
-            window.location.reload();
-          }}
-        >
-          Logout
-        </MenuItem>
       </Menu>
     </Sidebar>
   );
