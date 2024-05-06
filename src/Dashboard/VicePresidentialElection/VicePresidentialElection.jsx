@@ -21,8 +21,15 @@ export const VicePresidentialElection = () => {
   };
   return (
     <>
-      <Header />
-      <Container maxWidth="lg">
+      <Container
+        maxWidth="lg"
+        sx={{
+          mb: 20,
+          bgcolor: '#F8F9FA',
+          padding: '2rem',
+          borderRadius: '10px',
+        }}
+      >
         {/* select the candidate by clicking on the Card */}
         <Box sx={{ my: 4 }}>
           <Typography variant="h4" component="h1" gutterBottom>

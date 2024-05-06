@@ -30,35 +30,59 @@ const ElectoralResult = () => {
 
   return (
     <Container sx={{ my: 4 }}>
-      <Box>
-        <Typography variant="h6">Electoral Result Matrix</Typography>
-
+      <Box sx={{ marginBottom: 4 }}>
+        <Typography variant="h4" align="center" sx={{ marginBottom: 2 }}>
+          Electoral Result Matrix
+        </Typography>
         {/* Table */}
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Candidate</TableCell>
-                <TableCell>Party</TableCell>
-                <TableCell>Votes</TableCell>
+                <TableCell align="center">Candidate</TableCell>
+                <TableCell align="center">Party</TableCell>
+                <TableCell align="center">Votes</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {data.map((candidate) => (
                 <TableRow key={candidate.id}>
-                  <TableCell>{candidate.candidateName}</TableCell>
-                  <TableCell>{candidate.candidateParty}</TableCell>
-                  <TableCell>{candidate.candidateVote}</TableCell>
+                  <TableCell align="center">
+                    {candidate.candidateName}
+                  </TableCell>
+                  <TableCell align="center">
+                    {candidate.candidateParty}
+                  </TableCell>
+                  <TableCell align="center">
+                    {candidate.candidateVote}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
+      </Box>
 
+      <Box sx={{ marginBottom: 4 }}>
+        <Typography variant="h4" align="center" sx={{ marginBottom: 2 }}>
+          Vote Distribution
+        </Typography>
         {/* Chart */}
-        <Typography variant="h6">Vote Distribution</Typography>
-        <Box sx={{ height: 300, width: '100%' }}>
-          <BarChart width={600} height={300} data={data.slice(0, 5)}>
+        <Box
+          sx={{
+            height: 400,
+            width: '100%',
+            alignItems: 'center',
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          <BarChart
+            width={800}
+            height={400}
+            data={data}
+            margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+          >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="candidateName" />
             <YAxis />
@@ -67,16 +91,17 @@ const ElectoralResult = () => {
             <Bar dataKey="candidateVote" fill="#8884d8" />
           </BarChart>
         </Box>
-        <Typography>
-          Leading Candidate: {leadingCandidate.candidateName} (
-          {leadingCandidate.candidateParty}) with{' '}
-          {leadingCandidate.candidateVote} votes
-        </Typography>
-        <Typography variant="h6" sx={{ mb: 6 }}>
-          Total Votes Cast:{' '}
-          {data.reduce((acc, curr) => acc + curr.candidateVote, 0)}
-        </Typography>
       </Box>
+
+      <Typography variant="h5" align="center" sx={{ marginBottom: 2 }}>
+        Leading Candidate: {leadingCandidate.candidateName} (
+        {leadingCandidate.candidateParty}) with {leadingCandidate.candidateVote}{' '}
+        votes
+      </Typography>
+      <Typography variant="h5" align="center">
+        Total Votes Cast:{' '}
+        {data.reduce((acc, curr) => acc + curr.candidateVote, 0)}
+      </Typography>
     </Container>
   );
 };
