@@ -6,11 +6,12 @@ import { SuccessfullyVoted } from './SuccessfullyVoted';
 import { Dashboard } from './Dashboard';
 import { VicePresidentialElection } from './VicePresidentialElection';
 import { ElectorialMatrixes } from './ElectorialMatrixes';
-
+import { Profile } from './UserProfile';
 export const CandidatesRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Dashboard />} />
+      <Route path="/my-profile" element={<Profile />} />
       <Route path="/presidential-election" element={<PresidentialElection />} />
       <Route
         path="/presidential-election/:candidateId"

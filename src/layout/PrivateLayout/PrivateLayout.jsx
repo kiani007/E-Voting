@@ -26,9 +26,9 @@ const PrivateLayout = ({ children }) => {
             handleCollapsedChange={handleCollapsedChange}
           />
         </Box>
-        <Container maxWidth="lg">
+        <Container maxWidth="lg" sx={{ mb: 20 }}>
           <Header />
-          <Box pt={2} pb={2}>
+          <Box pt={2} pb={2} sx={{ flexGrow: 1 }}>
             {children}
           </Box>
           <Footer />
