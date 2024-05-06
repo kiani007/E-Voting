@@ -91,7 +91,7 @@ const index = ({
           <Box>
             <MenuItem
               icon={<FaUser />}
-              component={<Link to="/e-voting-system/profile" />}
+              component={<Link to="/e-voting-system/my-profile" />}
             >
               My Profile
             </MenuItem>
