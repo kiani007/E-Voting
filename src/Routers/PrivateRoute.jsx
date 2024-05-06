@@ -2,7 +2,7 @@ import React, { Suspense, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../Auth/index';
 import { Loader } from '../components/Loader';
-import { Layout } from '../layout';
+import { PrivateLayout } from '../layout';
 
 const PrivateRoute = ({ Component, ...rest }) => {
   const { loggedIn } = useAuth();
@@ -11,11 +11,11 @@ const PrivateRoute = ({ Component, ...rest }) => {
     return () => clearTimeout(timer);
   }, []);
   return loggedIn ? (
-    <Layout>
+    <PrivateLayout>
       <Suspense fallback={<Loader type="linear" />}>
         <Component {...rest} />
       </Suspense>
-    </Layout>
+    </PrivateLayout>
   ) : (
     <Navigate to="/login" replace />
   );
