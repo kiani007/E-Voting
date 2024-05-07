@@ -1,44 +1,44 @@
-import { createTheme } from "@mui/material/styles";
+import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
   overrides: {
     MuiCssBaseline: {
-      "@global": {
+      '@global': {
         html: {
           margin: 0,
           padding: 0,
-          boxSizing: "border-box",
+          boxSizing: 'border-box',
         },
         body: {
           margin: 0,
           padding: 0,
-          boxSizing: "border-box",
+          boxSizing: 'border-box',
         },
       },
     },
   },
   palette: {
     primary: {
-      main: "#336766",
+      main: '#336766',
     },
     secondary: {
-      main: "#2196f3",
+      main: '#2196f3',
     },
     error: {
-      main: "#f44336",
+      main: '#f44336',
     },
     warning: {
-      main: "#ff9800",
+      main: '#ff9800',
     },
     info: {
-      main: "#2196f3",
+      main: '#2196f3',
     },
     success: {
-      main: "#4caf50",
+      main: '#4caf50',
     },
   },
   typography: {
-    fontFamily: "Roboto, sans-serif",
+    fontFamily: 'Roboto, sans-serif',
   },
 
   spacing: 4,
@@ -46,7 +46,7 @@ const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          textTransform: "none",
+          textTransform: 'none',
         },
       },
     },
@@ -67,15 +67,15 @@ const theme = createTheme({
       xl: 1536,
     },
   },
-  direction: "ltr",
+  direction: 'ltr',
   mixins: {},
   props: {},
   transitions: {
     easing: {
-      easeInOut: "cubic-bezier(0.4, 0, 0.2, 1)",
-      easeOut: "cubic-bezier(0.0, 0, 0.2, 1)",
-      easeIn: "cubic-bezier(0.4, 0, 1, 1)",
-      sharp: "cubic-bezier(0.4, 0, 0.6, 1)",
+      easeInOut: 'cubic-bezier(0.4, 0, 0.2, 1)',
+      easeOut: 'cubic-bezier(0.0, 0, 0.2, 1)',
+      easeIn: 'cubic-bezier(0.4, 0, 1, 1)',
+      sharp: 'cubic-bezier(0.4, 0, 0.6, 1)',
     },
     duration: {
       shortest: 150,
