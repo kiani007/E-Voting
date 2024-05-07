@@ -8,9 +8,14 @@ import {
   Link,
   Grid,
   Avatar,
+  Box,
+  Card,
+  CardMedia,
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useAuth } from '../../Auth';
+import loginAvatar from '../../assets/LoginAvatar.png';
+import bgLoign from '../../assets/bgLogin.jpg';
 useAuth;
 const Index = () => {
   const { login } = useAuth();
@@ -40,75 +45,120 @@ const Index = () => {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <div
+    <Container
+      component="main"
+      maxWidth="lg"
+      sx={{
+        mt: 2,
+        backgroundColor: '#E9ECEF',
+        borderRadius: '10px',
+        padding: '2rem',
+        mb: 8,
+      }}
+    >
+      <Box
         style={{
-          marginTop: '8rem',
           display: 'flex',
-          flexDirection: 'column',
+          flexDirection: 'row',
           alignItems: 'center',
+          justifyContent: 'space-between',
         }}
       >
-        <Avatar sx={{ m: 3, bgcolor: 'primary.main', width: 150, height: 150 }}>
-          <LockOutlinedIcon sx={{ fontSize: 50 }} />
-        </Avatar>
-        <Typography
-          component="h1"
-          variant="h5"
-          sx={{ marginBottom: '1rem', fontWeight: 'bold' }}
-        >
-          Sign In
-        </Typography>
-        <Typography sx={{ marginBottom: '1rem' }}> Welcome Back! </Typography>
-        <form
-          style={{ width: '100%', marginTop: '1rem' }}
-          onSubmit={handleSubmit}
-        >
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            style={{ margin: '1rem 0' }}
+        <Box sx={{ padding: '1rem' }}>
+          <Typography
+            align="start"
+            component="h1"
+            variant="h3"
+            sx={{ marginBottom: '0.5rem', fontWeight: 'bold' }}
           >
-            Sign In
-          </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="/forget-password" variant="body2">
-                Forgot password?
-              </Link>
+            Welcome
+          </Typography>
+          <Typography variant="body1" align="start">
+            We are happy to see you back with us
+          </Typography>
+          <form
+            style={{ width: '100%', marginTop: '1rem' }}
+            onSubmit={handleSubmit}
+          >
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              style={{ margin: '1rem 0' }}
+            >
+              Sign In
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link href="/forget-password" variant="body2">
+                  Forgot password?
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link href="/sign-up" variant="body2">
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
             </Grid>
-            <Grid item>
-              <Link href="/sign-up" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
-      </div>
+          </form>
+        </Box>
+        <Box
+          sx={{
+            m: 2,
+            padding: '3rem',
+            borderRadius: '10px',
+          }}
+        >
+          <Card title="Login">
+            <CardMedia
+              component="img"
+              image={loginAvatar}
+              alt="login avatar"
+              borderRadius="10px"
+              sx={{
+                width: '500px',
+                height: '500px',
+                objectFit: 'cover',
+                objectPosition: 'center',
+                pointerEvents: 'none',
+                userSelect: 'none',
+                '-webkit-user-drag': 'none',
+                '-khtml-user-drag': 'none',
+                '-moz-user-drag': 'none',
+                '-o-user-drag': 'none',
+                userDrag: 'none',
+                WebkitUserDrag: 'none',
+                MozUserDrag: 'none',
+                OUserDrag: 'none',
+                msUserDrag: 'none',
+              }}
+            />
+          </Card>
+        </Box>
+      </Box>
     </Container>
   );
 };
