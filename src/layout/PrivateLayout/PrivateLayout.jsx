@@ -18,7 +18,7 @@ const PrivateLayout = ({ children }) => {
   return (
     <>
       <Box sx={{ display: 'flex' }}>
-        <Box sx={{ mt: 10 }}>
+        <Box sx={{ mt: 15 }}>
           <Sidebar
             collapsed={collapsed}
             toggled={toggled}
@@ -26,7 +26,10 @@ const PrivateLayout = ({ children }) => {
             handleCollapsedChange={handleCollapsedChange}
           />
         </Box>
-        <Container maxWidth="lg" sx={{ mb: 20 }}>
+        <Container
+          maxWidth="md"
+          sx={{ mb: 20, bgcolor: '#F8F9FA', borderRadius: '10px', mt: 4 }}
+        >
           <Header />
           <Box pt={2} pb={2} sx={{ flexGrow: 1 }}>
             {children}

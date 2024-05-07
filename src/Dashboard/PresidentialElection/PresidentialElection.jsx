@@ -16,11 +16,9 @@ const PresidentialElection = () => {
       sx={{
         display: 'flex',
         justifyContent: 'center',
-        backgroundColor: 'primary.main',
+        backgroundColor: '#FFFFFF',
         minHeight: '100vh',
         padding: '20px',
-        backgroundImage:
-          'linear-gradient(135deg, rgba(255,255,255,.1) 25%, transparent 25%, transparent 50%, rgba(255,255,255,.1) 50%, rgba(255,255,255,.1) 75%, transparent 75%, transparent)',
         backgroundSize: '50px 50px',
       }}
     >
@@ -50,7 +48,7 @@ const PresidentialElection = () => {
               mb: 4,
               bgcolor: 'white',
               p: 2,
-              boxShadow: '0 0 10px 5px rgba(0,0,0,0.2)',
+              boxShadow: '0 0 10px 10px rgba(0,0,0,0.2)',
               animation: `${shine} 10s linear infinite`,
             }}
           >
@@ -60,7 +58,6 @@ const PresidentialElection = () => {
                 fontWeight: 'bold',
                 mb: 2,
                 color: 'primary.main',
-                textShadow: '2px 2px 8px black',
               }}
             >
               General Election 2024
@@ -69,8 +66,7 @@ const PresidentialElection = () => {
               sx={{
                 width: '100%',
                 height: '10px',
-                background:
-                  'linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet)',
+                background: 'linear-gradient(90deg,  green, blue)',
                 borderRadius: '10px',
                 mb: 2,
               }}
@@ -78,7 +74,12 @@ const PresidentialElection = () => {
           </Box>
         </Grid>
         <Grid item xs={12} sx={{ p: 4 }}>
-          <Grid container spacing={2} justifyContent="center">
+          <Grid
+            container
+            spacing={2}
+            justifyContent="center"
+            alignContent={'center'}
+          >
             {presidentialCandidatesData.map((candidate) => (
               <Grid
                 item
@@ -102,6 +103,10 @@ const PresidentialElection = () => {
                       borderRadius: '10px',
                       overflow: 'hidden',
                       padding: '10px',
+                      transition: 'all 0.3s ease-in-out',
+                      '&:hover': {
+                        transform: 'scale(1.05)',
+                      },
                     }}
                   >
                     <CardMedia

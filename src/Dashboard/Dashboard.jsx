@@ -30,7 +30,7 @@ export const Dashboard = () => {
   return (
     <Box
       sx={{
-        backgroundColor: 'hsl(116.32deg 100% 88.95% / 76%)',
+        backgroundColor: '#E9ECEF',
         minHeight: '100vh',
         paddingTop: '20px',
         borderRadius: '2rem',

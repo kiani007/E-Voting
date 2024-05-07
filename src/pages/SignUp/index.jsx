@@ -8,8 +8,12 @@ import {
   Link,
   Grid,
   Avatar,
+  Box,
+  Card,
+  CardMedia,
 } from '@mui/material';
-
+import voteAvatar from '../../assets/voteAvatar.png';
+import bgLoign from '../../assets/bgLogin.jpg';
 const index = () => {
   const navigate = useNavigate();
   const handleSubmit = (event) => {
@@ -34,108 +38,154 @@ const index = () => {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <div
+    <Container
+      component="main"
+      maxWidth="lg"
+      sx={{
+        mt: 2,
+        backgroundColor: '#E9ECEF',
+        borderRadius: '10px',
+        padding: '2rem',
+        mb: 8,
+      }}
+    >
+      <Box
         style={{
-          marginTop: '8rem',
           display: 'flex',
-          flexDirection: 'column',
+          flexDirection: 'row',
           alignItems: 'center',
+          justifyContent: 'space-between',
         }}
       >
-        <Avatar
+        <Box sx={{ padding: '1rem' }}>
+          <Typography
+            align="start"
+            component="h1"
+            variant="h3"
+            sx={{ marginBottom: '0.5rem', fontWeight: 'bold' }}
+          >
+            Welcome
+          </Typography>
+          <Typography variant="body1" align="start">
+            Create an account
+          </Typography>
+          <form
+            style={{ width: '100%', marginTop: '1rem' }}
+            onSubmit={handleSubmit}
+          >
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  autoComplete="fname"
+                  name="firstName"
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="firstName"
+                  label="First Name"
+                  autoFocus
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="lastName"
+                  label="Last Name"
+                  name="lastName"
+                  autoComplete="lname"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="new-password"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="Phone Number"
+                  label="Phone Number"
+                  type="tel"
+                  id="phoneNumber"
+                  autoComplete="new-password"
+                />
+              </Grid>
+            </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              style={{ margin: '1rem 0' }}
+            >
+              Sign Up
+            </Button>
+            <Grid container justifyContent="flex-end">
+              <Grid item>
+                <Link href="/login" variant="body2">
+                  Already have an account? Sign in
+                </Link>
+              </Grid>
+            </Grid>
+          </form>
+        </Box>
+        <Box
           sx={{
             m: 2,
-            bgcolor: 'primary.main',
-            width: 150,
-            height: 150,
+            padding: '3rem',
+            borderRadius: '10px',
           }}
-        />
-        <Typography component="h1" variant="h5" fontWeight={'bold'}>
-          Sign Up
-        </Typography>
-        <form
-          style={{ width: '100%', marginTop: '2rem' }}
-          onSubmit={handleSubmit}
         >
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="fname"
-                name="firstName"
-                variant="outlined"
-                required
-                fullWidth
-                id="firstName"
-                label="First Name"
-                autoFocus
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="new-password"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="Phone Number"
-                label="Phone Number"
-                type="tel"
-                id="phoneNumber"
-                autoComplete="new-password"
-              />
-            </Grid>
-          </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            style={{ margin: '1rem 0' }}
-          >
-            Sign Up
-          </Button>
-          <Grid container justifyContent="flex-end">
-            <Grid item>
-              <Link href="/login" variant="body2">
-                Already have an account? Sign in
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
-      </div>
+          {/* set it as non selectable image non downloadable */}
+          <Card title="sign up" backgroundColor="#E9ECEF">
+            <CardMedia
+              component="img"
+              image={voteAvatar}
+              alt="login avatar"
+              sx={{
+                width: '500px',
+                height: '500px',
+                objectFit: 'cover',
+                objectPosition: 'center',
+                pointerEvents: 'none',
+                userSelect: 'none',
+                '-webkit-user-drag': 'none',
+                '-khtml-user-drag': 'none',
+                '-moz-user-drag': 'none',
+                '-o-user-drag': 'none',
+                userDrag: 'none',
+                WebkitUserDrag: 'none',
+                MozUserDrag: 'none',
+                OUserDrag: 'none',
+                msUserDrag: 'none',
+              }}
+              borderRadius="10px"
+            />
+          </Card>
+        </Box>
+      </Box>
     </Container>
   );
 };
