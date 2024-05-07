@@ -11,7 +11,7 @@ export default defineConfig({
     minify: true,
   },
   define: {
-    'process.env': { NODE_ENV: '"production"' },
+    'process.env': { NODE_ENV: 'production' },
   },
   esbuild: {
     logOverride: { 'this-is-undefined-in-esm': 'silent' },
