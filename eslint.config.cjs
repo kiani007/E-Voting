@@ -1,27 +1,22 @@
-// Es6 lint config
 module.exports = {
-  extends: ['@commitlint/config-conventional'],
+  env: {
+    browser: true,
+    es6: true,
+  },
+  extends: ['eslint:recommended', 'plugin:react/recommended'],
+  parserOptions: {
+    ecmaVersion: 2021,
+    sourceType: 'module',
+    ecmaFeatures: {
+      jsx: true,
+    },
+  },
+  plugins: ['react'],
   rules: {
-    'scope-empty': [2, 'never'],
-    'type-empty': [2, 'never'],
-    'type-case': [2, 'always', 'lower-case'],
-    'scope-case': [2, 'always', 'lower-case'],
-    'type-enum': [
-      2,
-      'always',
-      [
-        'build',
-        'chore',
-        'ci',
-        'docs',
-        'feat',
-        'fix',
-        'perf',
-        'refactor',
-        'revert',
-        'style',
-        'test',
-      ],
-    ],
+    indent: ['error', 2],
+    'linebreak-style': ['error', 'unix'],
+    quotes: ['error', 'single'],
+    semi: ['error', 'always'],
+    'react/prop-types': 'off',
   },
 };
