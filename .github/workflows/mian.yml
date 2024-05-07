@@ -19,7 +19,7 @@ jobs:
         run: npm run lint:fix && npm run format
 
       - name: Build
-        run: npm run build
+        run: npm run vite build
 
       - name: Deploy to Netlify
         uses: netlify/actions/cli@master
