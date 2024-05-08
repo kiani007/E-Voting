@@ -12,9 +12,13 @@ import {
   Card,
   CardMedia,
 } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import voteAvatar from '../../assets/voteAvatar.png';
 import bgLoign from '../../assets/bgLogin.jpg';
 const index = () => {
+  const theme = useTheme();
+  const isMd = useMediaQuery(theme.breakpoints.up('md'));
   const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -151,40 +155,42 @@ const index = () => {
             </Grid>
           </form>
         </Box>
-        <Box
-          sx={{
-            m: 2,
-            padding: '3rem',
-            borderRadius: '10px',
-          }}
-        >
-          {/* set it as non selectable image non downloadable */}
-          <Card title="sign up" backgroundColor="#E9ECEF">
-            <CardMedia
-              component="img"
-              image={voteAvatar}
-              alt="login avatar"
-              sx={{
-                width: '500px',
-                height: '500px',
-                objectFit: 'cover',
-                objectPosition: 'center',
-                pointerEvents: 'none',
-                userSelect: 'none',
-                '-webkit-user-drag': 'none',
-                '-khtml-user-drag': 'none',
-                '-moz-user-drag': 'none',
-                '-o-user-drag': 'none',
-                userDrag: 'none',
-                WebkitUserDrag: 'none',
-                MozUserDrag: 'none',
-                OUserDrag: 'none',
-                msUserDrag: 'none',
-              }}
-              borderRadius="10px"
-            />
-          </Card>
-        </Box>
+        {isMd && (
+          <Box
+            sx={{
+              m: 2,
+              padding: '3rem',
+              borderRadius: '10px',
+            }}
+          >
+            {/* set it as non selectable image non downloadable */}
+            <Card title="sign up" backgroundColor="#E9ECEF">
+              <CardMedia
+                component="img"
+                image={voteAvatar}
+                alt="login avatar"
+                sx={{
+                  width: '500px',
+                  height: '500px',
+                  objectFit: 'cover',
+                  objectPosition: 'center',
+                  pointerEvents: 'none',
+                  userSelect: 'none',
+                  '-webkit-user-drag': 'none',
+                  '-khtml-user-drag': 'none',
+                  '-moz-user-drag': 'none',
+                  '-o-user-drag': 'none',
+                  userDrag: 'none',
+                  WebkitUserDrag: 'none',
+                  MozUserDrag: 'none',
+                  OUserDrag: 'none',
+                  msUserDrag: 'none',
+                }}
+                borderRadius="10px"
+              />
+            </Card>
+          </Box>
+        )}
       </Box>
     </Container>
   );

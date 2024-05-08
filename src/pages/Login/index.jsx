@@ -16,8 +16,12 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useAuth } from '../../Auth';
 import loginAvatar from '../../assets/LoginAvatar.png';
 import bgLoign from '../../assets/bgLogin.jpg';
+import { useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 useAuth;
 const Index = () => {
+  const theme = useTheme();
+  const isMd = useMediaQuery(theme.breakpoints.up('md'));
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -61,7 +65,7 @@ const Index = () => {
           display: 'flex',
           flexDirection: 'row',
           alignItems: 'center',
-          justifyContent: 'space-between',
+          justifyContent: 'center',
         }}
       >
         <Box sx={{ padding: '1rem' }}>
@@ -125,39 +129,41 @@ const Index = () => {
             </Grid>
           </form>
         </Box>
-        <Box
-          sx={{
-            m: 2,
-            padding: '3rem',
-            borderRadius: '10px',
-          }}
-        >
-          <Card title="Login">
-            <CardMedia
-              component="img"
-              image={loginAvatar}
-              alt="login avatar"
-              borderRadius="10px"
-              sx={{
-                width: '500px',
-                height: '500px',
-                objectFit: 'cover',
-                objectPosition: 'center',
-                pointerEvents: 'none',
-                userSelect: 'none',
-                '-webkit-user-drag': 'none',
-                '-khtml-user-drag': 'none',
-                '-moz-user-drag': 'none',
-                '-o-user-drag': 'none',
-                userDrag: 'none',
-                WebkitUserDrag: 'none',
-                MozUserDrag: 'none',
-                OUserDrag: 'none',
-                msUserDrag: 'none',
-              }}
-            />
-          </Card>
-        </Box>
+        {isMd && (
+          <Box
+            sx={{
+              m: 2,
+              padding: '3rem',
+              borderRadius: '10px',
+            }}
+          >
+            <Card title="Login">
+              <CardMedia
+                component="img"
+                image={loginAvatar}
+                alt="login avatar"
+                borderRadius="10px"
+                sx={{
+                  maxWidth: '500px',
+                  maxHeight: '500px',
+                  objectFit: 'cover',
+                  objectPosition: 'center',
+                  pointerEvents: 'none',
+                  userSelect: 'none',
+                  '-webkit-user-drag': 'none',
+                  '-khtml-user-drag': 'none',
+                  '-moz-user-drag': 'none',
+                  '-o-user-drag': 'none',
+                  userDrag: 'none',
+                  WebkitUserDrag: 'none',
+                  MozUserDrag: 'none',
+                  OUserDrag: 'none',
+                  msUserDrag: 'none',
+                }}
+              />
+            </Card>
+          </Box>
+        )}
       </Box>
     </Container>
   );
