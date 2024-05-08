@@ -13,6 +13,7 @@ import {
   Step,
   StepLabel,
   StepContent,
+  useTheme,
 } from '@mui/material';
 import {
   ExpandMore as ExpandMoreIcon,
@@ -33,11 +34,16 @@ import {
 } from 'react-icons/ri';
 
 const index = () => {
+  const theme = useTheme();
+
   const styles = {
     mainSection: {
-      padding: '10rem',
+      display: 'flex',
+      justifyContent: 'center',
       backgroundColor: '#fffff',
-      textAlign: 'left',
+      textAlign: { xs: 'center', md: 'left' },
+      padding: '50px',
+      margin: '110px 0',
     },
     featureSection: {
       padding: '50px',
@@ -64,8 +70,14 @@ const index = () => {
       width: '100%',
     },
     contactSection: {
-      padding: '50px',
+      padding: '50px 10px',
       backgroundColor: '#ffffff',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontSize: '2rem',
+      fontWeight: 'bold',
     },
     featrueStepper: {
       display: 'flex',
@@ -119,6 +131,30 @@ const index = () => {
       question: 'Can I change my vote?',
       answer: 'No, once you submit your vote, it cannot be changed.',
     },
+    {
+      question: 'How do I view my vote results?',
+      answer: 'You can view your vote results in the "Results" section.',
+    },
+    {
+      question: 'Can I vote for multiple candidates?',
+      answer: 'No, you can not vote for multiple candidates.',
+    },
+    {
+      question: 'How do I know my vote is counted correctly?',
+      answer:
+        'This question addresses transparency in the voting process. Users may want to know how their votes are recorded and verified to ensure accuracy.',
+    },
+    {
+      question: 'What measures are in place to prevent voter fraud?',
+      answer:
+        'Users may be concerned about the potential for voter fraud in online voting systems. They may want to know about the security measures implemented to prevent unauthorized access or manipulation of votes.',
+    },
+    {
+      question: 'What if I encounter technical difficulties while voting?',
+      answer:
+        'Users may have concerns about technical issues such as website crashes or connectivity problems while voting. This question addresses how such issues are handled and ensures that users can still exercise their right to vote.',
+    },
+
     // Add more FAQs here
   ];
 
@@ -163,14 +199,15 @@ const index = () => {
   return (
     <div>
       {/* Main Section */}
-      <Grid
-        container
-        alignItems="center"
-        textAlign={'start'}
-        justify="start"
-        sx={{ p: 10 }}
-        style={styles.mainSection}
-      >
+      <Grid container alignItems="center" style={styles.mainSection}>
+        <Grid item xs={12} md={6}>
+          {/* Your animated infographic or lottie image here */}
+          <img
+            src={homeVote}
+            alt="Animated image"
+            style={{ width: '80%', display: 'block', margin: '0 auto' }}
+          />
+        </Grid>
         <Grid
           item
           xs={12}
@@ -180,11 +217,17 @@ const index = () => {
           }}
         >
           <Typography
-            component="h1"
+            component="div"
             gutterBottom
-            variant="h1"
+            variant="h3"
             sx={{
+              fontSize: { xs: '3rem', md: '5rem' },
               fontWeight: 'bold',
+              color: '#336766',
+              textAlign: {
+                xs: 'center',
+                sm: 'left',
+              },
             }}
           >
             VOTE ONLINE AND STOP BEING IN A QUEUE
@@ -200,15 +243,15 @@ const index = () => {
             speed={5}
             repeat={5}
             style={{
+              textAlign: {
+                xs: 'center',
+                sm: 'left',
+              },
               fontSize: '1rem',
               fontWeight: 'bold',
               fontFamily: 'sans-serif',
             }}
           />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          {/* Your animated infographic or lottie image here */}
-          <img src={homeVote} alt="Animated image" style={{ width: '100%' }} />
         </Grid>
       </Grid>
 
@@ -245,7 +288,11 @@ const index = () => {
         justify="center"
         sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
       >
-        <Typography variant="h4" gutterBottom>
+        <Typography
+          variant="h2"
+          gutterBottom
+          sx={{ textAlign: 'center', fontWeight: 'bold' }}
+        >
           Application Flow
         </Typography>
         <Stepper orientation="vertical">
@@ -282,9 +329,12 @@ const index = () => {
       </Grid>
 
       {/* Contact Us Section */}
-      <Grid container style={styles.contactSection} justify="center">
+      <Grid container style={styles.contactSection} justify="start">
         <Typography variant="h4" gutterBottom>
           Contact Us
+        </Typography>
+        <Typography variant="body1">
+          If you have any questions or concerns, please contact us.
         </Typography>
         <Grid item xs={12} sm={6}>
           <TextField label="Your Name" fullWidth margin="normal" />
