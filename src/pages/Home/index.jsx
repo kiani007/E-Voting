@@ -14,6 +14,7 @@ import {
   StepLabel,
   StepContent,
   useTheme,
+  Box,
 } from '@mui/material';
 import {
   ExpandMore as ExpandMoreIcon,
@@ -31,18 +32,21 @@ import {
   RiFileSearchLine,
   RiNotificationLine,
   RiUserStarLine,
+  RiArrowRightUpFill,
 } from 'react-icons/ri';
+import { useNavigate } from 'react-router';
 
 const index = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
 
   const styles = {
     mainSection: {
       display: 'flex',
       justifyContent: 'center',
       backgroundColor: '#fffff',
-      textAlign: { xs: 'center', md: 'left' },
-      padding: '50px',
+      textAlign: 'left',
+      // padding: '50px',
       margin: '110px 0',
     },
     featureSection: {
@@ -70,7 +74,8 @@ const index = () => {
       width: '100%',
     },
     contactSection: {
-      padding: '50px 10px',
+      padding: '3rem ',
+      marginBottom: '3rem',
       backgroundColor: '#ffffff',
       display: 'flex',
       flexDirection: 'column',
@@ -101,6 +106,29 @@ const index = () => {
       fontSize: '0.8rem',
       paddingLeft: '2rem',
       color: '#336766',
+    },
+    getStartedButton: {
+      // left align this button
+
+      marginTop: '2rem',
+      marginRight: 'auto',
+      marginLeft: 'auto',
+      padding: '1rem 2rem',
+      borderRadius: '30px',
+      fontWeight: 'bold',
+      fontSize: '1rem',
+      textTransform: 'none',
+      color: '#ffffff',
+      backgroundColor: '#336766',
+      '&:hover': {
+        backgroundColor: '#336766',
+        color: '#ffffff',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+        transition: 'all 0.3s ease',
+        borderRadius: '30px',
+        fontWeight: 'bold',
+        fontSize: '1rem',
+      },
     },
   };
 
@@ -205,7 +233,12 @@ const index = () => {
           <img
             src={homeVote}
             alt="Animated image"
-            style={{ width: '80%', display: 'block', margin: '0 auto' }}
+            style={{
+              width: '100%',
+              display: 'block',
+              minHeight: '400px',
+              objectFit: 'contain',
+            }}
           />
         </Grid>
         <Grid
@@ -214,6 +247,11 @@ const index = () => {
           md={6}
           sx={{
             maxWidth: '300px',
+            padding: {
+              xs: '1rem',
+              sm: '3rem',
+            },
+            textAlign: 'left',
           }}
         >
           <Typography
@@ -224,34 +262,44 @@ const index = () => {
               fontSize: { xs: '3rem', md: '5rem' },
               fontWeight: 'bold',
               color: '#336766',
-              textAlign: {
-                xs: 'center',
-                sm: 'left',
-              },
+              textAlign: 'left',
+              lineHeight: '1.2',
+              marginBottom: '1rem',
             }}
           >
             VOTE ONLINE AND STOP BEING IN A QUEUE
           </Typography>
-          <TypeAnimation
-            sequence={[
-              'VOTE ONLINE AND STOP BEING IN A QUEUE',
-              2000,
-              'VOTE CONVENIENTLY FROM ANYWHERE WITH OUR E-VOTING SYSTEM',
-              1000,
-            ]}
-            cursor={true}
-            speed={5}
-            repeat={5}
-            style={{
-              textAlign: {
-                xs: 'center',
-                sm: 'left',
-              },
-              fontSize: '1rem',
-              fontWeight: 'bold',
-              fontFamily: 'sans-serif',
-            }}
-          />
+          <Box sx={{ height: '50px' }}>
+            <TypeAnimation
+              sequence={[
+                'VOTE ONLINE AND STOP BEING IN A QUEUE',
+                500,
+                'VOTE CONVENIENTLY FROM ANYWHERE WITH OUR E-VOTING SYSTEM',
+                500,
+              ]}
+              cursor={true}
+              speed={60}
+              repeat={5}
+              style={{
+                textAlign: {
+                  xs: 'center',
+                  sm: 'left',
+                },
+                fontSize: '1rem',
+                fontWeight: 'bold',
+                fontFamily: 'sans-serif',
+              }}
+            />
+          </Box>
+          <Button
+            variant="contained"
+            color="primary"
+            style={styles.getStartedButton}
+            endIcon={<RiArrowRightUpFill />}
+            onClick={() => navigate('/login')}
+          >
+            Get Started
+          </Button>
         </Grid>
       </Grid>
 
@@ -289,7 +337,7 @@ const index = () => {
         sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
       >
         <Typography
-          variant="h2"
+          variant={'h4'}
           gutterBottom
           sx={{ textAlign: 'center', fontWeight: 'bold' }}
         >
