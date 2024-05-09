@@ -14,7 +14,7 @@ import {
 import { HiLogout } from 'react-icons/hi';
 import { MdDashboardCustomize } from 'react-icons/md';
 import { ViewSidebarRounded } from '@mui/icons-material';
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Typography, Button, Divider } from '@mui/material';
 import theme from '../../../theme';
 const index = ({
   collapsed,
@@ -24,101 +24,117 @@ const index = ({
 }) => {
   return (
     <Sidebar
-      style={{
-        backgroundColor: 'green',
-        borderRadius: '0 20px 20px 0',
-        boxShadow: '0 0 10px 0 rgba(0,0,0,0.2)',
-        height: '80vh',
+      anchor="left"
+      sx={{
+        '& .simplebar-scrollbar': {
+          display: 'none',
+        },
+        '& .simplebar-content': {
+          height: '100vh',
+        },
+        '& .simplebar-scrollbar:before': {
+          background: 'neutral.400',
+        },
       }}
       collapsed={collapsed}
       toggled={toggled}
       breakPoint="lg"
       collapsedWidth="4rem"
     >
-      <Menu
-        iconShape="circle"
-        menuItemStyles={{
-          root: {
-            '&:hover': {
-              backgroundColor: theme.palette.primary.main,
-              color: theme.palette.success,
-            },
-          },
-          button: {
-            [`&.active`]: {
-              backgroundColor: theme.palette.primary.main,
-              color: theme.palette.success,
-            },
-          },
-        }}
-        toggleButtonStyles={{
-          root: {
-            display: 'none',
-          },
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100vh',
         }}
       >
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '3rem',
-            alignContent: 'center',
-            alignItems: 'flex-start',
+        <Menu
+          menuItemStyles={{
+            root: {
+              '&:hover': {
+                backgroundColor: theme.palette.primary.main,
+                color: theme.palette.success,
+              },
+            },
+            button: {
+              [`&.active`]: {
+                backgroundColor: theme.palette.primary.main,
+                color: theme.palette.success,
+              },
+            },
+          }}
+          toggleButtonStyles={{
+            root: {
+              display: 'none',
+            },
           }}
         >
           <Box
-            style={{
-              marginTop: '1rem',
+            sx={{
               display: 'flex',
-              width: '90%',
-              justifyContent: 'space-between',
-              flexDirection: 'row',
-              padding: '0 0 0 1.8rem',
-              alignItems: 'center',
+              flexDirection: 'column',
+              gap: '3rem',
+              alignContent: 'center',
+              alignItems: 'flex-start',
             }}
           >
-            <Typography
-              onClick={handleCollapsedChange}
-              variant="h6"
-              sx={{ fontWeight: 'bold', py: 2, cursor: 'pointer' }}
+            <Box
+              style={{
+                marginTop: '1rem',
+                display: 'flex',
+                width: '90%',
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+                padding: '0 0 0 1.8rem',
+                alignItems: 'center',
+              }}
             >
-              {collapsed ? 'EV' : 'E - Voting'}
-            </Typography>
-            <Button sx={{ cursor: 'pointer' }} onClick={handleCollapsedChange}>
-              {<FaAngleDoubleLeft />}
-            </Button>
+              <Typography
+                onClick={handleCollapsedChange}
+                variant="h6"
+                sx={{ fontWeight: 'bold', py: 2, cursor: 'pointer' }}
+              >
+                {collapsed ? 'EV' : 'E - Voting'}
+              </Typography>
+              <Button
+                sx={{ cursor: 'pointer' }}
+                onClick={handleCollapsedChange}
+              >
+                {<FaAngleDoubleLeft />}
+              </Button>
+            </Box>
+            <Box>
+              <MenuItem
+                icon={<FaUser />}
+                component={<Link to="/e-voting-system/my-profile" />}
+              >
+                My Profile
+              </MenuItem>
+              <MenuItem
+                icon={<MdDashboardCustomize />}
+                component={<Link to="/e-voting-system" />}
+              >
+                Voting Dashboard
+              </MenuItem>
+              <MenuItem
+                icon={<FaChartBar />}
+                component={<Link to="/e-voting-system/electorial-matrix" />}
+              >
+                Result Matrix
+              </MenuItem>
+            </Box>
+            <MenuItem
+              icon={<HiLogout />}
+              onClick={() => {
+                localStorage.clear();
+                window.location.reload();
+              }}
+            >
+              Logout
+            </MenuItem>
           </Box>
-          <Box>
-            <MenuItem
-              icon={<FaUser />}
-              component={<Link to="/e-voting-system/my-profile" />}
-            >
-              My Profile
-            </MenuItem>
-            <MenuItem
-              icon={<MdDashboardCustomize />}
-              component={<Link to="/e-voting-system" />}
-            >
-              Voting Dashboard
-            </MenuItem>
-            <MenuItem
-              icon={<FaChartBar />}
-              component={<Link to="/e-voting-system/electorial-matrix" />}
-            >
-              Result Matrix
-            </MenuItem>
-          </Box>
-          <MenuItem
-            icon={<HiLogout />}
-            onClick={() => {
-              localStorage.clear();
-              window.location.reload();
-            }}
-          >
-            Logout
-          </MenuItem>
-        </Box>
-      </Menu>
+        </Menu>
+      </Box>
     </Sidebar>
   );
 };

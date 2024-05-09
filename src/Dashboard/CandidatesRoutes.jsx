@@ -7,6 +7,7 @@ import { Dashboard } from './Dashboard';
 import { VicePresidentialElection } from './VicePresidentialElection';
 import { ElectorialMatrixes } from './ElectorialMatrixes';
 import { Profile } from './UserProfile';
+import { ErrorPage } from '@/pages';
 export const CandidatesRoutes = () => {
   return (
     <Routes>
@@ -34,6 +35,7 @@ export const CandidatesRoutes = () => {
         element={<SuccessfullyVoted />}
       />
       <Route path="/electorial-matrix" element={<ElectorialMatrixes />} />
+      <Route path="/*" element={<ErrorPage />} />
     </Routes>
   );
 };

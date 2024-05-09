@@ -12,35 +12,43 @@ import React from 'react';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useParams, useNavigate } from 'react-router';
 import data from '../PresidentialElection/data.js';
+import Modal from '../../components/Modal';
 export const PresidentialCandidates = () => {
   const navigate = useNavigate();
 
   const params = useParams();
   const { candidateId } = params;
+  const [fingerprintModalOpen, setFingerprintModalOpen] = React.useState(false);
   const candidate = data.find(
     (item) => item.candidateId === Number(candidateId)
   );
-  console.log('params', params);
+
   const handleVoteCasted = () => {
-    console.log('vote casted');
+    console.log(candidateId);
+    handleFingerPrintModalClose();
     navigate('successfully-voted');
     return;
   };
   const handleCancel = () => {
-    // navigate back
-    console.log('cancel');
-    navigate('/e-voting-system/presidential-election');
+    navigate(-1);
   };
+  const handleFingerPrintModalOpen = () => {
+    setFingerprintModalOpen(true);
+  };
+  const handleFingerPrintModalClose = () => {
+    setFingerprintModalOpen(false);
+  };
+
   return (
     <Container
       sx={{
         textAlign: 'center',
-        bgcolor: '#F8F9FA',
+        bgcolor: '#FFFFFF',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        height: '100vh',
+        padding: '3rem',
       }}
     >
       <Avatar sx={{ m: 3, bgcolor: 'primary.main', width: 150, height: 150 }}>
@@ -52,8 +60,8 @@ export const PresidentialCandidates = () => {
         />
       </Avatar>
       <Typography
-        variant="h1"
-        sx={{ textAlign: 'center', color: 'primary.main' }}
+        variant="h4"
+        sx={{ textAlign: 'center', color: 'primary.main', fontWeight: 'bold' }}
       >
         {candidate.candidateName}
       </Typography>
@@ -65,18 +73,46 @@ export const PresidentialCandidates = () => {
       </Typography>
       <Box sx={{ mt: 4 }}>
         <Button
-          onClick={handleVoteCasted}
-          sx={{ bgcolor: 'primary.main', color: 'white', mr: 2 }}
+          onClick={handleFingerPrintModalOpen}
+          sx={{
+            bgcolor: 'primary.main',
+            color: 'white',
+            mr: 2,
+            padding: '10px 30px',
+            '&:hover': {
+              bgcolor: 'primary.dark',
+            },
+          }}
         >
           Vote
         </Button>
         <Button
-          sx={{ bgcolor: 'primary.main', color: 'white' }}
+          sx={{
+            bgcolor: 'error.main',
+            color: 'white',
+            mr: 2,
+            padding: '10px 30px',
+            '&:hover': {
+              bgcolor: 'error.dark',
+            },
+          }}
           onClick={handleCancel}
         >
           Cancel
         </Button>
       </Box>
+      {/* fingerprint modal */}
+      {fingerprintModalOpen && (
+        <Modal
+          open={fingerprintModalOpen}
+          handleClose={handleFingerPrintModalClose}
+          title="Fingerprint"
+          subTitle="Please scan your fingerprint"
+          description="This will be used to validate your vote"
+          buttonText="scan"
+          buttonFunction={handleVoteCasted}
+        />
+      )}
     </Container>
   );
 };

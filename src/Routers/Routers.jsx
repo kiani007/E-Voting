@@ -10,6 +10,7 @@ import PrivateRoute from './PrivateRoute';
 import { useAuth } from '../Auth/index';
 import BasicRoutes from './BasicRoutes';
 import MainRoutes from './MainRoutes';
+import ErrorPage from '../pages/ErrorPage';
 const Routers = () => {
   const { loggedIn } = useAuth();
   return (
@@ -35,7 +36,7 @@ const Routers = () => {
             />
           }
         />
-        {/* <Route path="/*" element={<ErrorPage />} /> */}
+        <Route path="/*" element={<ErrorPage />} />
       </Routes>
     </Router>
   );

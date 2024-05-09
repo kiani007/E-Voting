@@ -13,8 +13,9 @@ import {
 import { Link as RouterLink } from 'react-router-dom';
 import { useAuth } from '../../Auth/index';
 import { FaBars } from 'react-icons/fa';
-
+import { useTheme } from '@mui/material/styles';
 const Navbar = () => {
+  const theme = useTheme();
   const { loggedIn, logout } = useAuth();
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -31,149 +32,156 @@ const Navbar = () => {
   };
 
   return (
-    <Box
-      component={AppBar}
-      sx={{
-        bgcolor: 'white',
-        color: 'primary.main',
-        position: 'sticky',
-        top: 0,
-      }}
-    >
-      <Box
-        component="nav"
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          p: 2,
-        }}
+    <>
+      <AppBar
+        sx={(theme) => ({
+          left: {
+            lg: 280,
+          },
+          width: {
+            lg: 'calc(100% - 280px)',
+          },
+          backgroundColor: theme.palette.background.paper,
+          boxShadow: theme.shadows[3],
+        })}
       >
-        <Typography
-          variant="h4"
-          component="div"
+        <Box
+          component="nav"
           sx={{
-            fontWeight: 'bold',
-            color: 'primary.main',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            bgcolor: 'background.paper',
+            borderBottom: '1px solid #E0E0E0',
+            p: 2,
           }}
         >
-          EV
-        </Typography>
-        {!loggedIn ? (
-          <>
-            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-              {/* Normal buttons for desktop view */}
-              <Button
-                component={RouterLink}
-                to="/"
-                color="primary"
-                variant="text"
-                sx={{ mx: 1 }}
-              >
-                Home
-              </Button>
-              <Button
-                component={RouterLink}
-                to="/about"
-                color="primary"
-                variant="text"
-                sx={{ mx: 1 }}
-              >
-                About
-              </Button>
-              <Button
-                component={RouterLink}
-                to="/login"
-                color="primary"
-                variant="text"
-                sx={{ mx: 1 }}
-              >
-                Login
-              </Button>
-              <Button
-                component={RouterLink}
-                to="/sign-up"
-                color="primary"
-                variant="text"
-                sx={{ mx: 1 }}
-              >
-                Signup
-              </Button>
-            </Box>
-            <IconButton
-              size="large"
-              color="primary"
-              onClick={handleMenuOpen}
-              sx={{ display: { xs: 'flex', md: 'none' } }}
-            >
-              <FaBars />
-            </IconButton>
-            <Menu
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={handleMenuClose}
-              anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-              transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-              sx={{
-                display: {
-                  xs: 'flex',
-                  md: 'none',
-                },
-              }}
-            >
-              {/* Normal buttons for mobile view */}
-              <Stack
-                direction="column"
-                spacing={2}
-                p={2}
-                color="primary.main"
-                style={{
-                  borderRadius: '5px',
-                  fontWeight: 'bold',
-                  height: '80vh',
-                  width: '30vw',
-                  boxShadow: '34px 37px 13px -25px rgba(74,58,58,0.02) inset',
-                  ':hover': { color: 'success.main' },
-                }}
-              >
-                <MenuItem
+          <Typography
+            variant="h4"
+            component="div"
+            sx={{
+              fontWeight: 'bold',
+              color: 'primary.main',
+            }}
+          >
+            EV
+          </Typography>
+          {!loggedIn ? (
+            <>
+              <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+                {/* Normal buttons for desktop view */}
+                <Button
                   component={RouterLink}
                   to="/"
-                  onClick={handleMenuClose}
+                  color="primary"
+                  variant="text"
+                  sx={{ mx: 1 }}
                 >
                   Home
-                </MenuItem>
-                <MenuItem
+                </Button>
+                <Button
                   component={RouterLink}
                   to="/about"
-                  onClick={handleMenuClose}
+                  color="primary"
+                  variant="text"
+                  sx={{ mx: 1 }}
                 >
                   About
-                </MenuItem>
-                <MenuItem
+                </Button>
+                <Button
                   component={RouterLink}
                   to="/login"
-                  onClick={handleMenuClose}
+                  color="primary"
+                  variant="text"
+                  sx={{ mx: 1 }}
                 >
                   Login
-                </MenuItem>
-                <MenuItem
+                </Button>
+                <Button
                   component={RouterLink}
                   to="/sign-up"
-                  onClick={handleMenuClose}
+                  color="primary"
+                  variant="text"
+                  sx={{ mx: 1 }}
                 >
                   Signup
-                </MenuItem>
-              </Stack>
-            </Menu>
-          </>
-        ) : (
-          <Button onClick={handleLogout} variant="text">
-            Logout
-          </Button>
-        )}
-      </Box>
-    </Box>
+                </Button>
+              </Box>
+              <IconButton
+                size="large"
+                color="primary"
+                onClick={handleMenuOpen}
+                sx={{ display: { xs: 'flex', md: 'none' } }}
+              >
+                <FaBars />
+              </IconButton>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                sx={{
+                  display: {
+                    xs: 'flex',
+                    md: 'none',
+                  },
+                }}
+              >
+                {/* Normal buttons for mobile view */}
+                <Stack
+                  direction="column"
+                  spacing={2}
+                  p={2}
+                  color="primary.main"
+                  style={{
+                    borderRadius: '5px',
+                    fontWeight: 'bold',
+                    height: '80vh',
+                    width: '30vw',
+                    boxShadow: '34px 37px 13px -25px rgba(74,58,58,0.02) inset',
+                    ':hover': { color: 'success.main' },
+                  }}
+                >
+                  <MenuItem
+                    component={RouterLink}
+                    to="/"
+                    onClick={handleMenuClose}
+                  >
+                    Home
+                  </MenuItem>
+                  <MenuItem
+                    component={RouterLink}
+                    to="/about"
+                    onClick={handleMenuClose}
+                  >
+                    About
+                  </MenuItem>
+                  <MenuItem
+                    component={RouterLink}
+                    to="/login"
+                    onClick={handleMenuClose}
+                  >
+                    Login
+                  </MenuItem>
+                  <MenuItem
+                    component={RouterLink}
+                    to="/sign-up"
+                    onClick={handleMenuClose}
+                  >
+                    Signup
+                  </MenuItem>
+                </Stack>
+              </Menu>
+            </>
+          ) : (
+            <Button onClick={handleLogout} variant="text">
+              Logout
+            </Button>
+          )}
+        </Box>
+      </AppBar>
+    </>
   );
 };
 

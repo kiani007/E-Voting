@@ -5,9 +5,9 @@ import { Navbar } from '../index.js';
 
 const index = () => {
   return (
-    <header>
+    <Box>
       <Navbar />
-    </header>
+    </Box>
   );
 };
 

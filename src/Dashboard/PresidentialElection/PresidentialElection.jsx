@@ -9,8 +9,9 @@ import {
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import presidentialCandidatesData from './data.js';
-
+import useIsMobile from '../../utils/hooks/useIsMobile.js';
 const PresidentialElection = () => {
+  const isMobile = useIsMobile();
   return (
     <Box
       sx={{
@@ -25,14 +26,13 @@ const PresidentialElection = () => {
       <Grid container spacing={2} justifyContent="center">
         <Grid item xs={12} sx={{ textAlign: 'center' }}>
           <Typography
-            variant="h2"
+            variant={isMobile ? 'h5' : 'h2'}
             align="center"
             gutterBottom
             sx={{
               mt: 4,
               fontWeight: 'bold',
-              color: 'white',
-              textShadow: '2px 2px 8px black',
+              color: 'primary.main',
               textTransform: 'uppercase',
             }}
           >
@@ -44,33 +44,19 @@ const PresidentialElection = () => {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              mt: 4,
-              mb: 4,
               bgcolor: 'white',
               p: 2,
-              boxShadow: '0 0 10px 10px rgba(0,0,0,0.2)',
-              animation: `${shine} 10s linear infinite`,
             }}
           >
             <Typography
               variant="h3"
               sx={{
                 fontWeight: 'bold',
-                mb: 2,
                 color: 'primary.main',
               }}
             >
               General Election 2024
             </Typography>
-            <Box
-              sx={{
-                width: '100%',
-                height: '10px',
-                background: 'linear-gradient(90deg,  green, blue)',
-                borderRadius: '10px',
-                mb: 2,
-              }}
-            />
           </Box>
         </Grid>
         <Grid item xs={12} sx={{ p: 4 }}>
@@ -79,6 +65,8 @@ const PresidentialElection = () => {
             spacing={2}
             justifyContent="center"
             alignContent={'center'}
+            alignItems="center"
+            margin={'0 auto'}
           >
             {presidentialCandidatesData.map((candidate) => (
               <Grid
@@ -141,48 +129,3 @@ const PresidentialElection = () => {
 };
 
 export default PresidentialElection;
-
-const shine = {
-  '0%': {
-    backgroundPosition: '0% 0%',
-  },
-  '100%': {
-    backgroundPosition: '-100% 0%',
-  },
-};
-
-const shake = {
-  '0%': {
-    transform: 'translate(0)',
-  },
-  '10%': {
-    transform: 'translate(10px, 0)',
-  },
-  '20%': {
-    transform: 'translate(-10px, 0)',
-  },
-  '30%': {
-    transform: 'translate(10px, 0)',
-  },
-  '40%': {
-    transform: 'translate(-10px, 0)',
-  },
-  '50%': {
-    transform: 'translate(10px, 0)',
-  },
-  '60%': {
-    transform: 'translate(-10px, 0)',
-  },
-  '70%': {
-    transform: 'translate(10px, 0)',
-  },
-  '80%': {
-    transform: 'translate(-10px, 0)',
-  },
-  '90%': {
-    transform: 'translate(10px, 0)',
-  },
-  '100%': {
-    transform: 'translate(0)',
-  },
-};

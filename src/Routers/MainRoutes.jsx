@@ -1,4 +1,5 @@
 import React from 'react';
+import { ErrorPage } from '@/pages';
 import {
   BrowserRouter as Router,
   Routes,
@@ -13,6 +14,7 @@ export const MainRoutes = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/sign-up" element={<SignUp />} />
       <Route path="/about" element={<About />} />
+      <Route path="/*" element={<ErrorPage />} />
     </Routes>
   );
 };
