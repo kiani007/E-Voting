@@ -7,44 +7,62 @@ import {
   Button,
   Link,
   Grid,
-  Avatar,
   Box,
   Card,
   CardMedia,
 } from '@mui/material';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useAuth } from '../../Auth';
 import loginAvatar from '../../assets/LoginAvatar.png';
-import bgLoign from '../../assets/bgLogin.jpg';
 import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-useAuth;
-const Index = () => {
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../db/firebase';
+import { useHandleCookies } from '../../utils/Cookies';
+
+const Login = () => {
+  const { setCookieValue } = useHandleCookies();
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.up('md'));
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    //GET LOCAL STORAGE DATA AND COMPARE USER credentials
-    const user = localStorage.getItem('user');
-    const credentials = user && JSON.parse(user);
-    const loginCredential = localStorage.getItem('loginCredential');
-    const credentials2 = loginCredential && JSON.parse(loginCredential);
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        data.get('email'),
+        data.get('password')
+      );
 
-    if (
-      (credentials &&
-        credentials.email === data.get('email') &&
-        credentials.password === data.get('password')) ||
-      (credentials2 &&
-        credentials2[0].email === data.get('email') &&
-        credentials2[0].password === data.get('password'))
-    ) {
-      login();
-    } else {
-      alert('Invalid credentials');
+      const user = userCredential.user;
+      if (user) {
+        // Send info to the server for login
+        const response = await fetch('http://localhost:3000/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: data.get('email'), 
+            uid: user.uid
+          }),
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setCookieValue('token', data.token, '/');
+          localStorage.setItem('user', JSON.stringify(data.user));
+          login();
+          navigate('/');
+        } else {
+          console.error('Login failed');
+        }
+      } else {
+        navigate('/login');
+      }
+    } catch (error) {
+      console.error('Login failed:', error.message);
     }
   };
 
@@ -61,23 +79,20 @@ const Index = () => {
       }}
     >
       <Box
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
+        display="flex"
+        flexDirection="row"
+        alignItems="center"
+        justifyContent="center"
       >
         <Box sx={{ padding: '1rem' }}>
           <Typography
-            align="start"
             component="h1"
             variant="h3"
             sx={{ marginBottom: '0.5rem', fontWeight: 'bold' }}
           >
             Welcome
           </Typography>
-          <Typography variant="body1" align="start">
+          <Typography variant="body1">
             We are happy to see you back with us
           </Typography>
           <form
@@ -111,7 +126,7 @@ const Index = () => {
               fullWidth
               variant="contained"
               color="primary"
-              style={{ margin: '1rem 0' }}
+              sx={{ margin: '1rem 0' }}
             >
               Sign In
             </Button>
@@ -137,23 +152,19 @@ const Index = () => {
               borderRadius: '10px',
             }}
           >
-            <Card title="Login">
+            <Card>
               <CardMedia
                 component="img"
                 image={loginAvatar}
                 alt="login avatar"
-                borderRadius="10px"
                 sx={{
+                  borderRadius: '10px',
                   maxWidth: '500px',
                   maxHeight: '500px',
                   objectFit: 'cover',
                   objectPosition: 'center',
                   pointerEvents: 'none',
                   userSelect: 'none',
-                  '-webkit-user-drag': 'none',
-                  '-khtml-user-drag': 'none',
-                  '-moz-user-drag': 'none',
-                  '-o-user-drag': 'none',
                   userDrag: 'none',
                   WebkitUserDrag: 'none',
                   MozUserDrag: 'none',
@@ -169,4 +180,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Login;

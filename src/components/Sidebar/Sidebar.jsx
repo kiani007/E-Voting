@@ -16,12 +16,18 @@ import { MdDashboardCustomize } from 'react-icons/md';
 import { ViewSidebarRounded } from '@mui/icons-material';
 import { Box, Typography, Button, Divider } from '@mui/material';
 import theme from '../../../theme';
+import { useAuth } from '../../Auth';
 const index = ({
   collapsed,
   toggled,
   handleToggleSidebar,
   handleCollapsedChange,
 }) => {
+  const { logout } = useAuth();
+  const handleLogout = () => {
+    logout();
+    
+  };
   return (
     <Sidebar
       anchor="left"
@@ -125,10 +131,7 @@ const index = ({
             </Box>
             <MenuItem
               icon={<HiLogout />}
-              onClick={() => {
-                localStorage.clear();
-                window.location.reload();
-              }}
+              onClick={handleLogout}
             >
               Logout
             </MenuItem>

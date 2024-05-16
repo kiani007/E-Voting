@@ -6,7 +6,15 @@ const PublicLayout = ({ children }) => {
   return (
     <>
       <Header />
-      <Box pt={2} pb={2}>
+      <Box
+        sx={{
+          mt: '5rem',
+          minHeight: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
         {children}
       </Box>
       <Footer />

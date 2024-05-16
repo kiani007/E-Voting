@@ -9,12 +9,16 @@ import {
   MenuItem,
   Toolbar,
   Stack,
+  Avatar,
 } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
+import { Navigate, Link as RouterLink } from 'react-router-dom';
 import { useAuth } from '../../Auth/index';
 import { FaBars } from 'react-icons/fa';
 import { useTheme } from '@mui/material/styles';
+import { Person } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 const Navbar = () => {
+  const navigate = useNavigate();
   const theme = useTheme();
   const { loggedIn, logout } = useAuth();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -31,16 +35,15 @@ const Navbar = () => {
     setAnchorEl(null);
   };
 
+  const handleProfileOpen = () => {
+    //redirect to profile
+    navigate('my-profile');
+  };
   return (
     <>
       <AppBar
         sx={(theme) => ({
-          left: {
-            lg: 280,
-          },
-          width: {
-            lg: 'calc(100% - 280px)',
-          },
+          width: '100vw',
           backgroundColor: theme.palette.background.paper,
           boxShadow: theme.shadows[3],
         })}
@@ -52,19 +55,20 @@ const Navbar = () => {
             alignItems: 'center',
             justifyContent: 'space-between',
             bgcolor: 'background.paper',
-            borderBottom: '1px solid #E0E0E0',
             p: 2,
           }}
         >
           <Typography
             variant="h4"
-            component="div"
+            component="h4"
             sx={{
+              flexGrow: 1,
+              ml: 2,
               fontWeight: 'bold',
               color: 'primary.main',
             }}
           >
-            EV
+            {loggedIn ? '' : 'EV'}
           </Typography>
           {!loggedIn ? (
             <>
@@ -175,9 +179,17 @@ const Navbar = () => {
               </Menu>
             </>
           ) : (
-            <Button onClick={handleLogout} variant="text">
-              Logout
-            </Button>
+              <>
+                <Avatar
+                  src={loggedIn?.profilePic}
+                  alt="Profile"
+                  sx={{ width: 40, height: 40, cursor: 'pointer', mx: 1, mr: 1, '&:hover': { bgcolor: 'primary.main' }  }}
+                  onClick={handleProfileOpen}
+                />
+                <Button onClick={handleLogout} variant="text">
+                  Logout
+                </Button>
+              </>
           )}
         </Box>
       </AppBar>
