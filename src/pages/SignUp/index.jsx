@@ -10,20 +10,22 @@ import {
   Box,
   Card,
   CardMedia,
+  Alert,
 } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import voteAvatar from '../../assets/voteAvatar.png';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, deleteUser } from 'firebase/auth';
 import { getDatabase, ref, set } from 'firebase/database';
 import { auth } from '../../db/firebase';
 import { useAuth } from '../../Auth';
-import { useHandleCookies } from '../../utils/Cookies';
+import { Loader } from '../../components/Loader';
+import { signup } from '../../services/dataService';
 
 const Signup = () => {
-  const { setCookieValue } = useHandleCookies();
   const db = getDatabase();
   const { login } = useAuth();
+  const [error, setError] = useState(null);
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.up('md'));
   const navigate = useNavigate();
@@ -34,6 +36,7 @@ const Signup = () => {
     password: '',
     number: '',
   });
+  const [isLoading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -41,52 +44,69 @@ const Signup = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    
+    // Form validation
+    if (!formData.first_name || !formData.last_name || !formData.email || !formData.password || !formData.number) {
+      setError('All fields are required.');
+      return;
+    }
+
+    // Email validation
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(formData.email)) {
+      setError('Invalid email address.');
+      return;
+    }
+
+    // Password validation
+    if (formData.password.length < 6) {
+      setError('Password must be at least 6 characters long.');
+      return;
+    }
+
     try {
+      setLoading(true);
       const { first_name, last_name, email, password, number } = formData;
       
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-      console.log(user.uid);
-
-      await set(ref(db, `users/${user.uid}`), {
-        first_name,
-        last_name,
-        email,
-        number,
-      });
-
       if (user.uid) {
-        const response = await fetch('http://localhost:3000/auth/signup', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            first_name,
-            last_name,
-            email,
-            number,
-            uid: user.uid,
-          }),
+        await set(ref(db, `users/${user.uid}`), {
+          first_name,
+          last_name,
+          email,
+          number,
         });
-
-        if (response.ok) {
+        const response = await signup({
+          first_name,
+          last_name,
+          email,
+          number,
+          uid: user.uid,
+        });
+        
+        if (response === 200  ) {
           const responseUser = await response.json();
-          console.log(responseUser);
           localStorage.setItem('user', JSON.stringify(responseUser.user));
-          setCookieValue('token', responseUser.token, '/');
+          localStorage.setItem('token', responseUser.token);
           login();
-          navigate('/'); // Redirect to a different page after successful signup
         } else {
-          alert('Sign up failed');
+          setLoading(false);
+          setError('Sign up failed');
+          deleteUser(user);
         }
       }
     } catch (error) {
       console.error('Sign up failed:', error.message);
+      setLoading(false);
+      setError(error.message);
     }
   };
 
   return (
+    <>  
+      
+    {isLoading && <Loader type={'circular'}/>}  
     <Container
       component="main"
       maxWidth="lg"
@@ -97,7 +117,9 @@ const Signup = () => {
         mb: 8,
         borderRadius: '1rem',
       }}
-    >
+      >
+        {error  && <Alert severity="error">{error}</Alert>}
+
       <Box
         style={{
           display: 'flex',
@@ -105,7 +127,7 @@ const Signup = () => {
           alignItems: 'center',
           justifyContent: 'space-between',
         }}
-      >
+        >
         <Box sx={{ padding: '1rem' }}>
           <Typography
             component="h1"
@@ -131,7 +153,7 @@ const Signup = () => {
                   label="First Name"
                   autoFocus
                   value={formData.first_name}
-                  onChange={handleChange}
+                    onChange={handleChange}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -144,7 +166,7 @@ const Signup = () => {
                   name="last_name"
                   autoComplete="lname"
                   value={formData.last_name}
-                  onChange={handleChange}
+                    onChange={handleChange}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -171,7 +193,7 @@ const Signup = () => {
                   id="password"
                   autoComplete="new-password"
                   value={formData.password}
-                  onChange={handleChange}
+                    onChange={handleChange}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -184,7 +206,7 @@ const Signup = () => {
                   type="tel"
                   id="number"
                   value={formData.number}
-                  onChange={handleChange}
+                    onChange={handleChange}
                 />
               </Grid>
             </Grid>
@@ -237,6 +259,7 @@ const Signup = () => {
         )}
       </Box>
     </Container>
+    </>
   );
 };
 
