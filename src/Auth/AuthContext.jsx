@@ -1,24 +1,29 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { getAuth, onAuthStateChanged, reload, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { initializeApp } from 'firebase/app';
-import {useHandleCookies} from '../utils/Cookies'
+import { Loader } from '../components/Loader';
+import { Alert, Box } from '@mui/material';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const { removeCookieValue } = useHandleCookies('token');
   const [loggedIn, setLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const auth = getAuth();
-
+  
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
+    const unsubscribe = onAuthStateChanged(auth, async(user) => {
+      const token = localStorage.getItem('token');
+      if ( user && token ) {
         setLoggedIn(true);
         localStorage.setItem('isLoggedIn', 'true');
+
       } else {
+        await signOut(auth);
         setLoggedIn(false);
         localStorage.removeItem('isLoggedIn');
         localStorage.removeItem('token');
+        setError('User not logged in');
       }
       setLoading(false);
     });
@@ -26,15 +31,18 @@ export const AuthProvider = ({ children }) => {
     return () => unsubscribe();
   }, [auth]);
 
-  const login = () => {
+  const login = async() => {
     try {
-      const user = JSON.parse(localStorage.getItem('user'));
-      if (user && user.email) {
+      const token = localStorage.getItem('token');
+      if (token) {
         setLoggedIn(true);
         localStorage.setItem('isLoggedIn', 'true');
       }
     } catch (error) {
-      console.error("Login error:", error);
+      await signOut(auth);
+      setError(error);
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('token');
       // Handle login errors here
   }
   };
@@ -44,19 +52,26 @@ export const AuthProvider = ({ children }) => {
       await signOut(auth);
       localStorage.removeItem('isLoggedIn');
       localStorage.removeItem('token');
-      removeCookieValue('token');
       setLoggedIn(false);
     } catch (error) {
       console.error("Logout error:", error);
+      setError(error);
+      setLoading(false);
       // Handle logout errors here
     }
   };
 
-  return (
-    <AuthContext.Provider value={{ loggedIn, login, logout, loading }}>
-      {children}
-    </AuthContext.Provider>
-  );
+ return (
+  <AuthContext.Provider value={{ loggedIn, login, logout, loading }}>
+     {loading ? <Loader type={'circular'} /> :
+       <Box>
+         {error && <Alert severity="error">{error.message}</Alert>}
+         {children}
+      </Box>
+     }
+     
+  </AuthContext.Provider>
+);
 };
 
 export const useAuth = () => useContext(AuthContext);

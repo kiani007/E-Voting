@@ -1,16 +1,75 @@
-// services/dataService.js
-export const fetchUserData = async (userId) => {
+//services-userServices.js
+import axios from 'axios';
+
+const API_URL = 'http://localhost:3002';
+const token = localStorage.getItem('token');
+
+export const getUser = async () => {
   try {
-    const response = await fetch(
-      `https://jsonplaceholder.typicode.com/users/${userId}`
-    );
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    const data = await response.json();
-    return data;
+    const response = await axios.get(`${API_URL}/user/get-user`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}` 
+      },
+    });
+    return response.data;
   } catch (error) {
-    console.error('Error fetching user data:', error);
-    return null;
+    console.error('Error fetching data:', error);
+    throw error;
   }
-};
+}
+export const updateUser = async (data) => {
+  try {
+    const response = await axios.post(`${API_URL}/user/update`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    throw error;
+  }
+}
+export const uploadUserProfilePic = async (data) => {
+  try {
+    const response = await axios.post(`${API_URL}/upload-profile-pic`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `${token}}`
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    throw error;
+  }
+}
+ export const signup = async (data) => {
+          try {
+            const response = await axios.post(`${API_URL}/auth/signup`, data, {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+            return response.data;
+          } catch (error) {
+            console.log(error);
+            return error;
+          }
+ }
+        
+export const loginUser = async (data) => {
+          try {
+            const response = await axios.post(`${API_URL}/auth/login`, data, {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+            return response.data;
+          } catch (error) {
+            console.log(error);
+            return error;
+          }
+ }  
