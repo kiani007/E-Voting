@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
   Container,
@@ -24,69 +24,59 @@ import {
 import { MdOutlineHowToVote } from 'react-icons/md';
 import { useHandleCookies } from '../../utils/Cookies';
 import { Form } from 'react-router-dom';
-import { updateUser, uploadUserProfilePic } from '../../services/dataService';
+import { getUser, updateUser, uploadUserProfilePic } from '../../services/dataService';
 
 const ProfilePage = () => {
-  const user = JSON.parse(localStorage.getItem('user'));
-  const { getCookieValue } = useHandleCookies('token');
-  const token = getCookieValue('token');
-  
-
-  const [userProfile, setUserProfile] = useState({
-    first_name: user.first_name,
-    last_name:user.last_name,
-    cnic: user.cnic ?? "null",
-    address1: user.address1,
-    address2: user.address2,
-    photo: user.photo,
-    father_name: user.father_name,
-    phone: user.number,
-    email: user.email,
-    voted_for_presidential_candidates: user.voted_for_presidential_candidates,
-    voted_for_vice_presidential_candidates: user.voted_for_vice_presidential_candidates,
-    is_authorized: user.is_authorized,
-  });
-
+ 
+   const [userProfile, setUserProfile] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [preview, setPreview] = useState(null);
-  
-  
+
+  useEffect(() => {
+    fetchUserProfile();
+  }, []);
+
+  const fetchUserProfile = async () => {
+    try {
+      const response = await getUser();
+      setUserProfile(response.data);
+    } catch (error) {
+      console.error('Error fetching user profile:', error);
+    }
+  };
+
   const handleFileSelected = (event) => {
     const file = event.target.files[0];
     setSelectedFile(file);
     setPreview(URL.createObjectURL(file));
   };
-  
+
   const handleEdit = () => {
     setIsEditing(true);
   };
 
-  const handleSave = async() => {
+  const handleSave = async () => {
     setIsEditing(false);
-    const profileStatus = await uploadUserProfilePic();
-    if (profileStatus.status !== 201) {
-      setUserProfile(prev => ({ ...prev, photo: null }));
-      alert('Error while updating profile picture');
-    } else {
-      alert('Profile picture updated successfully');
-      const updateProfile = await updateUser(userProfile);
-      if (updateProfile.status !== 201) {
-        alert('Error while updating profile');
+    try {
+      if (selectedFile) {
+        await uploadUserProfilePic(selectedFile);
       }
-      else {
-        alert('Profile updated successfully');
-        setUserProfile(updateProfile);    
-      }
+      const updatedProfile = await updateUser(userProfile);
+      setUserProfile(updatedProfile.data);
+      alert('Profile updated successfully');
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      alert('Failed to update profile');
     }
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUserProfile({
-      ...userProfile,
+    setUserProfile((prevProfile) => ({
+      ...prevProfile,
       [name]: value,
-    });
+    }));
   };
 
   return (
@@ -220,15 +210,15 @@ const ProfilePage = () => {
             </Typography>
             {isEditing ? (
               <TextField
-                name="phone"
+                name="number"
                 label="Phone"
                 fullWidth
-                value={userProfile.phone}
+                value={userProfile.number}
                 onChange={handleChange}
                 margin="normal"
               />
             ) : (
-              <Typography>{userProfile.phone}</Typography>
+              <Typography>{userProfile.number}</Typography>
             )}
           </Grid>
           {/* Email Section */}

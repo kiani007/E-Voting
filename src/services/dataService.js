@@ -1,14 +1,15 @@
 //services-userServices.js
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000';
+const API_URL = 'http://localhost:3002';
+const token = localStorage.getItem('token');
 
 export const getUser = async () => {
   try {
-    const response = await axios.get(`${API_URL}/get-user`, {
+    const response = await axios.get(`${API_URL}/user/get-user`, {
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `${localStorage.getItem('token')}`
+        'Authorization': `Bearer ${token}` 
       },
     });
     return response.data;
@@ -19,10 +20,10 @@ export const getUser = async () => {
 }
 export const updateUser = async (data) => {
   try {
-    const response = await axios.post(`${API_URL}/update`, data, {
+    const response = await axios.post(`${API_URL}/user/update`, data, {
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `${localStorage.getItem('token')}`
+        'Authorization': `Bearer ${token}`
       },
     });
     return response.data;
@@ -36,7 +37,7 @@ export const uploadUserProfilePic = async (data) => {
     const response = await axios.post(`${API_URL}/upload-profile-pic`, data, {
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `${localStorage.getItem('token')}`
+        'Authorization': `${token}}`
       },
     });
     return response.data;
@@ -47,14 +48,12 @@ export const uploadUserProfilePic = async (data) => {
 }
  export const signup = async (data) => {
           try {
-            const response = await fetch('http://localhost:3000/auth/signup', {
-              method: 'POST',
+            const response = await axios.post(`${API_URL}/auth/signup`, data, {
               headers: {
                 'Content-Type': 'application/json',
               },
-              body: JSON.stringify(data),
             });
-            
+            return response.data;
           } catch (error) {
             console.log(error);
             return error;
@@ -63,14 +62,12 @@ export const uploadUserProfilePic = async (data) => {
         
 export const loginUser = async (data) => {
           try {
-            const response = await fetch('http://localhost:3000/auth/login', {
-              method: 'POST',
+            const response = await axios.post(`${API_URL}/auth/login`, data, {
               headers: {
                 'Content-Type': 'application/json',
               },
-              body: JSON.stringify(data),
             });
-            
+            return response.data;
           } catch (error) {
             console.log(error);
             return error;

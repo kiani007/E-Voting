@@ -17,6 +17,7 @@ export const AuthProvider = ({ children }) => {
       if ( user && token ) {
         setLoggedIn(true);
         localStorage.setItem('isLoggedIn', 'true');
+
       } else {
         await signOut(auth);
         setLoggedIn(false);
@@ -33,8 +34,7 @@ export const AuthProvider = ({ children }) => {
   const login = async() => {
     try {
       const token = localStorage.getItem('token');
-      const user = JSON.parse(localStorage.getItem('user'));
-      if (user && user.email && token) {
+      if (token) {
         setLoggedIn(true);
         localStorage.setItem('isLoggedIn', 'true');
       }
@@ -56,6 +56,7 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.error("Logout error:", error);
       setError(error);
+      setLoading(false);
       // Handle logout errors here
     }
   };

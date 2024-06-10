@@ -85,10 +85,9 @@ const Signup = () => {
           uid: user.uid,
         });
         
-        if (response === 200  ) {
-          const responseUser = await response.json();
-          localStorage.setItem('user', JSON.stringify(responseUser.user));
-          localStorage.setItem('token', responseUser.token);
+        if (response.status === 200) {
+          const responseUser = await response.user;
+          localStorage.setItem('token', response.token);
           login();
         } else {
           setLoading(false);

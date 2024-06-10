@@ -33,7 +33,13 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
+    const formData = new FormData(event.target);
+
+    // Convert FormData to an object
+    const data = Object.fromEntries(formData.entries());
+
+    // Debug: Check the contents of the form data
+    console.log('Form Data:', data);
 
     // Reset errors
     setErrors({});
@@ -41,10 +47,10 @@ const Login = () => {
 
     // Form validation
     const validationErrors = {};
-    if (!data.get('email')) {
+    if (!data.email) {
       validationErrors.email = 'Email is required.';
     }
-    if (!data.get('password')) {
+    if (!data.password) {
       validationErrors.password = 'Password is required.';
     }
 
@@ -57,21 +63,20 @@ const Login = () => {
       setLoading(true);
       const userCredential = await signInWithEmailAndPassword(
         auth,
-        data.get('email'),
-        data.get('password')
+        data.email,
+        data.password
       );
 
       const user = userCredential.user;
+
       if (user) {
         const response = await loginUser({
-          email: data.get('email'),
-          password: data.get('password'),
+          email: data.email,
+          uid: user.uid,
         });
-
-        if (response === 200) {
-          const data = await response.json();
-          localStorage.setItem('token', data.token);
-          localStorage.setItem('user', JSON.stringify(data.user));
+        console.log(response.status)
+        if (response.status === 200) {
+          localStorage.setItem('token', response.token);
           login();
           navigate('/');
         } else {
@@ -123,7 +128,7 @@ const Login = () => {
         >
           <Alert severity="error">{errorMessage}</Alert>
         </Popover>
-      
+
         <Box
           display="flex"
           flexDirection="row"
