@@ -24,22 +24,34 @@ import {
 import { MdOutlineHowToVote } from 'react-icons/md';
 import { useHandleCookies } from '../../utils/Cookies';
 import { Form } from 'react-router-dom';
-import { getUser, updateUser, uploadUserProfilePic } from '../../services/dataService';
+import {
+  getUser,
+  updateUser,
+  uploadUserProfilePic,
+} from '../../services/dataService';
 
 const ProfilePage = () => {
- 
-   const [userProfile, setUserProfile] = useState({});
+  const [userProfile, setUserProfile] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [preview, setPreview] = useState(null);
+  const [token, setToken] = useState({});
 
   useEffect(() => {
-    fetchUserProfile();
-  }, []);
+    const x = localStorage.getItem('token');
+    if (x) {
+      setToken(x);
+    }
+  }, []); // Only run once on mount
 
+  useEffect(() => {
+    if (token) {
+      fetchUserProfile();
+    }
+  }, [token]); 
   const fetchUserProfile = async () => {
     try {
-      const response = await getUser();
+      const response = await getUser(token);
       setUserProfile(response.data);
     } catch (error) {
       console.error('Error fetching user profile:', error);
@@ -81,13 +93,13 @@ const ProfilePage = () => {
 
   return (
     <div
-    style={{
-      display: 'flex',
-      borderRadius: '10px',
-      justifyContent: 'center',
-      alignItems: 'center',
-      padding: '3rem',
-    }}
+      style={{
+        display: 'flex',
+        borderRadius: '10px',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: '3rem',
+      }}
     >
       <Paper
         elevation={3}
@@ -106,16 +118,22 @@ const ProfilePage = () => {
                 textAlign: 'start',
               }}
             >
-          
               <input
                 type="file"
                 id="fileInput"
                 style={{ display: 'none' }}
                 onChange={handleFileSelected}
               />
-              <Tooltip title="Click here to select image and upload" sx={{left:0}}>
+              <Tooltip
+                title="Click here to select image and upload"
+                sx={{ left: 0 }}
+              >
                 <Avatar
-                  onClick={() => isEditing && (document.getElementById('fileInput').click(), document.getElementById('fileInput').value = '')}
+                  onClick={() =>
+                    isEditing &&
+                    (document.getElementById('fileInput').click(),
+                    (document.getElementById('fileInput').value = ''))
+                  }
                   style={{ width: '100px', height: '100px', cursor: 'pointer' }}
                   src={preview}
                 >
@@ -126,7 +144,9 @@ const ProfilePage = () => {
           </Grid>
           {/* Name Section */}
           <Grid item xs={12} md={8}>
-            <Typography variant="h4">{userProfile.first_name + " " + userProfile.last_name}</Typography>
+            <Typography variant="h4">
+              {userProfile.first_name + ' ' + userProfile.last_name}
+            </Typography>
             {isEditing && (
               <TextField
                 name="first_name"
