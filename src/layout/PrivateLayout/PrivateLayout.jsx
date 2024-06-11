@@ -7,8 +7,9 @@ import {
   useTheme,
 } from '@mui/material';
 import { Box } from '@mui/system';
-import { Footer, Header, Navbar } from '..';
 import { Sidebar } from '../../components';
+import  Navbar from '../Navbar';
+import { blueGrey } from '@mui/material/colors';
 
 const PrivateLayout = ({ children }) => {
   const theme = useTheme();
@@ -24,50 +25,53 @@ const PrivateLayout = ({ children }) => {
   };
 
   return (
-    <>
-      <Box position="fixed" sx={{ zIndex: theme.zIndex.drawer + 1 }}>
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: collapsed ? '4rem 1fr' : '18rem 1fr',
+      minHeight: '100vh',
+      gridTemplateAreas: `
+        "sidebar main"
+      `,
+    }}>
+      <nav style={{
+        gridArea: 'sidebar',
+        width: collapsed ? '4rem' : '17.5rem',
+        transition: theme.transitions.create('width', {
+          easing: theme.transitions.easing.sharp,
+          duration: theme.transitions.duration.enteringScreen,
+        }),
+        overflowX: 'hidden',
+      }}>
         <Sidebar
           collapsed={collapsed}
           toggled={toggled}
           handleToggleSidebar={handleToggleSidebar}
           handleCollapsedChange={handleCollapsedChange}
         />
-      </Box>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          flex: '1 1 auto',
-          maxWidth: '100%',
-          paddingTop: '4rem',
-          [theme.breakpoints.up('lg')]: {
-            paddingLeft: collapsed ? '4rem' : '17.5rem',
-          },
-        }}
-      >
-        <Container
-          sx={{
-            py: '2rem',
-            pb: '1rem',
-            minHeight: '100vh',
-            bgcolor: '#F8F9FA', //theme.palette.background.default,
-          }}
-        >
-          {children}
-        </Container>
-        <Typography
-          variant="caption"
-          display="block"
-          textAlign="center"
-          sx={{ py: '1rem' }}
-        >
-          Copyright ©{new Date().getFullYear()} E-Voting System.
-          <br />
-          All rights reserved.
-        </Typography>
-      </Box>
-      <Navbar />
-    </>
+      </nav>
+      
+      <div style={{
+        gridArea: 'main',
+        display: 'flex',
+        flexDirection: 'column',
+      }}>
+
+        <Navbar />
+        <main style={{
+          flexGrow: 1,
+          padding: '2rem',
+          backgroundColor: blueGrey[50],
+          transition: theme.transitions.create('margin', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+          }),
+        }}>
+          <Container>
+            {children}
+          </Container>
+        </main>
+      </div>
+    </div>
   );
 };
 

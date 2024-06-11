@@ -1,7 +1,7 @@
 import React from 'react';
 import { AppBar, Toolbar, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import { Footer, Header, Navbar } from '..';
+import { Footer, Header } from '../index';
 const PublicLayout = ({ children }) => {
   return (
     <>

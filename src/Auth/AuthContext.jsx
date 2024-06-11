@@ -1,8 +1,9 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { getAuth, onAuthStateChanged, reload, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { initializeApp } from 'firebase/app';
 import { Loader } from '../components/Loader';
 import { Alert, Box } from '@mui/material';
+
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -10,20 +11,22 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const auth = getAuth();
-  
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async(user) => {
-      const token = localStorage.getItem('token');
-      if ( user && token ) {
-        setLoggedIn(true);
-        localStorage.setItem('isLoggedIn', 'true');
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        try {
+          const token = await user.getIdToken(true);
+          localStorage.setItem('token', token);
+          localStorage.setItem('isLoggedIn', 'true');
+          setLoggedIn(true);
+          setError(null);
+        } catch (tokenError) {
+          console.error('Token error:', tokenError);
+          await handleLogout();
+        }
       } else {
-        await signOut(auth);
-        setLoggedIn(false);
-        localStorage.removeItem('isLoggedIn');
-        localStorage.removeItem('token');
-        setError('User not logged in');
+        await handleLogout();
       }
       setLoading(false);
     });
@@ -31,47 +34,59 @@ export const AuthProvider = ({ children }) => {
     return () => unsubscribe();
   }, [auth]);
 
-  const login = async() => {
+  const handleLogout = async () => {
+    await signOut(auth);
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('token');
+    setLoggedIn(false);
+    setError('User not logged in');
+  };
+
+  const login = async (email, password) => {
     try {
-      const token = localStorage.getItem('token');
-      if (token) {
-        setLoggedIn(true);
-        localStorage.setItem('isLoggedIn', 'true');
-      }
+      setLoading(true);
+      await signInWithEmailAndPassword(auth, email, password);
+      const user = auth.currentUser;
+      const token = await user.getIdToken(true);
+      localStorage.setItem('token', token);
+      localStorage.setItem('isLoggedIn', 'true');
+      setLoggedIn(true);
+      setError(null);
     } catch (error) {
-      await signOut(auth);
-      setError(error);
+      console.error('Login error:', error);
+      setError('Login failed. Please check your credentials.');
+      setLoggedIn(false);
       localStorage.removeItem('isLoggedIn');
       localStorage.removeItem('token');
-      // Handle login errors here
-  }
+    } finally {
+      setLoading(false);
+    }
   };
 
   const logout = async () => {
     try {
-      await signOut(auth);
-      localStorage.removeItem('isLoggedIn');
-      localStorage.removeItem('token');
-      setLoggedIn(false);
+      setLoading(true);
+      await handleLogout();
     } catch (error) {
-      console.error("Logout error:", error);
-      setError(error);
+      console.error('Logout error:', error);
+      setError('Logout failed. Please try again.');
+    } finally {
       setLoading(false);
-      // Handle logout errors here
     }
   };
 
- return (
-  <AuthContext.Provider value={{ loggedIn, login, logout, loading }}>
-     {loading ? <Loader type={'circular'} /> :
-       <Box>
-         {error && <Alert severity="error">{error.message}</Alert>}
-         {children}
-      </Box>
-     }
-     
-  </AuthContext.Provider>
-);
+  return (
+    <AuthContext.Provider value={{ loggedIn, login, logout, loading }}>
+      {loading ? (
+        <Loader type={'circular'} />
+      ) : (
+        <Box>
+          {error && <Alert severity="error">{error}</Alert>}
+          {children}
+        </Box>
+      )}
+    </AuthContext.Provider>
+  );
 };
 
 export const useAuth = () => useContext(AuthContext);

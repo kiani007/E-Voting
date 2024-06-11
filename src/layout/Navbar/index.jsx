@@ -41,15 +41,8 @@ const Navbar = () => {
   };
   return (
     <>
-      <AppBar
-        sx={(theme) => ({
-          width: '100vw',
-          backgroundColor: theme.palette.background.paper,
-          boxShadow: theme.shadows[3],
-        })}
-      >
         <Box
-          component="nav"
+          component="div"
           sx={{
             display: 'flex',
             alignItems: 'center',
@@ -192,7 +185,6 @@ const Navbar = () => {
               </>
           )}
         </Box>
-      </AppBar>
     </>
   );
 };

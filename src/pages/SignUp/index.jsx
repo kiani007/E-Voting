@@ -24,7 +24,7 @@ import { signup } from '../../services/dataService';
 
 const Signup = () => {
   const db = getDatabase();
-  const { login } = useAuth();
+  const { login,logedIn } = useAuth();
   const [error, setError] = useState(null);
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.up('md'));
