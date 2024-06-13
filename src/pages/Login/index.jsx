@@ -75,8 +75,9 @@ const Login = () => {
           uid: user.uid,
         });
         console.log(response.status)
+        console.log({X:response});
         if (response.status === 200) {
-          localStorage.setItem('token', response.token);
+          localStorage.setItem('tokenX', response.token);
           login();
           navigate('/');
         } else {

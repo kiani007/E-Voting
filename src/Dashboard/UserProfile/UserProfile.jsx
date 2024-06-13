@@ -38,7 +38,7 @@ const ProfilePage = () => {
   const [token, setToken] = useState({});
 
   useEffect(() => {
-    const x = localStorage.getItem('token');
+    const x = localStorage.getItem('tokenX');
     if (x) {
       setToken(x);
     }
@@ -46,6 +46,7 @@ const ProfilePage = () => {
 
   useEffect(() => {
     if (token) {
+      
       fetchUserProfile();
     }
   }, [token]); 

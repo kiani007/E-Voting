@@ -2,10 +2,11 @@
 import axios from 'axios';
 
 const API_URL = 'http://localhost:3000';
-const token = localStorage.getItem('token');
+const token = localStorage.getItem('tokenX');
 
 export const getUser = async (X) => {
   try {
+    console.log({X});
     const response = await axios.get(`${API_URL}/user/get-user`, {
       headers: {
         'Content-Type': 'application/json',
