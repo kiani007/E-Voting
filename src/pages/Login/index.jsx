@@ -28,7 +28,7 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.up('md'));
-  const { login } = useAuth();
+  const { login, setLoggedIn } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
@@ -47,6 +47,7 @@ const Login = () => {
 
     // Form validation
     const validationErrors = {};
+
     if (!data.email) {
       validationErrors.email = 'Email is required.';
     }
@@ -61,24 +62,18 @@ const Login = () => {
 
     try {
       setLoading(true);
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        data.email,
-        data.password
-      );
-
-      const user = userCredential.user;
-
+      const { user} = await login(data.email, data.password);
       if (user) {
         const response = await loginUser({
           email: data.email,
           uid: user.uid,
         });
-        console.log(response.status)
+
         if (response.status === 200) {
           localStorage.setItem('token', response.token);
-          login();
-          navigate('/');
+          localStorage.setItem('isLoggedIn', 'true');
+          setLoggedIn(true);
+          navigate('/e-voting-system');
         } else {
           console.error('Login failed');
           setErrorMessage('Login failed. Please try again.');
