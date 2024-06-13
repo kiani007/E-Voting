@@ -24,7 +24,7 @@ import { signup } from '../../services/dataService';
 
 const Signup = () => {
   const db = getDatabase();
-  const { login,logedIn } = useAuth();
+  const { login, setLoggedIn } = useAuth();
   const [error, setError] = useState(null);
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.up('md'));
@@ -88,7 +88,9 @@ const Signup = () => {
         if (response.status === 200) {
           const responseUser = await response.user;
           localStorage.setItem('token', response.token);
-          login();
+          localStorage.setItem('isLoggedIn', true);
+          setLoggedIn(true);
+          navigate('/e-voting-system');
         } else {
           setLoading(false);
           setError('Sign up failed');
