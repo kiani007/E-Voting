@@ -21,21 +21,25 @@ import { auth } from '../../db/firebase';
 import { useAuth } from '../../Auth';
 import { Loader } from '../../components/Loader';
 import { signup } from '../../services/dataService';
+import { firebaseServie } from '../../db/firebaseServices';
 
 const Signup = () => {
   const db = getDatabase();
-  const { login, setLoggedIn } = useAuth();
+  const { signupFirebae } = firebaseServie;
   const [error, setError] = useState(null);
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.up('md'));
   const navigate = useNavigate();
+  const { loginApproved } = useAuth();
   const [formData, setFormData] = useState({
     first_name: '',
     last_name: '',
     email: '',
     password: '',
     number: '',
+    cnic: '',
   });
+  
   const [isLoading, setLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -68,8 +72,8 @@ const Signup = () => {
       setLoading(true);
       const { first_name, last_name, email, password, number } = formData;
       
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
+      const user = await signupFirebae(email, password);
+
       if (user.uid) {
         await set(ref(db, `users/${user.uid}`), {
           first_name,
@@ -87,10 +91,10 @@ const Signup = () => {
         
         if (response.status === 200) {
           const responseUser = await response.user;
-          localStorage.setItem('token', response.token);
+          localStorage.setItem('userToken', response.token);
           localStorage.setItem('isLoggedIn', true);
-          setLoggedIn(true);
-          navigate('/e-voting-system');
+          loginApproved();
+          navigate('/');
         } else {
           setLoading(false);
           setError('Sign up failed');
@@ -112,10 +116,9 @@ const Signup = () => {
       component="main"
       maxWidth="lg"
       sx={{
-        mt: 2,
+        mt: 6,
         backgroundColor: '#E9ECEF',
         padding: '2rem',
-        mb: 8,
         borderRadius: '1rem',
       }}
       >
@@ -207,6 +210,19 @@ const Signup = () => {
                   type="tel"
                   id="number"
                   value={formData.number}
+                    onChange={handleChange}
+                />
+                </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="cnic"
+                  label="CNIC"
+                  type="text"
+                  id="cnic"
+                  value={formData.cnic}
                     onChange={handleChange}
                 />
               </Grid>

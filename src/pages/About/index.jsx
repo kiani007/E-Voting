@@ -4,11 +4,12 @@ import { Grid, Typography, Card, CardContent } from '@mui/material';
 const index = () => {
   const styles = {
     container: {
-      padding: '50px',
+      padding: '10px',
     },
     card: {
       boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
       borderRadius: '10px',
+      backgroundColor: '#f8f8f8',
       marginBottom: '20px',
     },
   };

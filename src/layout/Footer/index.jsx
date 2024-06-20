@@ -13,7 +13,7 @@ const styles = {
 
 function Footer() {
   return (
-    <Toolbar style={styles.footer}>
+    <Toolbar style={styles.footer}> 
       <Typography variant="body1">
         © {new Date().getFullYear()} E-Voting System. All rights reserved.
       </Typography>

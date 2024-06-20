@@ -21,14 +21,17 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../db/firebase';
 import { Loader } from '../../components/Loader';
 import { loginUser } from '../../services/dataService';
+import { firebaseServie } from '../../db/firebaseServices';
 
 const Login = () => {
+  const { login } = firebaseServie;
+  const {loginApproved} = useAuth();
   const [isLoading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const [errorMessage, setErrorMessage] = useState('');
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.up('md'));
-  const { login, setLoggedIn } = useAuth();
+  // const { login, setLoggedIn } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
@@ -62,7 +65,8 @@ const Login = () => {
 
     try {
       setLoading(true);
-      const { user} = await login(data.email, data.password);
+      const  user  = await login(data.email, data.password);
+      console.log('User:', user);
       if (user) {
         const response = await loginUser({
           email: data.email,
@@ -70,10 +74,10 @@ const Login = () => {
         });
 
         if (response.status === 200) {
-          localStorage.setItem('token', response.token);
+          localStorage.setItem('userToken', response.token);
           localStorage.setItem('isLoggedIn', 'true');
-          setLoggedIn(true);
-          navigate('/e-voting-system');
+          await loginApproved();
+          // navigate('/e-voting-system');
         } else {
           console.error('Login failed');
           setErrorMessage('Login failed. Please try again.');
@@ -102,11 +106,10 @@ const Login = () => {
         component="main"
         maxWidth="lg"
         sx={{
-          mt: 2,
+          mt: 8,
           backgroundColor: '#E9ECEF',
           borderRadius: '10px',
           padding: '2rem',
-          mb: 8,
         }}
       >
         <Popover

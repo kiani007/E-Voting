@@ -1,83 +1,45 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { initializeApp } from 'firebase/app';
 import { Loader } from '../components/Loader';
 import { Alert, Box } from '@mui/material';
-
+import { firebaseServie } from '../db/firebaseServices';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [loggedIn, setLoggedIn] = useState(() => {
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-    if (localStorage.getItem('isLoggedIn') === 'true' && localStorage.getItem('token')) {
-      return true;
-    } else {
-      return false;
-     }
-  });
+  const { logout:logoutFirebase } = firebaseServie;
+  const [loggedIn, setLoggedIn] = useState(() => localStorage.getItem('isLoggedIn') === 'true' && localStorage.getItem('token'));
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const auth = getAuth();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+    const unsubscribe = onAuthStateChanged(getAuth(), (user) => {
       if (user) {
-        try {
-          setError(null);
-        } catch (tokenError) {
-          console.error('Token error:', tokenError);
-          await handleLogout();
+        const loginState = localStorage.getItem('isLoggedIn');
+        if (loginState === 'true') {
+          setLoggedIn(true);
         }
       } else {
-        await handleLogout();
+        setLoggedIn(false);
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('userToken');
       }
       setLoading(false);
     });
-
     return () => unsubscribe();
-  }, [auth]);
+  }, []);
 
-  const handleLogout = async () => {
-    await signOut(auth);
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('token');
+  const loginApproved = async () => { 
+    setLoggedIn(true);
+  }
+
+  const logout = async() => {
+    const isLoggedOut = await logoutFirebase();
     setLoggedIn(false);
-    setError('User not logged in');
   };
 
-  const login = async (email, password) => {
-    try {
-      setLoading(true);
-      await signInWithEmailAndPassword(auth, email, password);
-      const user = auth.currentUser;
-      setError(null);
-      return {user};
-    } catch (error) {
-      console.error('Login error:', error);
-      setError('Login failed. Please check your credentials.');
-      localStorage.removeItem('isLoggedIn');
-      localStorage.removeItem('token');
-      setLoggedIn(false);
-      return null;
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const logout = async () => {
-    try {
-      setLoading(true);
-      await handleLogout();
-    } catch (error) {
-      console.error('Logout error:', error);
-      setError('Logout failed. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
-    <AuthContext.Provider value={{setLoggedIn,loggedIn, login, logout, loading }}>
+    <AuthContext.Provider value={{loggedIn, logout, loading, loginApproved }}>
       {loading ? (
         <Loader type={'circular'} />
       ) : (

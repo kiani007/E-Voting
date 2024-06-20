@@ -1,15 +1,8 @@
 import React, { useState } from 'react';
-import {
-  AppBar,
-  Container,
-  Toolbar,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { AppBar, Container, Toolbar, Typography, useTheme } from '@mui/material';
 import { Box } from '@mui/system';
 import { Sidebar } from '../../components';
-import  Navbar from '../Navbar';
-import { blueGrey } from '@mui/material/colors';
+import Navbar from '../Navbar';
 
 const PrivateLayout = ({ children }) => {
   const theme = useTheme();
@@ -24,53 +17,55 @@ const PrivateLayout = ({ children }) => {
     setToggled(!toggled);
   };
 
-  return (
-    <div style={{
-      display: 'grid',
-      gridTemplateColumns: collapsed ? '4rem 1fr' : '18rem 1fr',
-      minHeight: '100vh',
-      gridTemplateAreas: `
-        "sidebar main"
-      `,
-    }}>
-      <nav style={{
-        gridArea: 'sidebar',
-        width: collapsed ? '4rem' : '17.5rem',
-        transition: theme.transitions.create('width', {
-          easing: theme.transitions.easing.sharp,
-          duration: theme.transitions.duration.enteringScreen,
-        }),
-        overflowX: 'hidden',
-      }}>
-        <Sidebar
-          collapsed={collapsed}
-          toggled={toggled}
-          handleToggleSidebar={handleToggleSidebar}
-          handleCollapsedChange={handleCollapsedChange}
-        />
-      </nav>
-      
-      <div style={{
-        gridArea: 'main',
-        display: 'flex',
-        flexDirection: 'column',
-      }}>
 
+
+  return (
+    <div style={{ display: 'flex', height: '100vh', margin: 0, padding: 0, overflow: 'hidden' }}>
+      <Sidebar
+        collapsed={collapsed}
+        toggled={toggled}
+        handleToggleSidebar={handleToggleSidebar}
+        handleCollapsedChange={handleCollapsedChange}
+        rootStyles={{
+          '.sidebar-container': {
+            height: '100%',
+            overflowY: 'auto', 
+          },
+        }}
+      />
+
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          width: '100%',
+          height: '100%',
+          backgroundColor: theme.palette.primary.main,
+          position: 'relative', 
+          overflow: 'hidden', 
+        }}
+      >
+        {/* //Navbar */}
         <Navbar />
-        <main style={{
-          flexGrow: 1,
-          padding: '2rem',
-          backgroundColor: blueGrey[50],
-          transition: theme.transitions.create('margin', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-          }),
-        }}>
-          <Container>
-            {children}
-          </Container>
-        </main>
-      </div>
+
+        {/* //Content */}
+        <Container
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: '100%',
+            overflowY: 'auto',
+            scrollBehavior: 'smooth',
+            padding: 0,
+            margin: 0,
+            paddingTop: '4rem', 
+          }}
+          maxWidth={false}
+          
+        >
+          {children}
+        </Container>
+      </Box>
     </div>
   );
 };

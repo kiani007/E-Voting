@@ -8,16 +8,16 @@ const PublicLayout = ({ children }) => {
       <Header />
       <Box
         sx={{
-          mt: '5rem',
-          minHeight: '100vh',
+          mt: 2,
           display: 'flex',
+          flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
         }}
       >
         {children}
-      </Box>
       <Footer />
+      </Box>
     </>
   );
 };

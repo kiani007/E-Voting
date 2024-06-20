@@ -42,12 +42,14 @@ const index = () => {
 
   const styles = {
     mainSection: {
+      minHeight: '100vh',
+      with: '100%',
       display: 'flex',
       justifyContent: 'center',
       backgroundColor: '#fffff',
       textAlign: 'left',
       // padding: '50px',
-      margin: '110px 0',
+      // margin: '110px 0',
     },
     featureSection: {
       padding: '50px',
@@ -226,17 +228,14 @@ const index = () => {
 
   return (
     <div>
-      {/* Main Section */}
       <Grid container alignItems="center" style={styles.mainSection}>
         <Grid item xs={12} md={6}>
-          {/* Your animated infographic or lottie image here */}
           <img
             src={homeVote}
             alt="Animated image"
             style={{
               width: '100%',
               display: 'block',
-              minHeight: '400px',
               objectFit: 'contain',
             }}
           />
@@ -246,10 +245,10 @@ const index = () => {
           xs={12}
           md={6}
           sx={{
-            maxWidth: '300px',
+           width: '100%',
             padding: {
               xs: '1rem',
-              sm: '3rem',
+              sm: '1rem',
             },
             textAlign: 'left',
           }}
