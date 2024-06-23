@@ -5,17 +5,24 @@ import CheckIcon from '@mui/icons-material/Check';
 export const SuccessfullyVoted = () => {
   return (
     <Container
+      maxWidth="sm"
       sx={{
-        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: 'auto',
         bgcolor: '#F8F9FA',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
+        padding: '20px',
+        borderRadius: '10px',
       }}
     >
       <Avatar sx={{ m: 3, bgcolor: 'primary.main', width: 150, height: 150 }}>
-        {/* mui icon tick */}
+
         <CheckIcon />
       </Avatar>
 
@@ -29,10 +36,9 @@ export const SuccessfullyVoted = () => {
         Thanks for being a Responsiple citizen
       </Typography>
       <Box sx={{ textAlign: 'center' }}>
-        <Button>
-          <Link
-            to="/e-voting-system
-          "
+        <Button sx={{ mt: 3, mb: 2,py:1, px: 2, bgcolor: 'primary.main', color: 'primary.contrastText', '&:hover': { bgcolor: 'primary.main', color: 'primary.contrastText' } }}>
+          <Link style={{ textDecoration: 'none', color: 'white' }}
+            to="/e-voting-system"
           >
             Go Back
           </Link>

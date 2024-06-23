@@ -2,11 +2,11 @@
 import axios from 'axios';
 
 const API_URL = 'http://localhost:3000';
-const token = localStorage.getItem('tokenX');
+const token = localStorage.getItem('userToken');
+
 
 export const getUser = async (X) => {
   try {
-    console.log({X});
     const response = await axios.get(`${API_URL}/user/get-user`, {
       headers: {
         'Content-Type': 'application/json',
@@ -21,6 +21,7 @@ export const getUser = async (X) => {
 }
 export const updateUser = async (data) => {
   try {
+ 
     const response = await axios.post(`${API_URL}/user/update`, data, {
       headers: {
         'Content-Type': 'application/json',
@@ -33,17 +34,20 @@ export const updateUser = async (data) => {
     throw error;
   }
 }
-export const uploadUserProfilePic = async (data) => {
-  try {
-    const response = await axios.post(`${API_URL}/upload-profile-pic`, data, {
+export const uploadUserProfilePic = async (imageUrl) => {
+ try {
+    const formData = new FormData();
+    formData.append('file', imageUrl);
+
+    const response = await axios.post('http://localhost:3000/user/upload-image', formData, {
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `${token}}`
+        'Content-Type': 'multipart/form-data',
+        'Authorization': `Bearer ${token}`
       },
     });
     return response.data;
   } catch (error) {
-    console.error('Error fetching data:', error);
+    console.error('Error uploading profile picture:', error);
     throw error;
   }
 }
@@ -73,4 +77,54 @@ export const loginUser = async (data) => {
             console.log(error);
             return error;
           }
- }  
+}  
+ 
+export const getAllCandidates = async (candidate) => {
+  try {
+    const response = await axios.get(`${API_URL}/candidate/all-candidate`, {
+        params: {
+        position: candidate
+      },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}` 
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    throw error;
+  }
+}
+
+export const  getCandidateById = async(id) => {
+  try {
+    const response = await axios.get(`${API_URL}/candidate/get-candidate-by-id`, {
+      params: {id},
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}` 
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    throw error;
+  }
+}
+
+export const voteCandidate = async (id) => {
+  try {
+    const response = await axios.get(`${API_URL}/candidate/vote-to-candidate`, {
+      params: {id},
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}` 
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    throw error;
+  }
+}

@@ -12,25 +12,71 @@ import {
 import { useNavigate } from 'react-router-dom';
 import vote from '../assets/vote-img.png';
 
+const CardItem = ({ title, subtitle, image, onClick }) => (
+  <Grid item xs={12} sm={6}>
+    <Card
+      sx={{
+        minHeight: '100%',
+        cursor: 'pointer',
+        transition: 'all 0.3s ease',
+        boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.1)',
+        borderRadius: '10px', 
+        '&:hover': {
+          transform: 'scale(1.05)',
+          backgroundColor: 'grey.300',
+          boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.2)',
+        },
+      }}
+      onClick={onClick}
+    >
+      <CardActionArea>
+        <CardMedia
+          component="img"
+          height="200"
+          image={image}
+          alt={title}
+        />
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
+            {title}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {subtitle}
+          </Typography>
+        </CardContent>
+      </CardActionArea>
+    </Card>
+  </Grid>
+);
+
 export const Dashboard = () => {
   const navigate = useNavigate();
 
-  const handleVicePresidentElection = () => {
-    navigate('vice-presidential-eleciton');
-  };
-
-  const handlePresidentElection = () => {
-    navigate('presidential-election');
-  };
-
-  const handleMatrixElection = () => {
-    navigate('electorial-matrix');
-  };
+  const cardData = [
+    {
+      title: 'President',
+      subtitle: 'Campus Wise',
+      image: vote,
+      onClick: () => navigate('presidential-election'),
+    },
+    {
+      title: 'Vice President',
+      subtitle: 'Campus Wise',
+      image: vote,
+      onClick: () => navigate('vice-presidential-eleciton'),
+    },
+    // {
+    //   title: 'Matrix Election',
+    //   subtitle: 'Department Wise',
+    //   image: vote,
+    //   onClick: () => navigate('electorial-matrix'),
+    // },
+  ];
 
   return (
     <Box
       sx={{
-        backgroundColor: '#ffffff',
+        bgcolor: 'primary.main',
         paddingTop: '20px',
         borderRadius: '2rem',
         paddingBottom: '20px',
@@ -50,105 +96,21 @@ export const Dashboard = () => {
         >
           Election 2023
         </Typography>
-        <Typography variant="h5" align="center" sx={{ mt: 2 }}>
+        <Typography variant="h5" align="center" sx={{ mt: 2, color: 'grey.300' }}>
           Simple Free and Fair Elections <br /> Now in Pakistan
         </Typography>
-        <Grid container justifyContent="center" spacing={2} sx={{ mt: 4 }}>
-          <Grid item xs={12} lg={6}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <Card
-                  sx={{
-                    minHeight: '100%',
-                    cursor: 'pointer',
-                    '&:hover': {
-                      transform: 'scale(1.05)',
-                      backgroundColor: 'rgba(255, 255, 255, 0.5)',
-                      boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.2)',
-                    },
-                  }}
-                  onClick={handlePresidentElection}
-                >
-                  <CardActionArea>
-                    <CardMedia
-                      component="img"
-                      height="200"
-                      image={vote}
-                      alt="President"
-                    />
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="div">
-                        President
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        Campus Wise
-                      </Typography>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Card
-                  sx={{
-                    minHeight: '100%',
-                    cursor: 'pointer',
-                    '&:hover': {
-                      transform: 'scale(1.05)',
-                      backgroundColor: 'rgba(255, 255, 255, 0.5)',
-                      boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.2)',
-                    },
-                  }}
-                  onClick={handleVicePresidentElection}
-                >
-                  <CardActionArea>
-                    <CardMedia
-                      component="img"
-                      height="200"
-                      image={vote}
-                      alt="Vice President"
-                    />
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="div">
-                        Vice President
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        Campus Wise
-                      </Typography>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Card
-                  sx={{
-                    minHeight: '100%',
-                    cursor: 'pointer',
-                    '&:hover': {
-                      transform: 'scale(1.05)',
-                      backgroundColor: 'rgba(255, 255, 255, 0.5)',
-                      boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.2)',
-                    },
-                  }}
-                  onClick={handleMatrixElection}
-                >
-                  <CardActionArea>
-                    <CardMedia
-                      component="img"
-                      height="200"
-                      image={vote}
-                      alt="Results"
-                    />
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="div">
-                        SEE RESULT
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        Who is Leading
-                      </Typography>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
-              </Grid>
+        <Grid container justifyContent="center" spacing={5} sx={{ mt: 6, mb: 4,   }}>
+          <Grid item xs={12} lg={6} spacing={4}>
+            <Grid container spacing={4}>
+              {cardData.map((card, index) => (
+                <CardItem
+                  key={index}
+                  title={card.title}
+                  subtitle={card.subtitle}
+                  image={card.image}
+                  onClick={card.onClick}
+                />
+              ))}
             </Grid>
           </Grid>
         </Grid>

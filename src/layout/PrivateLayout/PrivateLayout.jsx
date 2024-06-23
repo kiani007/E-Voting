@@ -58,7 +58,7 @@ const PrivateLayout = ({ children }) => {
             scrollBehavior: 'smooth',
             padding: 0,
             margin: 0,
-            paddingTop: '4rem', 
+            paddingTop: '1rem', 
           }}
           maxWidth={false}
           

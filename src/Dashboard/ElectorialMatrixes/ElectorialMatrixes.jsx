@@ -22,6 +22,8 @@ import {
 } from 'recharts';
 import { electionData as data } from './data.js';
 
+import { BackNavigation } from '../common/BackNavigation.jsx';
+
 const ElectoralResult = () => {
   // Calculate leading candidate
   const leadingCandidate = data.reduce((prev, current) =>
@@ -29,6 +31,8 @@ const ElectoralResult = () => {
   );
 
   return (
+    <>
+    <BackNavigation path="/" />
     <Container sx={{ my: 4 }}>
       <Box sx={{ marginBottom: 4 }}>
         <Typography variant="h4" align="center" sx={{ marginBottom: 2 }}>
@@ -102,7 +106,9 @@ const ElectoralResult = () => {
         Total Votes Cast:{' '}
         {data.reduce((acc, curr) => acc + curr.candidateVote, 0)}
       </Typography>
-    </Container>
+      </Container>
+
+    </>
   );
 };
 

@@ -11,6 +11,7 @@ import {
   Avatar,
   Button,
   Tooltip,
+  Alert,
 } from '@mui/material';
 import {
   FaUser,
@@ -23,34 +24,31 @@ import {
 } from 'react-icons/fa';
 import { MdOutlineHowToVote } from 'react-icons/md';
 import { useHandleCookies } from '../../utils/Cookies';
-import { Form } from 'react-router-dom';
 import {
   getUser,
   updateUser,
   uploadUserProfilePic,
 } from '../../services/dataService';
+import { BackNavigation } from '../common/BackNavigation.jsx';
 
 const ProfilePage = () => {
   const [userProfile, setUserProfile] = useState({});
   const [isEditing, setIsEditing] = useState(false);
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [image, setImage] = useState(null);
+  const [url, setUrl] = useState("");
+  const [progress, setProgress] = useState(0);
   const [preview, setPreview] = useState(null);
-  const [token, setToken] = useState({});
+  const [token, setToken] = useState('');
 
   useEffect(() => {
-    const x = localStorage.getItem('tokenX');
-    if (x) {
-      setToken(x);
-    }
-  }, []); // Only run once on mount
-
-  useEffect(() => {
+    const token = localStorage.getItem('userToken');
     if (token) {
-      
-      fetchUserProfile();
+      setToken(token);
+      fetchUserProfile(token);
     }
-  }, [token]); 
-  const fetchUserProfile = async () => {
+  }, []);
+
+  const fetchUserProfile = async (token) => {
     try {
       const response = await getUser(token);
       setUserProfile(response.data);
@@ -61,8 +59,24 @@ const ProfilePage = () => {
 
   const handleFileSelected = (event) => {
     const file = event.target.files[0];
-    setSelectedFile(file);
+    setImage(file);
     setPreview(URL.createObjectURL(file));
+  };
+
+  const handleFileUpload = async () => {
+    if (image) {
+      try {
+        const response = await uploadUserProfilePic(image, token);
+        setUserProfile((prev) => ({ ...prev, photo: response.result.data.photo }));
+        setUrl(response.result.data.photo);
+        alert('Profile picture uploaded successfully');
+      } catch (error) {
+        console.error('Error uploading profile picture:', error);
+        alert('Failed to upload profile picture');
+      }
+    } else {
+      alert('Please select an image');
+    }
   };
 
   const handleEdit = () => {
@@ -72,11 +86,7 @@ const ProfilePage = () => {
   const handleSave = async () => {
     setIsEditing(false);
     try {
-      if (selectedFile) {
-        await uploadUserProfilePic(selectedFile);
-      }
       const updatedProfile = await updateUser(userProfile);
-      setUserProfile(updatedProfile.data);
       alert('Profile updated successfully');
     } catch (error) {
       console.error('Error updating profile:', error);
@@ -93,236 +103,228 @@ const ProfilePage = () => {
   };
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        borderRadius: '10px',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: '3rem',
-      }}
-    >
-      <Paper
-        elevation={3}
+    <>
+      <BackNavigation path="/" />
+      <div
         style={{
-          padding: '20px',
-          backgroundColor: '#fff',
-          width: '80%',
+          display: 'flex',
           borderRadius: '10px',
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: '3rem',
         }}
       >
-        <Grid container spacing={3} alignItems="center">
-          {/* Profile Picture Section */}
-          <Grid item xs={12} md={4}>
-            <div
-              style={{
-                textAlign: 'start',
-              }}
-            >
-              <input
-                type="file"
-                id="fileInput"
-                style={{ display: 'none' }}
-                onChange={handleFileSelected}
-              />
-              <Tooltip
-                title="Click here to select image and upload"
-                sx={{ left: 0 }}
-              >
-                <Avatar
-                  onClick={() =>
-                    isEditing &&
-                    (document.getElementById('fileInput').click(),
-                    (document.getElementById('fileInput').value = ''))
-                  }
-                  style={{ width: '100px', height: '100px', cursor: 'pointer' }}
-                  src={preview}
-                >
-                  {!preview && <FaUser style={{ fontSize: '60px' }} />}
-                </Avatar>
-              </Tooltip>
-            </div>
-          </Grid>
-          {/* Name Section */}
-          <Grid item xs={12} md={8}>
-            <Typography variant="h4">
-              {userProfile.first_name + ' ' + userProfile.last_name}
-            </Typography>
-            {isEditing && (
-              <TextField
-                name="first_name"
-                label="First Name"
-                fullWidth
-                value={userProfile.first_name}
-                onChange={handleChange}
-                margin="normal"
-              />
-            )}
-            {isEditing && (
-              <TextField
-                name="last_name"
-                label="Last Name"
-                fullWidth
-                value={userProfile.last_name}
-                onChange={handleChange}
-                margin="normal"
-              />
-            )}
-          </Grid>
-          {/* CNIC Section */}
-          <Grid item xs={12} md={4}>
-            <Typography variant="h6">
-              <FaIdCard /> CNIC
-            </Typography>
-            <Typography>{userProfile.cnic}</Typography>
-          </Grid>
-          {/* Address Section */}
-          <Grid item xs={12} md={8}>
-            <Typography variant="h6">
-              <FaAddressCard /> Address
-            </Typography>
-            {isEditing ? (
-              <>
-                <TextField
-                  name="address1"
-                  label="Address 1"
-                  fullWidth
-                  value={userProfile.address1}
-                  onChange={handleChange}
-                  margin="normal"
+        <Paper
+          elevation={3}
+          style={{
+            padding: '20px',
+            backgroundColor: '#fff',
+            width: '80%',
+            borderRadius: '10px',
+          }}
+        >
+          <Grid container spacing={3} alignItems="center">
+            <Grid item xs={12} md={4}>
+              <div style={{ textAlign: 'start' }}>
+                <input
+                  type="file"
+                  accept="image/png, image/jpeg, image/jpg"
+                  id="fileInput"
+                  style={{ display: 'none' }}
+                  onChange={handleFileSelected}
                 />
-                <TextField
-                  name="address2"
-                  label="Address 2"
-                  fullWidth
-                  value={userProfile.address2}
-                  onChange={handleChange}
-                  margin="normal"
-                />
-              </>
-            ) : (
-              <Typography>
-                {userProfile.address1}
-                <br />
-                {userProfile.address2}
+                <Tooltip title="Click here to select image and upload" sx={{ left: 0 }}>
+                  <Avatar
+                    onClick={() =>
+                      isEditing &&
+                      (document.getElementById('fileInput').click(),
+                      (document.getElementById('fileInput').value = ''))
+                    }
+                    style={{ width: '100px', height: '100px', cursor: 'pointer' }}
+                    src={userProfile.photo ? `http://localhost:3000${userProfile.photo}` : preview }
+                  >
+                    {!preview && !userProfile.photo && <FaUser style={{ fontSize: '60px' }} />}
+                  </Avatar>
+                </Tooltip>
+                {isEditing &&
+                  <Button sx={{ marginTop: '10px', bgcolor: 'primary.main', color: 'white', fontWeight: 'bold', '&:hover': { bgcolor: 'primary.dark', color: 'white' } }}
+                  onClick={handleFileUpload}>Upload</Button>}
+              </div>
+            </Grid>
+            <Grid item xs={12} md={8}>
+              <Typography variant="h4">
+                {userProfile.first_name + ' ' + userProfile.last_name}
               </Typography>
-            )}
-          </Grid>
-          {/* Father Name Section */}
-          <Grid item xs={12} md={4}>
-            <Typography variant="h6">Father's Name</Typography>
-            {isEditing ? (
-              <TextField
-                name="father_name"
-                label="Father's Name"
-                fullWidth
-                value={userProfile.father_name}
-                onChange={handleChange}
-                margin="normal"
-              />
-            ) : (
-              <Typography>{userProfile.father_name}</Typography>
-            )}
-          </Grid>
-          {/* Phone Section */}
-          <Grid item xs={12} md={4}>
-            <Typography variant="h6">
-              <FaPhone /> Phone
-            </Typography>
-            {isEditing ? (
-              <TextField
-                name="number"
-                label="Phone"
-                fullWidth
-                value={userProfile.number}
-                onChange={handleChange}
-                margin="normal"
-              />
-            ) : (
-              <Typography>{userProfile.number}</Typography>
-            )}
-          </Grid>
-          {/* Email Section */}
-          <Grid item xs={12} md={4}>
-            <Typography variant="h6">
-              <FaEnvelope /> Email
-            </Typography>
-            {isEditing ? (
-              <TextField
-                name="email"
-                label="Email"
-                fullWidth
-                value={userProfile.email}
-                onChange={handleChange}
-                margin="normal"
-              />
-            ) : (
-              <Typography>{userProfile.email}</Typography>
-            )}
-          </Grid>
-          {/* Voting Section */}
-          <Grid item xs={12} md={4}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={userProfile.voted_for_presidential_candidates}
-                  icon={<MdOutlineHowToVote />}
-                  checkedIcon={<FaVoteYea />}
-                  disabled={!isEditing}
+              {isEditing && (
+                <>
+                  <TextField
+                    name="first_name"
+                    label="First Name"
+                    fullWidth
+                    value={userProfile.first_name}
+                    onChange={handleChange}
+                    margin="normal"
+                  />
+                  <TextField
+                    name="last_name"
+                    label="Last Name"
+                    fullWidth
+                    value={userProfile.last_name}
+                    onChange={handleChange}
+                    margin="normal"
+                  />
+                </>
+              )}
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Typography variant="h6">
+                <FaIdCard /> CNIC
+              </Typography>
+              <Typography>{userProfile.cnic}</Typography>
+            </Grid>
+            <Grid item xs={12} md={8}>
+              <Typography variant="h6">
+                <FaAddressCard /> Address
+              </Typography>
+              {isEditing ? (
+                <>
+                  <TextField
+                    name="address1"
+                    label="Address 1"
+                    fullWidth
+                    value={userProfile.address1}
+                    onChange={handleChange}
+                    margin="normal"
+                  />
+                  <TextField
+                    name="address2"
+                    label="Address 2"
+                    fullWidth
+                    value={userProfile.address2}
+                    onChange={handleChange}
+                    margin="normal"
+                  />
+                </>
+              ) : (
+                <Typography>
+                  {userProfile.address1}
+                  <br />
+                  {userProfile.address2}
+                </Typography>
+              )}
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Typography variant="h6">Father's Name</Typography>
+              {isEditing ? (
+                <TextField
+                  name="father_name"
+                  label="Father's Name"
+                  fullWidth
+                  value={userProfile.father_name}
+                  onChange={handleChange}
+                  margin="normal"
                 />
-              }
-              label="Voted for Presidential"
-            />
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={userProfile.voted_for_vice_presidential_candidates}
-                  icon={<MdOutlineHowToVote />}
-                  checkedIcon={<FaVoteYea />}
-                  disabled={!isEditing}
+              ) : (
+                <Typography>{userProfile.father_name}</Typography>
+              )}
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Typography variant="h6">
+                <FaPhone /> Phone
+              </Typography>
+              {isEditing ? (
+                <TextField
+                  name="number"
+                  label="Phone"
+                  fullWidth
+                  value={userProfile.number}
+                  onChange={handleChange}
+                  margin="normal"
                 />
-              }
-              label="Voted for Vice Presidential"
-            />
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={userProfile.is_authorized}
-                  icon={<MdOutlineHowToVote />}
-                  checkedIcon={<FaVoteYea />}
-                  disabled={!isEditing}
+              ) : (
+                <Typography>{userProfile.number}</Typography>
+              )}
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Typography variant="h6">
+                <FaEnvelope /> Email
+              </Typography>
+              {isEditing ? (
+                <TextField
+                  name="email"
+                  label="Email"
+                  fullWidth
+                  value={userProfile.email}
+                  onChange={handleChange}
+                  margin="normal"
                 />
-              }
-              label="Eligible"
-            />
+              ) : (
+                <Typography>{userProfile.email}</Typography>
+              )}
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={userProfile.voted_for_presidential_candidates}
+                    icon={<MdOutlineHowToVote />}
+                    checkedIcon={<FaVoteYea />}
+                    disabled={!isEditing}
+                  />
+                }
+                label="Voted for Presidential"
+              />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={userProfile.voted_for_vice_presidential_candidates}
+                    icon={<MdOutlineHowToVote />}
+                    checkedIcon={<FaVoteYea />}
+                    disabled={!isEditing}
+                  />
+                }
+                label="Voted for Vice Presidential"
+              />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={userProfile.is_authorized}
+                    icon={<MdOutlineHowToVote />}
+                    checkedIcon={<FaVoteYea />}
+                    disabled={!isEditing}
+                  />
+                }
+                label="Eligible"
+              />
+            </Grid>
           </Grid>
-        </Grid>
-        {isEditing ? (
-          <Button
-            variant="contained"
-            color="primary"
-            style={{ marginTop: '20px' }}
-            onClick={handleSave}
-          >
-            Save Changes
-          </Button>
-        ) : (
-          <Button
-            variant="outlined"
-            color="primary"
-            style={{ marginTop: '20px' }}
-            onClick={handleEdit}
-            startIcon={<FaEdit />}
-          >
-            Edit Profile
-          </Button>
-        )}
-      </Paper>
-    </div>
+          {isEditing ? (
+            <Button
+              variant="contained"
+              color="primary"
+              style={{ marginTop: '20px' }}
+              onClick={handleSave}
+            >
+              Save Changes
+            </Button>
+          ) : (
+            <Button
+              variant="outlined"
+              color="primary"
+              style={{ marginTop: '20px' }}
+              onClick={handleEdit}
+              startIcon={<FaEdit />}
+            >
+              Edit Profile
+            </Button>
+          )}
+        </Paper>
+      </div>
+    </>
   );
 };
 
