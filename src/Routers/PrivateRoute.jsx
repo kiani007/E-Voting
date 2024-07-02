@@ -12,7 +12,7 @@ const PrivateRoute = ({ Component, ...rest }) => {
   }, []);
   return loggedIn ? (
     <PrivateLayout>
-      <Suspense fallback={<Loader type="linear" />}>
+      <Suspense fallback={<Loader type="circular" />}>
         <Component {...rest} />
       </Suspense>
     </PrivateLayout>

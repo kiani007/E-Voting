@@ -11,6 +11,7 @@ import { useAuth } from '../Auth/index';
 import BasicRoutes from './BasicRoutes';
 import MainRoutes from './MainRoutes';
 import ErrorPage from '../pages/ErrorPage';
+import AdminRoutes from '../Admin/AdminRoutes';
 const Routers = () => {
   const { loggedIn } = useAuth();
   return (
@@ -32,6 +33,16 @@ const Routers = () => {
             <PrivateRoute
               Component={() => {
                 return <CandidatesRoutes />;
+              }}
+            />
+          }
+        />
+        <Route
+          path="/admin/*"
+          element={
+            <PrivateRoute
+              Component={() => {
+                return <AdminRoutes />;
               }}
             />
           }
