@@ -43,70 +43,104 @@ const Signup = () => {
   const [isLoading, setLoading] = useState(false);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+   const { name, value } = e.target;
+  if (name === 'cnic') {
+ 
+    const formattedValue = value.replace(/\D/g, '');
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    
-    // Form validation
-    if (!formData.first_name || !formData.last_name || !formData.email || !formData.password || !formData.number) {
-      setError('All fields are required.');
-      return;
-    }
-
-    // Email validation
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(formData.email)) {
-      setError('Invalid email address.');
-      return;
-    }
-
-    // Password validation
-    if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters long.');
-      return;
-    }
-
-    try {
-      setLoading(true);
-      const { first_name, last_name, email, password, number } = formData;
-      
-      const user = await signupFirebae(email, password);
-
-      if (user.uid) {
-        await set(ref(db, `users/${user.uid}`), {
-          first_name,
-          last_name,
-          email,
-          number,
-        });
-        const response = await signup({
-          first_name,
-          last_name,
-          email,
-          number,
-          uid: user.uid,
-        });
-        
-        if (response.status === 200) {
-          const responseUser = await response.user;
-          localStorage.setItem('userToken', response.token);
-          localStorage.setItem('isLoggedIn', true);
-          loginApproved();
-          navigate('/');
-        } else {
-          setLoading(false);
-          setError('Sign up failed');
-          deleteUser(user);
-        }
+    let formattedCnic = '';
+    for (let i = 0; i < formattedValue.length; i++) {
+      if (i === 5 || i === 12) {
+        formattedCnic += '-';
       }
-    } catch (error) {
-      console.error('Sign up failed:', error.message);
-      setLoading(false);
-      setError(error.message);
+      formattedCnic += formattedValue[i];
     }
+
+    setFormData({ ...formData, [name]: formattedCnic });
+  } else {
+    setFormData({ ...formData, [name]: value });
+  }
   };
+
+const handleSubmit = async (event) => {
+  event.preventDefault();
+
+  // Form validation
+  if (
+    !formData.first_name ||
+    !formData.last_name ||
+    !formData.email ||
+    !formData.password ||
+    !formData.number ||
+    !formData.cnic
+  ) {
+    setError('All fields are required.');
+    return;
+  }
+
+  // Email validation
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailPattern.test(formData.email)) {
+    setError('Invalid email address.');
+    return;
+  }
+
+  // Password validation
+  if (formData.password.length < 6) {
+    setError('Password must be at least 6 characters long.');
+    return;
+  }
+
+  // CNIC validation
+  const cnicPattern = /^\d{5}-\d{7}-\d{1}$/;
+  if (!cnicPattern.test(formData.cnic)) {
+    setError('Invalid CNIC. It should be in the format xxxxx-xxxxxxx-x.');
+    return;
+  }
+
+  try {
+    setLoading(true);
+    const { first_name, last_name, email, password, number, cnic } = formData;
+
+    // Perform signup operation with Firebase or other service
+    const user = await signupFirebae(email, password);
+
+    if (user.uid) {
+      await set(ref(db, `users/${user.uid}`), {
+        first_name,
+        last_name,
+        email,
+        number,
+        cnic,
+      });
+
+      const response = await signup({
+        first_name,
+        last_name,
+        email,
+        number,
+        cnic,
+        uid: user.uid,
+      });
+
+      if (response.status === 200) {
+        localStorage.setItem('userToken', response.token);
+        localStorage.setItem('isLoggedIn', true);
+        loginApproved();
+        navigate('/');
+      } else {
+        setLoading(false);
+        setError('Sign up failed');
+        deleteUser(user);
+      }
+    }
+  } catch (error) {
+    console.error('Sign up failed:', error.message);
+    setLoading(false);
+    setError(error.message);
+  }
+};
+
 
   return (
     <>  
