@@ -3,14 +3,16 @@ import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from
 import { Loader } from '../components/Loader';
 import { Alert, Box } from '@mui/material';
 import { firebaseServie } from '../db/firebaseServices';
+import { useApiCall } from '../Admin/hooks';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const { logout:logoutFirebase } = firebaseServie;
+  const { logout: logoutFirebase } = firebaseServie;
+  const { fetchData } = useApiCall();
   const [loggedIn, setLoggedIn] = useState(() => localStorage.getItem('isLoggedIn') === 'true' && localStorage.getItem('token'));
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const [user, setUser] = useState({});
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(getAuth(), (user) => {
       if (user) {
@@ -27,7 +29,23 @@ export const AuthProvider = ({ children }) => {
     });
     return () => unsubscribe();
   }, []);
-
+  useEffect(() => {
+    if (loggedIn) {
+      getUser();
+    }
+  }, [loggedIn]);
+   
+  const getUser = async () => {
+    try {
+      const response = await fetchData('/user/get-user', 'get');
+      if (response.status === 200) {
+        const data = response.data;
+        setUser(data);
+      }
+    } catch (error) {
+      console.error('Error fetching user:', error);
+    }
+  };
   const loginApproved = async () => { 
     setLoggedIn(true);
   }
@@ -39,7 +57,7 @@ export const AuthProvider = ({ children }) => {
 
 
   return (
-    <AuthContext.Provider value={{loggedIn, logout, loading, loginApproved }}>
+    <AuthContext.Provider value={{loggedIn, logout, loading, loginApproved, user }}>
       {loading ? (
         <Loader type={'circular'} />
       ) : (

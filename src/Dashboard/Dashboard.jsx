@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import vote from '../assets/vote-img.png';
+import { useAuth } from '../Auth';
 
 const CardItem = ({ title, subtitle, image, onClick }) => (
   <Grid item xs={12} sm={6}>
@@ -51,19 +52,23 @@ const CardItem = ({ title, subtitle, image, onClick }) => (
 
 export const Dashboard = () => {
   const navigate = useNavigate();
-
+  const { user } = useAuth();
   const cardData = [
     {
       title: 'President',
       subtitle: 'Campus Wise',
       image: vote,
-      onClick: () => navigate('presidential-election'),
+      onClick: () => {
+        user && user.is_authorized ? navigate('presidential-election') : alert("You Are not Authorized")
+      },
     },
     {
       title: 'Vice President',
       subtitle: 'Campus Wise',
       image: vote,
-      onClick: () => navigate('vice-presidential-eleciton'),
+      onClick: () => {
+        user && user.is_authorized ? navigate('vice-presidential-eleciton') : alert("You Are not Authorized")
+      },
     },
     // {
     //   title: 'Matrix Election',
