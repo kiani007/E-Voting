@@ -35,7 +35,7 @@ const ProfilePage = () => {
   const [userProfile, setUserProfile] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [image, setImage] = useState(null);
-  const [url, setUrl] = useState("");
+  const [url, setUrl] = useState('');
   const [progress, setProgress] = useState(0);
   const [preview, setPreview] = useState(null);
   const [token, setToken] = useState('');
@@ -67,7 +67,10 @@ const ProfilePage = () => {
     if (image) {
       try {
         const response = await uploadUserProfilePic(image, token);
-        setUserProfile((prev) => ({ ...prev, photo: response.result.data.photo }));
+        setUserProfile((prev) => ({
+          ...prev,
+          photo: response.result.data.photo,
+        }));
         setUrl(response.result.data.photo);
         alert('Profile picture uploaded successfully');
       } catch (error) {
@@ -86,6 +89,7 @@ const ProfilePage = () => {
   const handleSave = async () => {
     setIsEditing(false);
     try {
+      console.log({ userProfile });
       const updatedProfile = await updateUser(userProfile);
       alert('Profile updated successfully');
     } catch (error) {
@@ -101,6 +105,21 @@ const ProfilePage = () => {
       [name]: value,
     }));
   };
+
+  const handleCheckboxChange = (event) => {
+    setUserProfile({
+      ...userProfile,
+      is_authorized: event.target.checked,
+    });
+  };
+
+  const handleCancel = () => {
+    setIsEditing(false);
+    setUserProfile(userProfile);
+  };
+  useEffect(() => {
+    setUserProfile(userProfile);
+  }, [userProfile]);
 
   return (
     <>
@@ -133,22 +152,46 @@ const ProfilePage = () => {
                   style={{ display: 'none' }}
                   onChange={handleFileSelected}
                 />
-                <Tooltip title="Click here to select image and upload" sx={{ left: 0 }}>
+                <Tooltip
+                  title="Click here to select image and upload"
+                  sx={{ left: 0 }}
+                >
                   <Avatar
                     onClick={() =>
                       isEditing &&
                       (document.getElementById('fileInput').click(),
                       (document.getElementById('fileInput').value = ''))
                     }
-                    style={{ width: '100px', height: '100px', cursor: 'pointer' }}
-                    src={userProfile.photo ? `http://localhost:3000${userProfile.photo}` : preview }
+                    style={{
+                      width: '100px',
+                      height: '100px',
+                      cursor: 'pointer',
+                    }}
+                    src={
+                      userProfile.photo
+                        ? `http://localhost:3000${userProfile.photo}`
+                        : preview
+                    }
                   >
-                    {!preview && !userProfile.photo && <FaUser style={{ fontSize: '60px' }} />}
+                    {!preview && !userProfile.photo && (
+                      <FaUser style={{ fontSize: '60px' }} />
+                    )}
                   </Avatar>
                 </Tooltip>
-                {isEditing &&
-                  <Button sx={{ marginTop: '10px', bgcolor: 'primary.main', color: 'white', fontWeight: 'bold', '&:hover': { bgcolor: 'primary.dark', color: 'white' } }}
-                  onClick={handleFileUpload}>Upload</Button>}
+                {isEditing && (
+                  <Button
+                    sx={{
+                      marginTop: '10px',
+                      bgcolor: 'primary.main',
+                      color: 'white',
+                      fontWeight: 'bold',
+                      '&:hover': { bgcolor: 'primary.dark', color: 'white' },
+                    }}
+                    onClick={handleFileUpload}
+                  >
+                    Upload
+                  </Button>
+                )}
               </div>
             </Grid>
             <Grid item xs={12} md={8}>
@@ -293,24 +336,50 @@ const ProfilePage = () => {
                 control={
                   <Checkbox
                     checked={userProfile.is_authorized}
-                    icon={<MdOutlineHowToVote />}
-                    checkedIcon={<FaVoteYea />}
+                    icon={
+                      <MdOutlineHowToVote
+                        style={{
+                          color: userProfile.is_authorized ? '#336766' : 'inherit',
+                        }}
+                      />
+                    }
+                    checkedIcon={
+                      <FaVoteYea
+                        style={{
+                          color: userProfile.is_authorized ? '#336766' : 'inherit',
+                        }}
+                      />
+                    }
                     disabled={!isEditing}
+                    onChange={handleCheckboxChange}
                   />
                 }
-                label="Eligible"
+                label="Authorized"
+                style={{
+                  color: userProfile.is_authorized ? '#336766' : 'inherit',
+                }}
               />
             </Grid>
           </Grid>
           {isEditing ? (
-            <Button
-              variant="contained"
-              color="primary"
-              style={{ marginTop: '20px' }}
-              onClick={handleSave}
-            >
-              Save Changes
-            </Button>
+            <>
+              <Button
+                variant="contained"
+                color="primary"
+                style={{ marginTop: '20px' }}
+                onClick={handleSave}
+              >
+                Save Changes
+              </Button>
+              <Button
+                variant="outlined"
+                color="error"
+                style={{ marginTop: '20px', marginLeft: '10px' }}
+                onClick={handleCancel}
+              >
+                Cancel
+              </Button>
+            </>
           ) : (
             <Button
               variant="outlined"

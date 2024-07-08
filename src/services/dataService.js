@@ -2,15 +2,12 @@
 import axios from 'axios';
 
 const API_URL = 'http://localhost:3000';
-const token = localStorage.getItem('userToken');
-
-
 export const getUser = async (X) => {
   try {
     const response = await axios.get(`${API_URL}/user/get-user`, {
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${X}` 
+        Authorization: `Bearer ${X}`,
       },
     });
     return response.data;
@@ -18,14 +15,14 @@ export const getUser = async (X) => {
     console.error('Error fetching data:', error);
     throw error;
   }
-}
+};
 export const updateUser = async (data) => {
   try {
- 
+    const T = localStorage.getItem('userToken');
     const response = await axios.post(`${API_URL}/user/update`, data, {
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+        Authorization: `Bearer ${T}`,
       },
     });
     return response.data;
@@ -33,61 +30,67 @@ export const updateUser = async (data) => {
     console.error('Error fetching data:', error);
     throw error;
   }
-}
+};
 export const uploadUserProfilePic = async (imageUrl) => {
- try {
+  try {
+    const T = localStorage.getItem('userToken');
     const formData = new FormData();
     formData.append('file', imageUrl);
-
-    const response = await axios.post('http://localhost:3000/user/upload-image', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        'Authorization': `Bearer ${token}`
-      },
-    });
+    console.log({ token });
+    const response = await axios.post(
+      'http://localhost:3000/user/upload-image',
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${T}`,
+        },
+      }
+    );
     return response.data;
   } catch (error) {
     console.error('Error uploading profile picture:', error);
     throw error;
   }
-}
- export const signup = async (data) => {
-          try {
-            const response = await axios.post(`${API_URL}/auth/signup`, data, {
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            });
-            return response.data;
-          } catch (error) {
-            console.log(error);
-            return error;
-          }
- }
-        
+};
+export const signup = async (data) => {
+  try {
+    const response = await axios.post(`${API_URL}/auth/signup`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+
 export const loginUser = async (data) => {
-          try {
-            const response = await axios.post(`${API_URL}/auth/login`, data, {
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            });
-            return response.data;
-          } catch (error) {
-            console.log(error);
-            return error;
-          }
-}  
- 
+  try {
+    const response = await axios.post(`${API_URL}/auth/login`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+
 export const getAllCandidates = async (candidate) => {
   try {
+    const T = localStorage.getItem('userToken');
     const response = await axios.get(`${API_URL}/candidate/all-candidate`, {
-        params: {
-        position: candidate
+      params: {
+        position: candidate,
       },
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}` 
+        Authorization: `Bearer ${T}`,
       },
     });
     return response.data;
@@ -95,31 +98,36 @@ export const getAllCandidates = async (candidate) => {
     console.error('Error fetching data:', error);
     throw error;
   }
-}
+};
 
-export const  getCandidateById = async(id) => {
+export const getCandidateById = async (id) => {
   try {
-    const response = await axios.get(`${API_URL}/candidate/get-candidate-by-id`, {
-      params: {id},
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}` 
-      },
-    });
+    const T = localStorage.getItem('userToken');
+    const response = await axios.get(
+      `${API_URL}/candidate/get-candidate-by-id`,
+      {
+        params: { id },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${T}`,
+        },
+      }
+    );
     return response.data;
   } catch (error) {
     console.error('Error fetching data:', error);
     throw error;
   }
-}
+};
 
 export const voteCandidate = async (id) => {
   try {
+    const T = localStorage.getItem('userToken');
     const response = await axios.get(`${API_URL}/candidate/vote-to-candidate`, {
-      params: {id},
+      params: { id },
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}` 
+        Authorization: `Bearer ${T}`,
       },
     });
     return response.data;
@@ -127,4 +135,4 @@ export const voteCandidate = async (id) => {
     console.error('Error fetching data:', error);
     throw error;
   }
-}
+};
