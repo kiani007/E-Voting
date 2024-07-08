@@ -305,61 +305,67 @@ const ProfilePage = () => {
                 <Typography>{userProfile.email}</Typography>
               )}
             </Grid>
-            <Grid item xs={12} md={4}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={userProfile.voted_for_presidential_candidates}
-                    icon={<MdOutlineHowToVote />}
-                    checkedIcon={<FaVoteYea />}
-                    disabled={!isEditing}
-                  />
-                }
-                label="Voted for Presidential"
-              />
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={userProfile.voted_for_vice_presidential_candidates}
-                    icon={<MdOutlineHowToVote />}
-                    checkedIcon={<FaVoteYea />}
-                    disabled={!isEditing}
-                  />
-                }
-                label="Voted for Vice Presidential"
-              />
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={userProfile.is_authorized}
-                    icon={
-                      <MdOutlineHowToVote
-                        style={{
-                          color: userProfile.is_authorized ? '#336766' : 'inherit',
-                        }}
-                      />
-                    }
-                    checkedIcon={
-                      <FaVoteYea
-                        style={{
-                          color: userProfile.is_authorized ? '#336766' : 'inherit',
-                        }}
-                      />
-                    }
-                    disabled={!isEditing}
-                    onChange={handleCheckboxChange}
-                  />
-                }
-                label="Authorized"
-                style={{
-                  color: userProfile.is_authorized ? '#336766' : 'inherit',
-                }}
-              />
-            </Grid>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-evenly',
+                width:"100%",
+               marginLeft: "2rem",
+                flexWrap: "wrap",
+                marginTop:"2rem"
+              }}
+            >
+              <Grid item xs={12} md={4}>
+                <Typography style={{ fontSize: '16px' }}>
+                  <FaIdCard /> Voted for Presidential
+                </Typography>
+                <Typography>
+                  {userProfile.voted_for_presidential_candidates}
+                </Typography>
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <Typography style={{ fontSize: '16px' }}>
+                  <FaIdCard /> Voted for Vice Presidential
+                </Typography>
+                <Typography>
+                  {userProfile.voted_for_vice_presidential_candidates}
+                </Typography>
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={userProfile.is_authorized}
+                      icon={
+                        <MdOutlineHowToVote
+                          style={{
+                            color: userProfile.is_authorized
+                              ? '#336766'
+                              : 'inherit',
+                          }}
+                        />
+                      }
+                      checkedIcon={
+                        <FaVoteYea
+                          style={{
+                            color: userProfile.is_authorized
+                              ? '#336766'
+                              : 'inherit',
+                          }}
+                        />
+                      }
+                      disabled={!isEditing}
+                      onChange={handleCheckboxChange}
+                    />
+                  }
+                  label="Authorized"
+                  style={{
+                    color: userProfile.is_authorized ? '#336766' : 'inherit',
+                  }}
+                />
+              </Grid>
+            </div>
           </Grid>
           {isEditing ? (
             <>
