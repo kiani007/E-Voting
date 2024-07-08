@@ -7,7 +7,7 @@ import {
   Grid,
   Typography,
 } from '@mui/material';
-import  ElectorialCandidateView  from '../common/ElectorialCandiadateView.jsx';
+import ElectorialCandidateView from '../common/ElectorialCandiadateView.jsx';
 import { getAllCandidates } from '../../services/dataService';
 import { get } from 'firebase/database';
 import { BackNavigation } from '../common/BackNavigation.jsx';
@@ -19,11 +19,11 @@ const PresidentialElection = () => {
     window.scrollTo(0, 0);
     document.title = 'Presidential Election';
   }, []);
-  
- useEffect(() => {
+
+  useEffect(() => {
     const getCandidates = async () => {
       try {
-        const { candidates } = await getAllCandidates('President');
+        const { candidates } = await getAllCandidates('president');
         setPresidentialCandidates(candidates);
       } catch (error) {
         console.error('Error fetching candidates:', error);
@@ -36,10 +36,13 @@ const PresidentialElection = () => {
 
   return (
     <>
-
       <BackNavigation />
-      {presidentialCandidates!==null ?
-        <ElectorialCandidateView Candidates={presidentialCandidates} electionBody="Presidential Election" /> : 
+      {presidentialCandidates !== null ? (
+        <ElectorialCandidateView
+          Candidates={presidentialCandidates}
+          electionBody="Presidential Election"
+        />
+      ) : (
         <Typography
           variant="h4"
           align="center"
@@ -53,10 +56,9 @@ const PresidentialElection = () => {
         >
           There is no data
         </Typography>
-      }
-    
+      )}
     </>
-  )
+  );
 };
 
 export default PresidentialElection;

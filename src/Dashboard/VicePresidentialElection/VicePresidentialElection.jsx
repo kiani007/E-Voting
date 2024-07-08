@@ -25,7 +25,7 @@ const VicePresidentialElection = () => {
  useEffect(() => {
     const getCandidates = async () => {
       try {
-        const { candidates } = await getAllCandidates('Vice President');
+        const { candidates } = await getAllCandidates('vice_president');
         setPresidentialCandidates(candidates);
       } catch (error) {
         console.error('Error fetching candidates:', error);
