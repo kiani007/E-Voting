@@ -8,8 +8,8 @@ export const EditUserPage = ({ user, setIsEditable, setEditUser, handleSubmit, h
       <Grid item xs={12} sm={8} md={6} lg={4} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <Paper sx={{ p: 5, borderRadius: '5px', mb: 3, boxShadow: '0 0 10px 5px rgba(0,0,0,0.2)', width: '100%' }}>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', mb: 3 }}>
-            <Avatar sx={{ width: 100, height: 100, bgcolor: 'primary.main' }}>
-              {user?.photo ? <img src={"http://localhost:3000" + user?.photo} alt={user?.name} height={100} width={100} /> : <FaUser />}
+            <Avatar sx={{ width: 100, height: 100, bgcolor: 'primary.main', cursor: 'pointer' }}>
+              {user?.photo ? <img src={`http://localhost:3000${user?.photo}`} alt={user?.name} height={100} width={100} /> : <FaUser />}
             </Avatar>
             {!isEditable && (
               <IconButton
