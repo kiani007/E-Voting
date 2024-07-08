@@ -5,7 +5,7 @@ const useApiCall = () => {
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const fetchData = async (url, method = 'get', data = null) => {
+  const fetchData = async (url, method = 'get', data = null, params = {}) => {
     setLoading(true);
     setError(null);
     const baseUrl = "http://localhost:3000";
@@ -18,8 +18,9 @@ const useApiCall = () => {
       const options = {
         url: baseUrl + url,
         method,
+        params,
         headers,
-        data,
+        data
       };
       if (method === 'delete') {
           console.log("delete called",options.url);

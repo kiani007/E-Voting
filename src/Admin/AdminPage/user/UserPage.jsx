@@ -20,7 +20,7 @@ const UserPage = ({ users, isLoading, error, onDelete, handleEdit }) => {
                                 <TableCell sx={cellStyle}>CNIC</TableCell>
                                 <TableCell sx={cellStyle}>Email</TableCell>
                                 <TableCell sx={cellStyle}>Number</TableCell>
-                                {/* <TableCell>Is Authorized</TableCell> */}
+                                <TableCell sx={{fontSize: '14px', fontWeight: 'bold', text: "center"}}>Is Authorized</TableCell>
                                 <TableCell sx={{fontSize: '14px', fontWeight: 'bold', text: "center"}}>Voted for Presidential Candidates</TableCell>
                                 <TableCell sx={{fontSize: '14px', fontWeight: 'bold', text: "center"}}>Voted for Vice Presidential Candidates</TableCell>
                                 <TableCell sx={cellStyle}>Actions</TableCell>
@@ -37,7 +37,7 @@ const UserPage = ({ users, isLoading, error, onDelete, handleEdit }) => {
                                 <TableCell>{user.cnic}</TableCell>
                                 <TableCell>{user.email}</TableCell>
                                 <TableCell>{user.number}</TableCell>
-                                {/* <TableCell>{user.isAuthorized ? 'Yes' : 'No'}</TableCell> */}
+                                <TableCell>{user.isAuthorized ? 'Yes' : 'No'}</TableCell>
                                 <TableCell>{!user.voted_for_presidential_candidates  && "nill"}</TableCell>
                                 <TableCell>{!user.voted_for_vice_presidential_candidates && "nill"}</TableCell>
                                 <TableCell>

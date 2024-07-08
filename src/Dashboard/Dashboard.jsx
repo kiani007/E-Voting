@@ -30,10 +30,12 @@ const CardItem = ({ title, subtitle, image, onClick }) => (
       }}
       onClick={onClick}
     >
-      <CardActionArea>
+      <CardActionArea sx={{ px: 5 }}>
         <CardMedia
           component="img"
-          height="200"
+          minHeight="200px"
+          minWidth="400px"
+          sx={{ objectFit: 'contain' }}
           image={image}
           alt={title}
         />
@@ -57,7 +59,7 @@ export const Dashboard = () => {
     {
       title: 'President',
       subtitle: 'Campus Wise',
-      image: vote,
+      image: "presidential-election.png",
       onClick: () => {
         user && user.is_authorized ? navigate('presidential-election') : alert("You Are not Authorized")
       },

@@ -115,8 +115,9 @@ export const PresidentialCandidates = () => {
               height: 200,
               marginBottom: '20px',
             }}
-            src={candidate.image}
-          />
+            >
+              <img src={`http://localhost:3000${candidate?.image}`} alt={candidate?.name} style={{ width: '100%', height: '100%', borderRadius: '50%' }} />
+          </Avatar>
           <Typography
             variant="h1"
             sx={{ textAlign: 'center', color: 'primary.main', fontWeight: 'bold' }}

@@ -10,6 +10,7 @@ import {
 import { Link } from 'react-router-dom';
 import presidentialCandidatesData from '../PresidentialElection/data.js';
 import useIsMobile from '../../utils/hooks/useIsMobile.js';
+import { FaUser } from 'react-icons/fa';
 
 export const CandidateCard = ({ candidate }) => (
   <Grid item xs={12} sm={6} md={4} lg={3} xl={3}>
@@ -42,11 +43,11 @@ export const CandidateCard = ({ candidate }) => (
             marginBottom: '20px',
           }}
         >
-          <img
-            src={candidate.candidateImage}
-            alt={candidate.candidateName}
+          {candidate?.image ? <img
+            src={`http://localhost:3000${candidate?.image}` }
+            alt={candidate.name}
             style={{ width: '100%', height: '100%' }}
-          />
+          />: <FaUser />}
         </Avatar>
         <CardContent sx={{ textAlign: 'center' }}>
           <Typography gutterBottom variant="h6" component="div">
