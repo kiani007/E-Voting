@@ -356,7 +356,7 @@ const ProfilePage = () => {
                         />
                       }
                       disabled={!isEditing}
-                      onChange={handleCheckboxChange}
+                      // onChange={handleCheckboxChange}
                     />
                   }
                   label="Authorized"
