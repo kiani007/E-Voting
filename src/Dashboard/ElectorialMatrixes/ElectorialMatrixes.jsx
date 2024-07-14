@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{ useState, useEffect } from 'react';
 import {
   Table,
   TableBody,
@@ -10,35 +10,73 @@ import {
   Box,
   Typography,
   Container,
+  Alert,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from '@mui/material';
 import {
   BarChart,
   Bar,
-  XAxis,
-  YAxis,
   Tooltip,
   Legend,
   CartesianGrid,
+  ResponsiveContainer,
 } from 'recharts';
 import { electionData as data } from './data.js';
 
 import { BackNavigation } from '../common/BackNavigation.jsx';
+import { useApiCall } from '../../Admin/hooks/index.js';
 
 const ElectoralResult = () => {
-  // Calculate leading candidate
-  const leadingCandidate = data.reduce((prev, current) =>
-    prev.candidateVote > current.candidateVote ? prev : current
-  );
+  const { error, fetchData, isLoading } = useApiCall();
+  const [chartData, setChartData] = useState([]);
+  const [leadingCandidate, setLeadingCandidate] = useState({});
+  const [selectCandidate, setSelectCandidate] = useState('president');
 
+  useEffect(() => {
+    getChartData();
+    getLeadingCandidate();
+  }, [selectCandidate]);
+
+  const getChartData = async () => {
+    const { candidates } = await fetchData('/candidate/all-candidate', 'get');
+    setChartData(candidates);
+  };
+  const getLeadingCandidate = async() => {
+    const { candidate } = await fetchData(`/candidate/get-winner-candidte?position=${selectCandidate}`, 'get');
+    setLeadingCandidate(candidate);
+  };
+  
   return (
     <>
+      {error && <Alert severity="error">
+        {error && error}
+      </Alert>}
     <BackNavigation path="/" />
     <Container sx={{ my: 4 }}>
       <Box sx={{ marginBottom: 4 }}>
         <Typography variant="h4" align="center" sx={{ marginBottom: 2 }}>
           Electoral Result Matrix
         </Typography>
-        {/* Table */}
+          <FormControl  sx={{ marginBottom: 2 }}>
+            <InputLabel id="election-body-label">Select Election Body</InputLabel>
+            <Select
+              sx={{ backgroundColor: 'white', color: 'black', borderRadius: '5px', padding: '5px' }}
+              name="position"
+              variant='standard'
+              labelId="election-body-label"
+              id="election-body-select"
+              value={selectCandidate}
+              label="Select Election Body"
+              onChange={(e) => setSelectCandidate(e.target.value)}
+            >
+              <MenuItem value="president">President</MenuItem>
+              <MenuItem value="vice_president">Vice President</MenuItem>
+            </Select>
+          </FormControl>          
+          {/* Table */}
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
@@ -46,19 +84,23 @@ const ElectoralResult = () => {
                 <TableCell align="center">Candidate</TableCell>
                 <TableCell align="center">Party</TableCell>
                 <TableCell align="center">Votes</TableCell>
+                <TableCell align="center">Position</TableCell>  
               </TableRow>
             </TableHead>
             <TableBody>
-              {data.map((candidate) => (
+              {chartData.filter((candidate) => candidate?.position === selectCandidate).map((candidate) => (
                 <TableRow key={candidate.id}>
                   <TableCell align="center">
-                    {candidate.candidateName}
+                    {candidate?.name}
                   </TableCell>
                   <TableCell align="center">
-                    {candidate.candidateParty}
+                    {candidate?.party_name}
                   </TableCell>
                   <TableCell align="center">
-                    {candidate.candidateVote}
+                    {candidate?.vote_counter}
+                  </TableCell>
+                  <TableCell align="center">
+                    {candidate?.position}
                   </TableCell>
                 </TableRow>
               ))}
@@ -84,27 +126,25 @@ const ElectoralResult = () => {
           <BarChart
             width={800}
             height={400}
-            data={data}
+            data={chartData}
             margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
           >
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="candidateName" />
-            <YAxis />
             <Tooltip />
             <Legend />
-            <Bar dataKey="candidateVote" fill="#8884d8" />
+            <Bar dataKey="vote_counter" fill="#8884d8" />
           </BarChart>
         </Box>
       </Box>
 
       <Typography variant="h5" align="center" sx={{ marginBottom: 2 }}>
-        Leading Candidate: {leadingCandidate.candidateName} (
-        {leadingCandidate.candidateParty}) with {leadingCandidate.candidateVote}{' '}
+        Leading Candidate: {leadingCandidate?.name?? "nil"} (
+        {leadingCandidate?.party_name?? "nil"}) with {leadingCandidate?.vote_counter?? "nil"}{' '}
         votes
       </Typography>
       <Typography variant="h5" align="center">
         Total Votes Cast:{' '}
-        {data.reduce((acc, curr) => acc + curr.candidateVote, 0)}
+          {leadingCandidate?.vote_counter?? "nil"}
       </Typography>
       </Container>
 

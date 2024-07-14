@@ -8,12 +8,13 @@ import { Box, Typography, Button } from '@mui/material';
 import theme from '../../../theme';
 import { useAuth } from '../../Auth';
 
-const Index = ({ collapsed, toggled, handleToggleSidebar, handleCollapsedChange }) => {
+const Index = ({ collapsed, toggled, handleToggleSidebar, handleCollapsedChange, rootStyles, handleFeedbackModalOpen }) => {
   const { logout } = useAuth();
 
   const handleLogout = async () => {
     await logout();
   };
+  
 
   return (
     <Sidebar
@@ -72,6 +73,7 @@ const Index = ({ collapsed, toggled, handleToggleSidebar, handleCollapsedChange 
         </MenuItem>
 
       </Menu>
+        
 
         <Box
           onClick={handleLogout}
@@ -109,6 +111,13 @@ const Index = ({ collapsed, toggled, handleToggleSidebar, handleCollapsedChange 
           sx={{ padding: '1rem 0',backgroundColor: '#f0f0f0', color: '#000' }}
         >
           {collapsed ? <FaAngleDoubleRight /> : <FaAngleDoubleLeft />}
+        </Button>
+        <Button
+          variant="contained"
+          onClick={handleFeedbackModalOpen}
+          sx={{ padding: '1rem 0.3rem', backgroundColor: 'primary.main', color: '#fff' }}
+        >
+          Give us Feedback
         </Button>
       </Box>
     </Sidebar>

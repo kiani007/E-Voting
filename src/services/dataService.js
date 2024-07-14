@@ -31,19 +31,17 @@ export const updateUser = async (data) => {
     throw error;
   }
 };
-export const uploadUserProfilePic = async (imageUrl) => {
+export const uploadUserProfilePic = async (imageUrl, token) => {
   try {
-    const T = localStorage.getItem('userToken');
     const formData = new FormData();
     formData.append('file', imageUrl);
-    console.log({ token });
     const response = await axios.post(
       'http://localhost:3000/user/upload-image',
       formData,
       {
         headers: {
           'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${T}`,
+          Authorization: `Bearer ${token}`,
         },
       }
     );

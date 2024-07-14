@@ -35,7 +35,7 @@ const CardItem = ({ title, subtitle, image, onClick }) => (
           component="img"
           minHeight="200px"
           minWidth="400px"
-          sx={{ objectFit: 'contain' }}
+          sx={{ objectFit: 'contain', maxHeight: '200px', maxWidth: '400px',marginTop: '10px' }}
           image={image}
           alt={title}
         />
@@ -67,7 +67,7 @@ export const Dashboard = () => {
     {
       title: 'Vice President',
       subtitle: 'Campus Wise',
-      image: vote,
+      image: "vice_president.jpg",
       onClick: () => {
         user && user.is_authorized ? navigate('vice-presidential-eleciton') : alert("You Are not Authorized")
       },

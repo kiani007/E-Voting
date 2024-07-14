@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
 import { getAnalytics } from 'firebase/analytics';
 import { getDatabase } from 'firebase/database';
 import { getStorage } from 'firebase/storage';
@@ -21,4 +21,5 @@ const analytics = getAnalytics(firebaseApp);
 const db = getDatabase(firebaseApp);
 const storage = getStorage(firebaseApp);
 
-export { auth, analytics, firebaseApp, db, storage };
+
+export { auth, analytics, firebaseApp, db, storage, signInWithPhoneNumber, RecaptchaVerifier };

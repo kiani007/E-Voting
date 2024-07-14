@@ -102,7 +102,6 @@ export const PresidentialCandidates = () => {
         margin: 'auto',
         textAlign: 'center',
         bgcolor: '#FFFFFF',
-        display: 'flex',
         borderRadius: '10px',
         padding: '3rem',
       }}

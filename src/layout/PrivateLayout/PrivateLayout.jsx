@@ -3,11 +3,13 @@ import { AppBar, Container, Toolbar, Typography, useTheme } from '@mui/material'
 import { Box } from '@mui/system';
 import { Sidebar } from '../../components';
 import Navbar from '../Navbar';
+import { FeedbackModal } from '../../components/Modal/feedbackModal';
 
 const PrivateLayout = ({ children }) => {
   const theme = useTheme();
   const [collapsed, setCollapsed] = useState(false);
   const [toggled, setToggled] = useState(false);
+  const [feedbackModal, setFeedbackModal] = useState(false);
 
   const handleCollapsedChange = () => {
     setCollapsed(!collapsed);
@@ -16,7 +18,13 @@ const PrivateLayout = ({ children }) => {
   const handleToggleSidebar = () => {
     setToggled(!toggled);
   };
-
+  const handleFeedbackModalOpen = () => {
+    console.log('Feedback modal opened');
+    setFeedbackModal(true);
+  };
+ const handleFeedbackModalClose = () => {
+    setFeedbackModal(false);
+  };
 
 
   return (
@@ -26,6 +34,7 @@ const PrivateLayout = ({ children }) => {
         toggled={toggled}
         handleToggleSidebar={handleToggleSidebar}
         handleCollapsedChange={handleCollapsedChange}
+        handleFeedbackModalOpen={handleFeedbackModalOpen}
         rootStyles={{
           '.sidebar-container': {
             height: '100%',
@@ -63,6 +72,12 @@ const PrivateLayout = ({ children }) => {
           maxWidth={false}
           
         >
+         {  feedbackModal &&
+            <FeedbackModal
+              open={handleFeedbackModalOpen}
+              handleClose={handleFeedbackModalClose}
+            />
+          }
           {children}
         </Container>
       </Box>
