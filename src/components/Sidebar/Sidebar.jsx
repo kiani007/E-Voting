@@ -134,13 +134,13 @@ const Index = ({ collapsed, toggled, handleToggleSidebar, handleCollapsedChange,
         >
           {collapsed ? <FaAngleDoubleRight /> : <FaAngleDoubleLeft />}
         </Button>
-        <Button
+        { !isAdmin && <Button
           variant="contained"
           onClick={handleFeedbackModalOpen}
           sx={{ padding: '1rem 0.3rem', backgroundColor: 'primary.main', color: '#fff' }}
         >
           Give us Feedback
-        </Button>
+        </Button>}
       </Box>
     </Sidebar>
   );

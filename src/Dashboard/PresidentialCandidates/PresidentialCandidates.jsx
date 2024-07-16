@@ -12,20 +12,30 @@ import {
   Icon,
   IconButton,
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useParams, useNavigate, useLocation } from 'react-router';
 import data from '../PresidentialElection/data.js';
 import Modal from '../../components/Modal';
 import { getCandidateById, voteCandidate } from '../../services/dataService';
-import { Image } from '@mui/icons-material';
+import { Camera, Image } from '@mui/icons-material';
 import { Fingerprint } from '@mui/icons-material'; 
 import { LuScanFace } from "react-icons/lu";
 import { BackNavigation } from '../common/BackNavigation.jsx';
 import { useApiCall } from '../../Admin/hooks/index.js';
+import * as  faceapi from 'face-api.js';
+
 export const PresidentialCandidates = () => {
+  const storedImages = [
+    '/myImages/image1.jpg',
+    '/myImages/image2.jpg',
+    '/myImages/image3.jpg',
+  ]
   const { fetchData, isLoading, error } = useApiCall();
+  const [isMatched, setIsMatched] = useState(null)
   const navigate = useNavigate();
+  const videoRef = useRef();
+  const canvasRef = useRef();
   const [candidate, setCandidate] = useState(null);
   const [isVoterAuthPage, setIsVoterAuthPage] = useState(false);
   const params = useParams();
@@ -33,6 +43,7 @@ export const PresidentialCandidates = () => {
   const [fingerprintModalOpen, setFingerprintModalOpen] = React.useState(false);
   const [faceScannerModalOpen, setFaceScannerModalOpen] = React.useState(false);
   const { pathname } = useLocation();
+  const [videoStarted, setVideoStarted] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -52,6 +63,82 @@ export const PresidentialCandidates = () => {
       getCandidate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (videoStarted) {
+      loadModels();
+    }
+    () => {
+      stopVideo();
+      videoRef.current.srcObject = null;
+      videoRef.current.src = null;
+    }
+  }, [videoStarted]);
+  
+  const loadModels =  () => {
+    Promise.all([
+              faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
+              faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
+              faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
+              faceapi.nets.faceExpressionNet.loadFromUri('/models'),
+              faceapi.nets.ssdMobilenetv1.loadFromUri('/models'),
+            ]).then (() => {
+                detectMyFace();
+            }).catch((err) => {
+                 
+                console.error('Error loading models:', err);
+            });
+  };
+
+  const detectMyFace = async () => {
+    const canvas = canvasRef.current;
+    const displaySize = { width: videoRef.current.width, height: videoRef.current.height };
+    faceapi.matchDimensions(canvas, displaySize);
+    setInterval(async () => {
+      const detections = await faceapi.detectAllFaces(videoRef.current, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptors();
+      const resizedDetections = faceapi.resizeResults(detections, displaySize);
+      console.log(resizedDetections);
+      canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+
+      faceapi.draw.drawDetections(canvas, resizedDetections);
+      faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
+     
+    }, 100);
+     
+  };
+  
+  const startVideo = () => {
+    if (videoRef.current.srcObject) {
+      const stream = videoRef.current.srcObject;
+    }
+    navigator.mediaDevices
+      .getUserMedia({ video: true, audio: false })
+      .then((stream) => {
+        videoRef.current.srcObject = stream;  
+        setVideoStarted(true);
+      })
+      .catch((err) => {
+        setVideoStarted(false);
+        console.error('Error accessing the camera:', err);
+      });
+  }
+  const handleVideoPlay = () => {
+            setInterval(async () => {
+                const detections = await faceapi.detectAllFaces(videoRef.current, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptors();
+                console.log(detections);
+            }, 100);
+        };
+ const stopVideo = () => {
+    if (videoRef.current.srcObject) {
+      const stream = videoRef.current.srcObject;
+      const tracks = stream.getTracks();
+      tracks.forEach((track) => {
+        videoRef.current.srcObject = null;
+        track.stop();
+      });
+      videoRef.current.srcObject = null;
+    }
+  };
 
   const handleVoteCasted = async () => {
     try {
@@ -81,6 +168,8 @@ export const PresidentialCandidates = () => {
     setFaceScannerModalOpen(true);
   }
   const handleFaceScannerModalClose = () => {
+    setVideoStarted(false);
+    stopVideo();
     setFaceScannerModalOpen(false);
   }
  
@@ -256,8 +345,20 @@ export const PresidentialCandidates = () => {
           subTitle="Please scan your face"
           description="This will be used to validate your vote"
           buttonText="scan"
-          buttonFunction={handleVoteCasted}
-        />
+          buttonFunction={videoStarted? null : startVideo}
+          >  
+            {
+              !videoStarted &&
+              <Box style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' , margin: 'auto', }}>
+                <Camera sx={{ width: '100px', height: '100px', cursor: 'pointer' }} onClick={startVideo}/>
+              </Box>
+            }
+            <div style={{position: 'relative'}}>
+              <video crossOrigin='anonymous' ref={videoRef} autoPlay playsInline width={720} height={560}/>
+              <canvas ref={canvasRef} width={720} height={560}   style={{position: 'absolute', zIndex: 1000,top: 0,left: 0, backdropFilter: 'blur(5px)'}} />
+
+            </div>
+        </Modal>
       )}
       </Container>
     </>
