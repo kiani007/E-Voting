@@ -26,8 +26,8 @@ import {
 } from 'recharts';
 import { electionData as data } from './data.js';
 
-import { BackNavigation } from '../common/BackNavigation.jsx';
-import { useApiCall } from '../../Admin/hooks/index.js';
+import { BackNavigation } from '../../../Dashboard/common/BackNavigation.jsx';
+import { useApiCall } from '../../hooks/index.js';
 
 const ElectoralResult = () => {
   const { error, fetchData, isLoading } = useApiCall();
@@ -42,7 +42,7 @@ const ElectoralResult = () => {
 
   const getChartData = async () => {
     const { candidates } = await fetchData('/candidate/all-candidate', 'get');
-    setChartData(candidates);
+    setChartData(candidates.filter((candidate) => candidate?.position === selectCandidate));
   };
   const getLeadingCandidate = async() => {
     const { candidate } = await fetchData(`/candidate/get-winner-candidte?position=${selectCandidate}`, 'get');
@@ -115,7 +115,8 @@ const ElectoralResult = () => {
         </Typography>
         {/* Chart */}
         <Box
-          sx={{
+            sx={{
+            
             height: 400,
             width: '100%',
             alignItems: 'center',
@@ -123,15 +124,20 @@ const ElectoralResult = () => {
             justifyContent: 'center',
           }}
         >
-          <BarChart
-            width={800}
-            height={400}
-            data={chartData}
-            margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+            <BarChart
+              style={{ margin: 'auto' }}
+              cx={400}
+              cy={400}
+              width={800}
+              height={400}
+              data={chartData}
+              margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
           >
             <CartesianGrid strokeDasharray="3 3" />
             <Tooltip />
-            <Legend />
+              <Legend />
+            <Bar dataKey="party_name" fill="#82ca9d" />
+            <Bar dataKey="name" fill="#1cdd7d" />
             <Bar dataKey="vote_counter" fill="#8884d8" />
           </BarChart>
         </Box>

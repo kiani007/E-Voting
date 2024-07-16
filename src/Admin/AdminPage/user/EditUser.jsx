@@ -50,7 +50,7 @@ export default function EditUser() {
         {error}
       </Alert>}
       <BackNavigation path={'/admin/user'} />
-        <h1 style={{color: '#fff'}}>Edit User Page</h1>
+        <h1 style={{color: '#fff', textAlign: 'left', fontFamily: 'sans-serif' }}>Edit User Page</h1>
               <Grid container spacing={2} sx={{ backgroundColor: 'grey.200', p: 2 , borderRadius: '5px', height: '90vh', scrollBehavior: 'smooth', overflowX: 'auto' }}>
                 <Grid item xs={12}>
                   <EditUserPage

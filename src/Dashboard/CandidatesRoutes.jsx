@@ -5,7 +5,7 @@ import { PresidentialCandidates } from './PresidentialCandidates';
 import { SuccessfullyVoted } from './SuccessfullyVoted';
 import { Dashboard } from './Dashboard';
 import { VicePresidentialElection } from './VicePresidentialElection';
-import { ElectorialMatrixes } from './ElectorialMatrixes';
+import { ElectorialMatrixes } from '../Admin/AdminPage/ElectorialMatrixes';
 import { Profile } from './UserProfile';
 import { ErrorPage } from '@/pages';
 export const CandidatesRoutes = () => {

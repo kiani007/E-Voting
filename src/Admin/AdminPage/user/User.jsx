@@ -35,7 +35,7 @@ export default function User() {
     }, []);
     return (
        <Container maxWidth="xl" >
-        <h1 style={{color: '#fff'}}>Admin Page</h1>
+        <h1 style={{color: '#fff', textAlign: 'left', fontWeight: 'bold', fontFamily: 'sans-serif'}}>Users</h1>
               <Grid container spacing={2} sx={{ backgroundColor: 'grey.200', p: 2 , borderRadius: '5px', height: '90vh', scrollBehavior: 'smooth', overflowX: 'auto' }}>
                 <Grid item xs={12}>
                    { <UserPage users={users} handleEdit={handleEdit} onDelete={onDelete} isLoading={isLoading} error={error} />}

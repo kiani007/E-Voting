@@ -13,6 +13,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [user, setUser] = useState({});
+  const [isAdmin, setIsAdmin] = useState(false);
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(getAuth(), (user) => {
       if (user) {
@@ -41,6 +42,9 @@ export const AuthProvider = ({ children }) => {
       if (response.status === 200) {
         const data = response.data;
         setUser(data);
+        if (data.isRole === 'ADMIN') {
+          setIsAdmin(true);
+        }
       }
     } catch (error) {
       console.error('Error fetching user:', error);
@@ -57,7 +61,7 @@ export const AuthProvider = ({ children }) => {
 
 
   return (
-    <AuthContext.Provider value={{loggedIn, logout, loading, loginApproved, user }}>
+    <AuthContext.Provider value={{loggedIn, logout, loading, loginApproved, user, isAdmin }}>
       {loading ? (
         <Loader type={'circular'} />
       ) : (

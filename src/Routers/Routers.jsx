@@ -13,7 +13,7 @@ import MainRoutes from './MainRoutes';
 import ErrorPage from '../pages/ErrorPage';
 import AdminRoutes from '../Admin/AdminRoutes';
 const Routers = () => {
-  const { loggedIn } = useAuth();
+  const { loggedIn, isAdmin } = useAuth();
   return (
     <Router>
       <Routes>
@@ -27,7 +27,8 @@ const Routers = () => {
             />
           }
         />
-        <Route
+        {!isAdmin ?
+         ( <Route
           path="/e-voting-system/*"
           element={
             <PrivateRoute
@@ -36,8 +37,9 @@ const Routers = () => {
               }}
             />
           }
-        />
-        <Route
+          />
+          ) :(
+          <Route
           path="/admin/*"
           element={
             <PrivateRoute
@@ -46,7 +48,7 @@ const Routers = () => {
               }}
             />
           }
-        />
+        />)}
         <Route path="/*" element={<ErrorPage />} />
       </Routes>
     </Router>

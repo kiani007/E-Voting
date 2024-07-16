@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { useParams, useNavigate } from 'react-router';
+import { useParams, useNavigate, useLocation } from 'react-router';
 import data from '../PresidentialElection/data.js';
 import Modal from '../../components/Modal';
 import { getCandidateById, voteCandidate } from '../../services/dataService';
@@ -22,7 +22,9 @@ import { Image } from '@mui/icons-material';
 import { Fingerprint } from '@mui/icons-material'; 
 import { LuScanFace } from "react-icons/lu";
 import { BackNavigation } from '../common/BackNavigation.jsx';
+import { useApiCall } from '../../Admin/hooks/index.js';
 export const PresidentialCandidates = () => {
+  const { fetchData, isLoading, error } = useApiCall();
   const navigate = useNavigate();
   const [candidate, setCandidate] = useState(null);
   const [isVoterAuthPage, setIsVoterAuthPage] = useState(false);
@@ -30,6 +32,8 @@ export const PresidentialCandidates = () => {
   const { candidateId } = params;  
   const [fingerprintModalOpen, setFingerprintModalOpen] = React.useState(false);
   const [faceScannerModalOpen, setFaceScannerModalOpen] = React.useState(false);
+  const { pathname } = useLocation();
+
   useEffect(() => {
     window.scrollTo(0, 0);
     document.title = 'Presidential Candidates';
@@ -51,18 +55,13 @@ export const PresidentialCandidates = () => {
 
   const handleVoteCasted = async () => {
     try {
-      const { status, message } = await voteCandidate(candidateId);
-
-      if (status !== 200) {
-        console.error(message);
-        return;
-      }
+      const { status, message, candidates } = await fetchData( pathname.includes('presidential-election')?'/candidate/vote-to-persident':'/candidate/vote-to-vice','GET', null, {id: candidateId });
       handleFingerPrintModalClose();
       navigate('successfully-voted');
-      return;
 
     } catch (error) {
-      alert('Error casting vote:', error);
+      alert(`Error casting vote: ${error.response.data.message}`);
+      navigate(pathname.includes('presidential-election')?'/e-voting-system/presidential-election':'/e-voting-system/vice-presidential-eleciton');
     }
     
   };

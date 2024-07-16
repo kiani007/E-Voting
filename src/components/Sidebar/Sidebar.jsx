@@ -1,15 +1,15 @@
 import React from 'react';
 import { Sidebar, Menu, MenuItem } from 'react-pro-sidebar';
 import { Link } from 'react-router-dom';
-import { FaUser, FaAngleDoubleLeft, FaAngleDoubleRight, FaChartBar } from 'react-icons/fa';
+import { FaUser, FaAngleDoubleLeft, FaAngleDoubleRight, FaChartBar,FaPeopleArrows } from 'react-icons/fa';
 import { HiLogout } from 'react-icons/hi';
 import { MdDashboardCustomize } from 'react-icons/md';
 import { Box, Typography, Button } from '@mui/material';
 import theme from '../../../theme';
-import { useAuth } from '../../Auth';
+import { useAuth, } from '../../Auth';
 
-const Index = ({ collapsed, toggled, handleToggleSidebar, handleCollapsedChange, rootStyles, handleFeedbackModalOpen }) => {
-  const { logout } = useAuth();
+const Index = ({ collapsed, toggled, handleToggleSidebar, handleCollapsedChange, rootStyles, handleFeedbackModalOpen, isAdmin }) => {
+  const { logout } = useAuth()
 
   const handleLogout = async () => {
     await logout();
@@ -39,7 +39,7 @@ const Index = ({ collapsed, toggled, handleToggleSidebar, handleCollapsedChange,
           color: theme.palette.primary.contrastText,
         }}
       >
-        <Typography variant="h6" sx={{ fontWeight: 'bold',cursor: 'pointer' }}  onClick={handleCollapsedChange} >EV</Typography>
+        <Typography variant="h6" sx={{ fontWeight: 'bold',cursor: 'pointer' }}  onClick={handleCollapsedChange}> {!isAdmin ? 'EV': 'Admin pannel'}</Typography>
       </Box>
 
       <Menu
@@ -53,24 +53,46 @@ const Index = ({ collapsed, toggled, handleToggleSidebar, handleCollapsedChange,
           },
         }}
       >
-        <MenuItem
-          icon={<FaUser />}
-          component={<Link to="/e-voting-system/my-profile" />}
-        >
-          My Profile
-        </MenuItem>
-        <MenuItem
-          icon={<MdDashboardCustomize />}
-          component={<Link to="/e-voting-system" />}
-        >
-          Voting Dashboard
-        </MenuItem>
-        <MenuItem
-          icon={<FaChartBar />}
-          component={<Link to="/e-voting-system/electorial-matrix" />}
-        >
-          Result Matrix
-        </MenuItem>
+        {!isAdmin &&
+          <>
+            <MenuItem
+              icon={<FaUser />}
+              component={<Link to="/e-voting-system/my-profile" />}
+            >
+              My Profile
+            </MenuItem>
+            <MenuItem
+              icon={<MdDashboardCustomize />}
+              component={<Link to="/e-voting-system" />}
+            >
+              Voting Dashboard
+            </MenuItem>
+          
+          </>
+        }
+
+        {isAdmin &&
+          <>
+            <MenuItem
+              icon={<FaUser />}
+              component={<Link to="/admin/user" />}
+            >
+              Users
+            </MenuItem>
+            <MenuItem
+              icon={<FaPeopleArrows />}
+              component={<Link to="/admin/candidate" />}
+            >
+              Candidates
+            </MenuItem>
+            <MenuItem
+              icon={<FaChartBar />}
+              component={<Link to="/admin/electorial-matrix" />}
+            >
+              Result Matrix
+            </MenuItem>
+          </>
+        }
 
       </Menu>
         

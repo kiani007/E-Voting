@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   Typography,
@@ -12,12 +12,13 @@ import {
 import { useNavigate } from 'react-router-dom';
 import vote from '../assets/vote-img.png';
 import { useAuth } from '../Auth';
+import { useApiCall } from '../Admin/hooks';
+import { get } from 'firebase/database';
 
 const CardItem = ({ title, subtitle, image, onClick }) => (
   <Grid item xs={12} sm={6}>
     <Card
       sx={{
-        minHeight: '100%',
         cursor: 'pointer',
         transition: 'all 0.3s ease',
         boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.1)',
@@ -30,12 +31,18 @@ const CardItem = ({ title, subtitle, image, onClick }) => (
       }}
       onClick={onClick}
     >
-      <CardActionArea sx={{ px: 5 }}>
+      <CardActionArea component="div" sx={{ px: 2, py: 2 }}>
         <CardMedia
           component="img"
-          minHeight="200px"
-          minWidth="400px"
-          sx={{ objectFit: 'contain', maxHeight: '200px', maxWidth: '400px',marginTop: '10px' }}
+          sx={{
+            height: '10rem',
+            width: '10rem',
+            objectFit: 'contain',
+            borderRadius: '50%',
+            px: 2, py: 2,
+            mx: 'auto', 
+            mb: 2,
+          }}
           image={image}
           alt={title}
         />
@@ -54,14 +61,35 @@ const CardItem = ({ title, subtitle, image, onClick }) => (
 
 export const Dashboard = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { fetchData, error, isLoading } = useApiCall();
+  const [isEligible, setIsEligible] = useState(false);
+  useEffect(() => {
+    getUserEligibility();
+    return () => {
+      setIsEligible(false);
+    }
+  }, []);
+
+  const getUserEligibility = async () => {
+    try {
+      const { status } = await fetchData('/user/check-eligibility', 'get');
+      if (status === 200) { 
+        setIsEligible(true);
+      }
+      else {
+        setIsEligible(false);
+      }
+    } catch (error) {
+      console.error('Error fetching user eligibility:', error);
+    }
+  }
   const cardData = [
     {
       title: 'President',
       subtitle: 'Campus Wise',
       image: "presidential-election.png",
       onClick: () => {
-        user && user.is_authorized ? navigate('presidential-election') : alert("You Are not Authorized")
+        isEligible ? navigate('presidential-election') : alert("You Are not Authorized")
       },
     },
     {
@@ -69,15 +97,9 @@ export const Dashboard = () => {
       subtitle: 'Campus Wise',
       image: "vice_president.jpg",
       onClick: () => {
-        user && user.is_authorized ? navigate('vice-presidential-eleciton') : alert("You Are not Authorized")
+        isEligible ? navigate('vice-presidential-eleciton') : alert("You Are not Authorized")
       },
     },
-    // {
-    //   title: 'Matrix Election',
-    //   subtitle: 'Department Wise',
-    //   image: vote,
-    //   onClick: () => navigate('electorial-matrix'),
-    // },
   ];
 
   return (
@@ -107,7 +129,7 @@ export const Dashboard = () => {
           Simple Free and Fair Elections <br /> Now in Pakistan
         </Typography>
         <Grid container justifyContent="center" spacing={5} sx={{ mt: 6, mb: 4,   }}>
-          <Grid item xs={12} lg={6} spacing={4}>
+          <Grid item xs={12} lg={6}>
             <Grid container spacing={4}>
               {cardData.map((card, index) => (
                 <CardItem

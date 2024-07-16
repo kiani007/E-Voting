@@ -7,10 +7,6 @@ export const SuccessfullyVoted = () => {
     <Container
       maxWidth="sm"
       sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
         margin: 'auto',
         bgcolor: '#F8F9FA',
         display: 'flex',

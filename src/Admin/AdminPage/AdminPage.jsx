@@ -31,7 +31,7 @@ const AdminPage = () => {
   return (
       <>
         <Container maxWidth="lg" >
-        <h1 style={{color: '#fff'}}>Admin Page</h1>
+        <h1 style={{color: '#fff'}}>Admin</h1>
               {/* here we will add users table to display all users edit them and delete them USING MUI*/}
               <Grid container spacing={2} sx={{ backgroundColor: 'grey.200', p: 2 , borderRadius: '5px', height: '80vh' }}>
                   <Grid item xs={12}>

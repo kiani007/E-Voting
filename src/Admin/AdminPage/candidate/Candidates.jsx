@@ -58,8 +58,7 @@ export default function Candidates() {
     }, []);
     return (
         <Container maxWidth="xl" >
-            <BackNavigation path="/admin/candidate" />
-            <h1 style={{ color: '#fff' }}>Candidate Page</h1>
+            <h1 style={{ color: '#fff', textAlign: 'left', fontFamily: 'sans-serif' }}>Candidate Page</h1>
             <Button variant="contained" color="success" onClick={handleModalOpen} >Add Candidate {"  "} <FaPlus /></Button>
             {open && <AddCandidateModal open={open} handleClose={handleModalClose} handleAddCandidate={handleAddCandidate} />}
               <Grid container spacing={2} sx={{ backgroundColor: 'grey.200', p: 2 , borderRadius: '5px', height: '90vh', scrollBehavior: 'smooth', overflowX: 'auto' }}>

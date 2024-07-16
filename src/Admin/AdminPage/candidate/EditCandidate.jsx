@@ -108,7 +108,7 @@ export default function EditCandidate() {
     <Container maxWidth="xl">
       {error && <Alert sx={{ mb: 2 }} severity="info">{error}</Alert>}
       <BackNavigation path={'/admin/candidate'} />
-      <h1>Edit Candidate Page</h1>
+      <h1 style={{ color: 'white', textAlign: 'left', fontFamily: 'sans-serif' }}>Edit Candidate Page</h1>
       <Grid container spacing={2} sx={{ backgroundColor: 'grey.200', p: 2, borderRadius: '5px', overflowX: 'auto' }}>
         <Grid item xs={12}>
           <EditCandidatePage

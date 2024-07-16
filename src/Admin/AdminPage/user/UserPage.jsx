@@ -30,16 +30,16 @@ const UserPage = ({ users, isLoading, error, onDelete, handleEdit }) => {
                           {users.map((user, index) => (
                               <TableRow key={user.id}>
                                 <TableCell>{index + 1}</TableCell>
-                                <TableCell>{user.id}</TableCell>
-                                <TableCell>{user.first_name}</TableCell>
-                                <TableCell>{user.last_name}</TableCell>
-                                <TableCell>{user.father_name}</TableCell>
-                                <TableCell>{user.cnic}</TableCell>
-                                <TableCell>{user.email}</TableCell>
-                                <TableCell>{user.number}</TableCell>
-                                <TableCell>{user.isAuthorized ? 'Yes' : 'No'}</TableCell>
-                                <TableCell>{!user.voted_for_presidential_candidates  && "nill"}</TableCell>
-                                <TableCell>{!user.voted_for_vice_presidential_candidates && "nill"}</TableCell>
+                                <TableCell>{user?.id}</TableCell>
+                                <TableCell>{user?.first_name}</TableCell>
+                                <TableCell>{user?.last_name}</TableCell>
+                                <TableCell>{user?.father_name}</TableCell>
+                                <TableCell>{user?.cnic}</TableCell>
+                                <TableCell>{user?.email}</TableCell>
+                                <TableCell>{user?.number}</TableCell>
+                                <TableCell>{user?.isAuthorized ? 'Yes' : 'No'}</TableCell>
+                                <TableCell>{user?.voted_for_presidential_candidates ??  "nill"}</TableCell>
+                                <TableCell>{user?.voted_for_vice_presidential_candidates ?? "nill"}</TableCell>
                                 <TableCell>
                                     <Button variant="contained" color="primary" onClick={() => handleEdit(user.id)}>Edit</Button>
                                     </TableCell>

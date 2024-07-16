@@ -4,8 +4,10 @@ import { Box } from '@mui/system';
 import { Sidebar } from '../../components';
 import Navbar from '../Navbar';
 import { FeedbackModal } from '../../components/Modal/feedbackModal';
+import { useAuth } from '../../Auth';
 
 const PrivateLayout = ({ children }) => {
+  const {isAdmin} = useAuth();
   const theme = useTheme();
   const [collapsed, setCollapsed] = useState(false);
   const [toggled, setToggled] = useState(false);
@@ -32,6 +34,7 @@ const PrivateLayout = ({ children }) => {
       <Sidebar
         collapsed={collapsed}
         toggled={toggled}
+        isAdmin={isAdmin}
         handleToggleSidebar={handleToggleSidebar}
         handleCollapsedChange={handleCollapsedChange}
         handleFeedbackModalOpen={handleFeedbackModalOpen}
@@ -72,7 +75,7 @@ const PrivateLayout = ({ children }) => {
           maxWidth={false}
           
         >
-         {  feedbackModal &&
+         { !isAdmin && feedbackModal &&
             <FeedbackModal
               open={handleFeedbackModalOpen}
               handleClose={handleFeedbackModalClose}

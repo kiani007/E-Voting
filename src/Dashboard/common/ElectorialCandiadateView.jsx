@@ -80,7 +80,7 @@ const isMobile = useIsMobile();
         padding: '20px',
       }}
     >
-      <Grid container spacing={2} justifyContent="center">
+      <Grid container spacing={4} justifyContent="center">
         <Grid item xs={12} sx={{ textAlign: 'left' }}>
           <Typography
             variant={isMobile ? 'h5' : 'h4'}

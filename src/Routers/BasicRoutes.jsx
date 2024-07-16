@@ -5,14 +5,14 @@ import { Loader } from '../components/Loader';
 import { PublicLayout } from '../layout';
 
 const BasicRoutes = ({ Component, args }) => {
-  const { loggedIn } = useAuth();
+  const { loggedIn, isAdmin } = useAuth();
   //make artifical delay
   useEffect(() => {
     const timer = setTimeout(() => {}, 1000);
     return () => clearTimeout(timer);
   }, []);
-  return loggedIn ? (
-    <Navigate to="/e-voting-system" />
+  return loggedIn   ? (
+    <Navigate to={isAdmin ? '/admin' : '/e-voting-system'} />
   ) : (
     <PublicLayout>
       <Suspense fallback={<Loader />}>
