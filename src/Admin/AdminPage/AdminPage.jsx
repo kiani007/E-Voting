@@ -1,32 +1,32 @@
 import { Container, Grid,Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material'
 import React from 'react'
-const users = [
-  {
-    id: 1,
-    name: 'John',
-    lastName: 'Doe',
-    fatherName: 'Michael Doe',
-    cnic: '12345-6789012-3',
-    email: 'john.doe@example.com',
-    number: '1234567890',
-    isAuthorized: true,
-    votedForPresidentialCandidates: 'Candidate A',
-    votedForVicePresidentialCandidates: 'Candidate B',
-  },
-  {
-    id: 2,
-    name: 'Jane',
-    lastName: 'Smith',
-    fatherName: 'Robert Smith',
-    cnic: '23456-7890123-4',
-    email: 'jane.smith@example.com',
-    number: '0987654321',
-    isAuthorized: false,
-    votedForPresidentialCandidates: 'Candidate C',
-    votedForVicePresidentialCandidates: '',
-  },
-  // Add more users as needed
-];
+// const users = [
+//   {
+//     id: 1,
+//     name: 'John',
+//     lastName: 'Doe',
+//     fatherName: 'Michael Doe',
+//     cnic: '12345-6789012-3',
+//     email: 'john.doe@example.com',
+//     number: '1234567890',
+//     isAuthorized: true,
+//     votedForPresidentialCandidates: 'Candidate A',
+//     votedForVicePresidentialCandidates: 'Candidate B',
+//   },
+//   {
+//     id: 2,
+//     name: 'Jane',
+//     lastName: 'Smith',
+//     fatherName: 'Robert Smith',
+//     cnic: '23456-7890123-4',
+//     email: 'jane.smith@example.com',
+//     number: '0987654321',
+//     isAuthorized: false,
+//     votedForPresidentialCandidates: 'Candidate C',
+//     votedForVicePresidentialCandidates: '',
+//   },
+//   // Add more users as needed
+// ];
 const AdminPage = () => {
   return (
       <>
@@ -53,18 +53,18 @@ const AdminPage = () => {
                             </TableRow>
                             </TableHead>
                             <TableBody>
-                            {users.map((user) => (
-                                <TableRow key={user.id}>
-                                <TableCell>{user.id}</TableCell>
-                                <TableCell>{user.name}</TableCell>
-                                <TableCell>{user.lastName}</TableCell>
-                                <TableCell>{user.fatherName}</TableCell>
-                                <TableCell>{user.cnic}</TableCell>
-                                <TableCell>{user.email}</TableCell>
-                                <TableCell>{user.number}</TableCell>
-                                <TableCell>{user.isAuthorized ? 'Yes' : 'No'}</TableCell>
-                                <TableCell>{user.votedForPresidentialCandidates}</TableCell>
-                                <TableCell>{user.votedForVicePresidentialCandidates}</TableCell>
+                            {users?.map((user) => (
+                                <TableRow key={user?.id}>
+                                <TableCell>{user?.id}</TableCell>
+                                <TableCell>{user?.name}</TableCell>
+                                <TableCell>{user?.lastName}</TableCell>
+                                <TableCell>{user?.fatherName}</TableCell>
+                                <TableCell>{user?.cnic}</TableCell>
+                                <TableCell>{user?.email}</TableCell>
+                                <TableCell>{user?.number}</TableCell>
+                                <TableCell>{user?.isAuthorized ? 'Yes' : 'No'}</TableCell>
+                                <TableCell>{user?.votedForPresidentialCandidates}</TableCell>
+                                <TableCell>{user?.votedForVicePresidentialCandidates}</TableCell>
                                 <TableCell>
                                     <Button variant="contained" color="primary" onClick={() => handleEdit(user.id)}>Edit</Button>
                                     </TableCell>
