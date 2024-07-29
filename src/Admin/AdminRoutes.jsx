@@ -1,6 +1,6 @@
 import React from 'react'
 import { Routes, Route } from 'react-router'
-import { AdminPage, User, EditUser, Candidates, EditCandidates, ElectorialMatrixes } from './AdminPage'
+import { AdminPage, User, EditUser, Candidates, EditCandidates, ElectorialMatrixes, UserFeedback } from './AdminPage'
 import { ErrorPage } from '@/pages'
 import UserPage from './AdminPage/user/UserPage'
 const AdminRoutes = () => {
@@ -12,6 +12,8 @@ const AdminRoutes = () => {
         <Route path="/candidate" element={<Candidates />} />
         <Route path="/candidate/edit/:id" element={<EditCandidates />} />
         <Route path="/electorial-matrix" element={<ElectorialMatrixes />} />
+        <Route path="/feedback" element={<UserFeedback />} />
+        <Route path="/voting-duration" element={<VotingDurationSetting />} />
         <Route path="/*" element={<ErrorPage />} />
       </Routes>
   )

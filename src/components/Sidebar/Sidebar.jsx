@@ -7,6 +7,7 @@ import { MdDashboardCustomize } from 'react-icons/md';
 import { Box, Typography, Button } from '@mui/material';
 import theme from '../../../theme';
 import { useAuth, } from '../../Auth';
+import { Feedback, Poll } from '@mui/icons-material';
 
 const Index = ({ collapsed, toggled, handleToggleSidebar, handleCollapsedChange, rootStyles, handleFeedbackModalOpen, isAdmin }) => {
   const { logout } = useAuth()
@@ -90,6 +91,18 @@ const Index = ({ collapsed, toggled, handleToggleSidebar, handleCollapsedChange,
               component={<Link to="/admin/electorial-matrix" />}
             >
               Result Matrix
+            </MenuItem>
+            <MenuItem
+                icon={<Feedback />}
+                component={<Link to="/admin/feedback" />}
+              >
+                Feedback
+            </MenuItem>
+            <MenuItem
+                icon={<Poll />}
+                component={<Link to="/admin/voting-duration" />}
+              >
+                Voting Duration
             </MenuItem>
           </>
         }

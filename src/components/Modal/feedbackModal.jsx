@@ -1,17 +1,31 @@
 import React from 'react'
 import { Modal, Box, Typography, TextField, Button } from '@mui/material';
+import { useApiCall } from '../../Admin/hooks/index.js';
 
 export const FeedbackModal = ({ open, handleClose }) => {
   const [feedback, setFeedback] = React.useState('');
-
+  const {loading, error, fetchData} = useApiCall();
   const handleFeedbackChange = (event) => {
     setFeedback(event.target.value);
   };
 
-  const handleSubmit = () => {
-    // Submit the feedback to the server
-    console.log('Feedback submitted:', feedback);
-    handleClose();
+  const handleSubmit = async () => {
+    if (feedback) {
+      try {
+        const response = await fetchData('/feedback/add-feedback', 'POST', { feedback });
+        if (response.status === 200) {
+          alert(response.message);
+          handleClose();
+        } else {
+          alert(response.message);
+          handleClose();
+        }
+      } catch (error) {
+        alert('Error adding feedback:', error);
+        handleClose();
+      }
+     
+    }
   };
 
   return (
