@@ -116,9 +116,9 @@ const isMobile = useIsMobile();
             alignItems="center"
             margin={'0 auto'}
           >
-            {Candidates.map((candidate) => (
+            {Candidates.length > 0 ? (Candidates.map((candidate) => (
               <CandidateCard key={candidate.id} candidate={candidate} />
-            ))}
+            ))):<Typography variant={"h5"}> No Candidate Found! </Typography>}
           </Grid>
         </Grid>
       </Grid>

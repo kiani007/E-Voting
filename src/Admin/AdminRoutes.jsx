@@ -1,6 +1,6 @@
 import React from 'react'
 import { Routes, Route } from 'react-router'
-import { AdminPage, User, EditUser, Candidates, EditCandidates, ElectorialMatrixes, UserFeedback } from './AdminPage'
+import { AdminPage, User, EditUser, Candidates, EditCandidates, ElectorialMatrixes, UserFeedback,VotingDurationSetting } from './AdminPage'
 import { ErrorPage } from '@/pages'
 import UserPage from './AdminPage/user/UserPage'
 const AdminRoutes = () => {
