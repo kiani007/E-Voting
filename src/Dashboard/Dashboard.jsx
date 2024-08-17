@@ -10,10 +10,9 @@ import {
   CardContent,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import vote from '../assets/vote-img.png';
-import { useAuth } from '../Auth';
 import { useApiCall } from '../Admin/hooks';
-import { get } from 'firebase/database';
+import {Timer} from "@mui/icons-material";
+import {useReverseTimer} from "./ReverseTimer.jsx";
 
 const CardItem = ({ title, subtitle, image, onClick }) => (
   <Grid item xs={12} sm={6}>
@@ -61,8 +60,9 @@ const CardItem = ({ title, subtitle, image, onClick }) => (
 
 export const Dashboard = () => {
   const navigate = useNavigate();
-  const { fetchData, error, isLoading } = useApiCall();
+  const { fetchData } = useApiCall();
   const [isEligible, setIsEligible] = useState(false);
+  const {timer,timeLeft} = useReverseTimer()
   useEffect(() => {
     getUserEligibility();
     return () => {
@@ -83,6 +83,7 @@ export const Dashboard = () => {
       console.error('Error fetching user eligibility:', error);
     }
   }
+
   const cardData = [
     {
       title: 'President',
@@ -101,7 +102,6 @@ export const Dashboard = () => {
       },
     },
   ];
-
   return (
     <Box
       sx={{
@@ -112,6 +112,17 @@ export const Dashboard = () => {
         scrollbarColor: 'red',
       }}
     >
+        <Box sx={{
+            justifyContent: 'center',
+            display: 'flex',
+            color: 'white',
+            alignItems:'center',
+        }}>
+          <Timer sx={{fontSize:"3rem"}}/>
+             <Typography variant="h4" color="White" sx={{pl: '2rem'}}>
+                {timer === "null" ? "voting is not started yet" : timeLeft=== 0 ? "Voting has been ended": "Ending in " + timer }
+            </Typography>
+        </Box>
       <Container>
         <Typography
           variant="h2"

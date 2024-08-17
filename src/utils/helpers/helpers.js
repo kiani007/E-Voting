@@ -29,3 +29,19 @@ export const convertTime = (start_time, end_time) => {
         endMinute: endMinute.toString(),
     };
 };
+// Helper function to check end time and calculate time difference
+export function getTimeRemaining(endTime) {
+    const currentTime = new Date().getTime();
+
+    // If end time is less than the current time, return false
+    if (endTime < currentTime) {
+        return false;
+    }
+
+    // Calculate the difference between end time and current time
+    const timeLeft = endTime - currentTime;
+
+    // Return the time difference
+    return timeLeft;
+}
+
