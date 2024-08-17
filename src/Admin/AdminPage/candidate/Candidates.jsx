@@ -3,7 +3,6 @@ import { useApiCall } from '../../hooks'
 import { Button, Container, Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import CandidatePage from './CandidatePage';
-import { BackNavigation } from '../../../Dashboard/common/BackNavigation';
 import { FaPlus } from 'react-icons/fa';
 import AddCandidateModal from './AddCandidateModal';
 
@@ -18,8 +17,10 @@ export default function Candidates() {
     }
     const onDelete = async (id) => {
     try {
-        const response = await fetchData(`/candidate/delete/${uid}`, 'delete');
-        getAllCandidates();
+        const response = await fetchData(`/candidate/delete-candidate-by-id`, "delete", '', {id:id} );
+        if (response.status === 200) {
+            getAllCandidates();
+        }
     } catch (error) {
         alert('Error deleting user:', error);
         }
@@ -27,7 +28,6 @@ export default function Candidates() {
         
     const handleEdit = async (id) => {
         navigate(`/admin/candidate/edit/${id}`);
-        return;
     }
     const handleModalOpen = () => {
         setOpen(true);

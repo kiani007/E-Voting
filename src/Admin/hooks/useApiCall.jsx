@@ -24,8 +24,8 @@ const useApiCall = () => {
       };
       if (method === 'delete') {
           console.log("delete called",options.url);
-          const response = await axios.delete(options.url,{
-          headers: options.headers
+         await axios.delete(options.url,{
+          headers: options.headers, params: options.params,
         })
       }
       else {
