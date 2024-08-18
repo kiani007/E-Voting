@@ -1,17 +1,22 @@
 import { useState, useEffect } from 'react';
-import {useApiCall} from "../Admin/hooks/index.js";
+import { useApiCall } from "../Admin/hooks/index.js";
 
 export function useReverseTimer() {
     const [timeLeft, setTimeLeft] = useState(null);
     const [formattedTime, setFormattedTime] = useState('Loading...');
-    const {fetchData} = useApiCall();
+    const { fetchData } = useApiCall();
+
     useEffect(() => {
         const fetchEndTime = async () => {
             try {
                 const response = await fetchData('/duration/get-duration');
                 const data = await response.endTime;
-                const endTime =new Date(data)
-                const initialTimeLeft = calculateTimeLeft(endTime);
+
+                const endTime = new Date(data);
+
+                // Subtract 5 hours (5 hours * 60 minutes * 60 seconds * 1000 milliseconds)
+                const adjustedEndTime = new Date(endTime.getTime() - (5 * 60 * 60 * 1000));
+                const initialTimeLeft = calculateTimeLeft(adjustedEndTime);
                 setTimeLeft(initialTimeLeft);
             } catch (error) {
                 console.error('Error fetching end time:', error);
@@ -44,7 +49,7 @@ export function useReverseTimer() {
         return () => clearInterval(timerInterval);
     }, [timeLeft]);
 
-    return {timer:formattedTime,timeLeft};
+    return { timer: formattedTime, timeLeft };
 }
 
 function calculateTimeLeft(endTime) {
