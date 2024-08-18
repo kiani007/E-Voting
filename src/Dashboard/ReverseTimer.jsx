@@ -20,7 +20,8 @@ export function useReverseTimer() {
                 setTimeLeft(initialTimeLeft);
             } catch (error) {
                 console.error('Error fetching end time:', error);
-                setFormattedTime('Error fetching timer');
+                setFormattedTime("00:00:00");
+                setTimeLeft(null);
             }
         };
 

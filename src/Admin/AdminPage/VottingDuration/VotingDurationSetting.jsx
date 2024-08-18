@@ -10,10 +10,11 @@ import {
     CircularProgress,
 } from '@mui/material';
 import { useApiCall } from '../../hooks/index.js';
-import {convertTime} from "../../../utils/helpers/helpers.js";
+import { convertTime } from '../../../utils/helpers/helpers.js';
 
 const VotingDurationSetting = () => {
     const [duration, setDuration] = useState(null);
+    const [durationId, setDurationId] = useState(null);
     const { fetchData, error, loading } = useApiCall();
 
     useEffect(() => {
@@ -21,17 +22,18 @@ const VotingDurationSetting = () => {
             try {
                 const res = await fetchData('/duration/get-duration');
                 if (res.status === 200) {
-                    const {startTime, endTime} = res;
-                    const scheduleTime = convertTime(startTime,endTime);
+                    const { startTime, endTime, id } = res;
+                    setDurationId(id);
+                    const scheduleTime = convertTime(startTime, endTime);
                     setDuration(scheduleTime);
                 } else {
+                    setDurationId(null);
                     setDuration(null);
                 }
             } catch (error) {
-                console.error(error);
+                console.error("Error fetching duration:", error);
             }
         };
-
         fetchDuration();
     }, []);
 
@@ -49,8 +51,7 @@ const VotingDurationSetting = () => {
                             <Typography variant="h5" align="center" gutterBottom sx={{ color: 'primary.main', fontWeight: 'bold' }}>
                                 Voting Duration
                             </Typography>
-
-                            <TimeForm duration={duration} />
+                            <TimeForm duration={duration} setDuration={setDuration} durationId={durationId} />
                         </Grid>
                     </Grid>
                 </Grid>
@@ -59,7 +60,7 @@ const VotingDurationSetting = () => {
     );
 };
 
-const TimeForm = ({duration}) => {
+const TimeForm = ({ duration, setDuration, durationId }) => {
     const { fetchData, error, loading } = useApiCall();
     const [formData, setFormData] = useState({
         date: '',
@@ -81,16 +82,58 @@ const TimeForm = ({duration}) => {
         e.preventDefault();
         try {
             const res = await fetchData('/duration/add-duration', 'POST', formData);
-            console.log('Form Data:', res);
+            if (res.status === 200) {
+                alert('Duration added successfully');
+            } else {
+                console.error("Failed to add duration:", res.message);
+            }
         } catch (error) {
-            console.error(error);
+            console.error("Error adding duration:", error);
         }
     };
-    useEffect(()=>{
-        if (duration!==null){
-            setFormData(duration)
+
+    const deleteDuration = async (id) => {
+        try {
+            const res = await fetchData('/duration/delete-duration', 'DELETE', { id });
+            if (res.status === 200) {
+                alert('Duration deleted successfully');
+                setDuration(null); // Clear the duration
+                setFormData({ // Clear form data
+                    date: '',
+                    startHour: '10AM',
+                    startMinute: '0',
+                    endHour: '2PM',
+                    endMinute: '30',
+                });
+            } else {
+                console.error("Failed to delete duration:", res.message);
+            }
+        } catch (error) {
+            console.error("Error deleting duration:", error);
         }
-    },[duration])
+    };
+
+    const handleDeleteDuration = () => {
+        if (durationId) {
+            deleteDuration(durationId);
+        } else {
+            alert("No duration to delete");
+        }
+    };
+
+    useEffect(() => {
+        if (duration) {
+            setFormData(duration);
+        } else {
+            setFormData({
+                date: '',
+                startHour: '10AM',
+                startMinute: '0',
+                endHour: '2PM',
+                endMinute: '30',
+            });
+        }
+    }, [duration]);
 
     return (
         <Container>
@@ -101,12 +144,9 @@ const TimeForm = ({duration}) => {
             <form onSubmit={handleSubmit}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} md={6}>
-                        <Typography>
-                            Date:
-                        </Typography>
+                        <Typography>Date:</Typography>
                         <TextField
                             type="date"
-                            label="Date"
                             name="date"
                             value={formData.date}
                             onChange={handleChange}
@@ -116,9 +156,7 @@ const TimeForm = ({duration}) => {
                         />
                     </Grid>
                     <Grid item xs={12} md={3}>
-                        <Typography>
-                            Start Hour:
-                        </Typography>
+                        <Typography>Start Hour:</Typography>
                         <Select
                             label="Start Hour"
                             name="startHour"
@@ -132,9 +170,7 @@ const TimeForm = ({duration}) => {
                         </Select>
                     </Grid>
                     <Grid item xs={12} md={3}>
-                        <Typography>
-                            Start Min:
-                        </Typography>
+                        <Typography>Start Minute:</Typography>
                         <Select
                             label="Start Minute"
                             name="startMinute"
@@ -147,9 +183,7 @@ const TimeForm = ({duration}) => {
                         </Select>
                     </Grid>
                     <Grid item xs={12} md={3}>
-                        <Typography>
-                            End Hour:
-                        </Typography>
+                        <Typography>End Hour:</Typography>
                         <Select
                             label="End Hour"
                             name="endHour"
@@ -163,9 +197,7 @@ const TimeForm = ({duration}) => {
                         </Select>
                     </Grid>
                     <Grid item xs={12} md={3}>
-                        <Typography>
-                            End Min:
-                        </Typography>
+                        <Typography>End Minute:</Typography>
                         <Select
                             label="End Minute"
                             name="endMinute"
@@ -177,9 +209,12 @@ const TimeForm = ({duration}) => {
                             {generateMinuteOptions()}
                         </Select>
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} lg={12}>
                         <Button type="submit" variant="contained" color="primary">
                             Submit
+                        </Button>
+                        <Button variant="contained" color="error" onClick={handleDeleteDuration} sx={{ ml: 2 }}>
+                            Delete
                         </Button>
                     </Grid>
                 </Grid>
@@ -202,7 +237,7 @@ const generateTimeOptions = (period) => {
 };
 
 const generateMinuteOptions = () => {
-    const options = ['0', '15', '30', '45', '50', '55'];
+    const options = ['0', '5','10', '15','20','25', '30','35', '40', '45', '50', '55'];
     return options.map((minute) => (
         <MenuItem key={minute} value={minute}>
             {minute.padStart(2, '0')}

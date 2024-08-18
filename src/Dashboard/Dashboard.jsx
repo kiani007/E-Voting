@@ -112,17 +112,17 @@ export const Dashboard = () => {
         scrollbarColor: 'red',
       }}
     >
-        <Box sx={{
+        {timeLeft !== null && <Box sx={{
             justifyContent: 'center',
             display: 'flex',
             color: 'white',
-            alignItems:'center',
+            alignItems: 'center',
         }}>
-          <Timer sx={{fontSize:"3rem"}}/>
-             <Typography variant="h4" color="White" sx={{pl: '2rem'}}>
-                {timer === "null" ? "voting is not started yet" : timeLeft=== 0 ? "Voting has been ended": "Ending in " + timer }
+            <Timer sx={{fontSize: "3rem"}}/>
+            <Typography variant="h4" color="White" sx={{pl: '2rem'}}>
+                { timeLeft>0 ? "Ending in " + timer: 'Voting Ended'}
             </Typography>
-        </Box>
+        </Box>}
       <Container>
         <Typography
           variant="h2"
